@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Ingredients } from "./Ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
+import { Recipes } from "./Recipes/Recipes";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -47,6 +48,9 @@ const AppRouter = () => (
             <Link to="/">Hjem</Link>
           </li>
           <li>
+            <Link to="/recipes/">Oppskrifter</Link>
+          </li>
+          <li>
             <Link to="/ingredients/">Ingredienser</Link>
           </li>
         </ul>
@@ -54,6 +58,7 @@ const AppRouter = () => (
       <StyledWrapper>
         <Route path="/" exact component={Index} />
         <Route path="/ingredients/" component={Ingredients} />
+        <Route path="/recipes/" component={Recipes} />
       </StyledWrapper>
     </div>
   </Router>

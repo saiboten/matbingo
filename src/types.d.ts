@@ -9,3 +9,8 @@ export interface Ingredient {
   name: string;
   unit: Unit;
 }
+
+export interface RecipeType {
+  name: string;
+  description: string;
+}
