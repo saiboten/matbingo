@@ -2,29 +2,11 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Field, Form } from "react-final-form";
 import { Ingredient } from "../types";
+import { firebase } from "../firebase/firebase";
 
 interface IngredientErrors {
   name: string | undefined;
 }
-
-const onSubmit = (values: any, dispatch: any) => {
-  console.log("Submit", values);
-  dispatch({
-    type: "add",
-    ingredient: { ...values }
-  });
-};
-
-const validate = (values: any) => {
-  let errors: IngredientErrors = { name: undefined };
-
-  console.log(values);
-
-  if (!values.name) {
-    errors.name = "<-- Ingrediens kan ikke være tom";
-  }
-  return errors;
-};
 
 const StyledForm = styled.form`
   text-align: left;
@@ -117,43 +99,30 @@ const StyledButton = styled.button`
   }
 `;
 
-function AddUnit() {
-  return (
-    <StyledUnits>
-      <StyledRadio
-        id="kg"
-        name="unit"
-        component="input"
-        type="radio"
-        value="kg"
-      />
-      <StyledLabel htmlFor="kg">Kilo</StyledLabel>
+const onSubmit = (values: any) => {
+  console.log("Submit", values);
+  const db = firebase.firestore();
 
-      <StyledRadio
-        id="liter"
-        name="unit"
-        component="input"
-        type="radio"
-        value="liter"
-      />
-      <StyledLabel htmlFor="liter">Liter</StyledLabel>
+  db.collection("ingredients").add({
+    ...values
+  });
+};
 
-      <StyledRadio
-        id="units"
-        name="unit"
-        component="input"
-        type="radio"
-        value="units"
-      />
-      <StyledLabel htmlFor="units">Stk</StyledLabel>
-    </StyledUnits>
-  );
-}
+const validate = (values: any) => {
+  let errors: IngredientErrors = { name: undefined };
 
-export function AddIngredient({ dispatch }: any) {
+  console.log(values);
+
+  if (!values.name) {
+    errors.name = "<-- Ingrediens kan ikke være tom";
+  }
+  return errors;
+};
+
+export function AddIngredient() {
   return (
     <Form
-      onSubmit={values => onSubmit(values, dispatch)}
+      onSubmit={values => onSubmit(values)}
       validate={validate}
       render={({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>
@@ -177,7 +146,32 @@ export function AddIngredient({ dispatch }: any) {
                 )}
               </Field>
             </StyledFieldSet>
-            <AddUnit />
+            <StyledUnits>
+              <StyledRadio
+                id="kg"
+                name="unit"
+                component="input"
+                type="radio"
+                value="kg"
+              />
+              <StyledLabel htmlFor="kg">Kilo</StyledLabel>
+              <StyledRadio
+                id="liter"
+                name="unit"
+                component="input"
+                type="radio"
+                value="liter"
+              />
+              <StyledLabel htmlFor="liter">Liter</StyledLabel>
+              <StyledRadio
+                id="units"
+                name="unit"
+                component="input"
+                type="radio"
+                value="units"
+              />
+              <StyledLabel htmlFor="units">Stk</StyledLabel>
+            </StyledUnits>
             <StyledButton type="submit" disabled={pristine || submitting}>
               Legg til
             </StyledButton>

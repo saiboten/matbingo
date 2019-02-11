@@ -10,7 +10,7 @@ const initialState: Ingredient[] = [];
 
 function reducer(state: any, action: any) {
   switch (action.type) {
-    case "add":
+    case "addIngredient":
       return [...state, action.ingredient];
     default:
       throw new Error();
@@ -29,8 +29,8 @@ export function Ingredients() {
 
   return (
     <div>
-      <AddIngredient dispatch={dispatch} />
-      <ListIngredients state={state} />
+      <AddIngredient />
+      <ListIngredients state={state} dispatch={dispatch} />
     </div>
   );
 }
