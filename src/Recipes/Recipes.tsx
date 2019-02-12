@@ -1,20 +1,12 @@
-import React from "react";
-import { RecipeType } from "../types";
-import { Recipe } from "./Recipe";
+import React, { useEffect } from "react";
+import { ListRecipes } from "./ListRecipes";
 import { AddRecipe } from "./AddRecipe";
 
-const RecipeList = [
-  {
-    name: "Taco",
-    description: "Taco! Yeah"
-  }
-];
-
-export const Recipes = () => (
-  <div>
-    <AddRecipe />
-    {RecipeList.map((taco: RecipeType) => (
-      <Recipe key={taco.name} {...taco} />
-    ))}
-  </div>
-);
+export const Recipes = () => {
+  return (
+    <div>
+      <AddRecipe />
+      <ListRecipes />
+    </div>
+  );
+};
