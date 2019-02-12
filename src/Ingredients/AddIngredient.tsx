@@ -129,12 +129,7 @@ export function AddIngredient() {
           <StyledHeaderH1>Legg til ingrediens</StyledHeaderH1>
           <StyledForm onSubmit={handleSubmit}>
             <StyledFieldSet>
-              <Field
-                name="name"
-                component="input"
-                type="text"
-                placeholder="Navnet på ingrediensen"
-              >
+              <Field name="name" component="input" type="text">
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Ingrediens</StyledInputLabel>
