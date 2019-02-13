@@ -8,6 +8,7 @@ export enum Unit {
 export interface Ingredient {
   name: string;
   unit: Unit;
+  id: string;
 }
 
 export interface RecipeType {

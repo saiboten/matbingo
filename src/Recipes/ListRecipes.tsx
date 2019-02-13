@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { RecipeType } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledListItem } from "../components/StyledList";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 
 function deleteItem(id: string) {
   const db = firebase.firestore();
@@ -28,13 +29,16 @@ export const ListRecipes = ({
   }, []);
 
   return (
-    <ul>
-      {state.map(el => (
-        <StyledListItem key={el.id}>
-          {el.name} - {el.description}
-          <div onClick={() => deleteItem(el.id)}>Slett</div>
-        </StyledListItem>
-      ))}
-    </ul>
+    <>
+      <StyledHeaderH1>Oppskrifter</StyledHeaderH1>
+      <ul>
+        {state.map(el => (
+          <StyledListItem key={el.id}>
+            {el.name}
+            <div onClick={() => deleteItem(el.id)}>Slett</div>
+          </StyledListItem>
+        ))}
+      </ul>
+    </>
   );
 };

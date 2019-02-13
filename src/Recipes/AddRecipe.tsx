@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -10,12 +11,6 @@ interface RecipeErrors {
 
 const StyledForm = styled.form`
   text-align: left;
-  margin-bottom: 24px;
-`;
-
-const StyledHeaderH1 = styled.h1`
-  margin-top: 24px;
-  text-align: center;
   margin-bottom: 24px;
 `;
 

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Field, Form } from "react-final-form";
 import { Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 
 interface IngredientErrors {
   name: string | undefined;
@@ -10,12 +11,6 @@ interface IngredientErrors {
 
 const StyledForm = styled.form`
   text-align: left;
-  margin-bottom: 24px;
-`;
-
-const StyledHeaderH1 = styled.h1`
-  margin-top: 24px;
-  text-align: center;
   margin-bottom: 24px;
 `;
 
@@ -99,12 +94,14 @@ const StyledButton = styled.button`
   }
 `;
 
-const onSubmit = (values: any) => {
+const onSubmit = (values: any, reset: () => void) => {
   const db = firebase.firestore();
 
   db.collection("ingredients").add({
     ...values
   });
+
+  reset();
 };
 
 const validate = (values: any) => {
@@ -119,7 +116,7 @@ const validate = (values: any) => {
 export function AddIngredient() {
   return (
     <Form
-      onSubmit={values => onSubmit(values)}
+      onSubmit={(values, form) => onSubmit(values, form.reset)}
       validate={validate}
       render={({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>

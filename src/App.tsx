@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
 html {
     // This defines what 1 rem is
     font-size: 62.5%; // 1 rem == 10px
+    background-color: #d4dce0;
 }
 
 body {
@@ -39,34 +40,55 @@ li {
 
 const StyledWrapper = styled.div`
   max-width: 415px;
-  margin: 0 auto;
+  margin: 20px auto;
   border: 1px solid #bbbbbb;
-  padding: 0 15px;
+  padding: 15px;
+  background-color: #fff;
 `;
 
-const Index = () => <h1>Velkommen hjem</h1>;
+const StyledNav = styled.nav``;
+
+const StyledUl = styled.ul`
+  list-style-type: none;
+  display: flex;
+  margin-top: 20px;
+  justify-content: flex-end;
+`;
+
+const StyledLi = styled.li`
+  margin-right: 5px;
+`;
+
+const StyledLink = styled(Link)`
+  &:visited,
+  &:link {
+    color: inherit;
+    text-decoration: none;
+  }
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+`;
 
 const AppRouter = () => (
   <Router>
     <div>
       <GlobalStyle />
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Hjem</Link>
-          </li>
-          <li>
-            <Link to="/recipes/">Oppskrifter</Link>
-          </li>
-          <li>
-            <Link to="/ingredients/">Ingredienser</Link>
-          </li>
-        </ul>
-      </nav>
+
       <StyledWrapper>
-        <Route path="/" exact component={Index} />
+        <nav>
+          <StyledUl>
+            <StyledLi>
+              <StyledLink to="/">Oppskrifter</StyledLink>
+            </StyledLi>
+            <StyledLi>
+              <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+            </StyledLi>
+          </StyledUl>
+        </nav>
+        <Route path="/" exact component={Recipes} />
+        <Route path="/receipt/:id" exact component={Recipes} />
         <Route path="/ingredients/" component={Ingredients} />
-        <Route path="/recipes/" component={Recipes} />
       </StyledWrapper>
     </div>
   </Router>
