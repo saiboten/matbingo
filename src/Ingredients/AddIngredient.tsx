@@ -7,7 +7,7 @@ import { StyledError } from "../components/StyledError";
 import { StyledInputWrapper } from "../components/StyledInputWrapper";
 import { StyledInput } from "../components/StyledInput";
 import { StyledForm } from "../components/StyledForm";
-import { StyledFieldSet } from "../components/StyledFieldset";
+import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
 
 interface IngredientErrors {
