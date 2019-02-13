@@ -5,14 +5,8 @@ import { RecipeType } from "../types";
 
 function reducer(state: RecipeType[], action: any) {
   switch (action.type) {
-    case "addRecipe":
-      return [
-        ...state,
-        {
-          ...action.recipe,
-          id: action.key
-        }
-      ];
+    case "setRecipes":
+      return action.recipes.map((doc: any) => ({ id: doc.id, ...doc.data() }));
     default:
       throw new Error();
   }

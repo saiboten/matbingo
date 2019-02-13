@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
+import { StyledListItem } from "../components/StyledList";
 
 export function ListIngredients({
   state,
@@ -25,9 +26,9 @@ export function ListIngredients({
   return (
     <ul>
       {state.map(el => (
-        <li key={el.name}>
+        <StyledListItem key={el.name}>
           {el.name} - {el.unit}
-        </li>
+        </StyledListItem>
       ))}
     </ul>
   );

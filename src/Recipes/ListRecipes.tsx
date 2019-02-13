@@ -1,6 +1,15 @@
 import React, { useEffect } from "react";
 import { RecipeType } from "../types";
 import { firebase } from "../firebase/firebase";
+import { StyledListItem } from "../components/StyledList";
+
+function deleteItem(id: string) {
+  const db = firebase.firestore();
+  const recipes = db
+    .collection("recipes")
+    .doc(id)
+    .delete();
+}
 
 export const ListRecipes = ({
   state,
@@ -11,13 +20,9 @@ export const ListRecipes = ({
 }) => {
   useEffect(() => {
     const db = firebase.firestore();
-    db.collection("recipes")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          dispatch({ type: "addRecipe", key: doc.id, recipe: doc.data() });
-        });
-      });
+    db.collection("recipes").onSnapshot(querySnapshot => {
+      dispatch({ type: "setRecipes", recipes: querySnapshot.docs });
+    });
 
     return () => {};
   }, []);
@@ -25,9 +30,10 @@ export const ListRecipes = ({
   return (
     <ul>
       {state.map(el => (
-        <li key={el.id}>
+        <StyledListItem key={el.id}>
           {el.name} - {el.description}
-        </li>
+          <div onClick={() => deleteItem(el.id)}>Slett</div>
+        </StyledListItem>
       ))}
     </ul>
   );

@@ -55,12 +55,14 @@ const StyledButton = styled.button`
   }
 `;
 
-const onSubmit = (values: any) => {
+const onSubmit = (values: any, form: any) => {
   const db = firebase.firestore();
 
   db.collection("recipes").add({
     ...values
   });
+
+  form.reset();
 };
 
 const validate = (values: any) => {
@@ -76,12 +78,19 @@ const validate = (values: any) => {
 export function AddRecipe() {
   return (
     <Form
-      onSubmit={values => onSubmit(values)}
+      onSubmit={(values, form) => onSubmit(values, form)}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine }) => (
+      render={({ handleSubmit, submitting, pristine, reset }) => (
         <React.Fragment>
           <StyledHeaderH1>Legg til oppskrift</StyledHeaderH1>
-          <StyledForm onSubmit={handleSubmit}>
+          <StyledForm
+            onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) => {
+              const promise = handleSubmit(event);
+              if (promise) {
+                promise.then(reset);
+              }
+            }}
+          >
             <StyledFieldSet>
               <Field name="name" component="input" type="text">
                 {({ input, meta }: { input: any; meta: any }) => (
@@ -98,6 +107,8 @@ export function AddRecipe() {
                   </>
                 )}
               </Field>
+            </StyledFieldSet>
+            <StyledFieldSet>
               <Field name="description" component="input" type="text">
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>

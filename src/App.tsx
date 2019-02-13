@@ -24,6 +24,14 @@ body {
     font-size: 1.6rem;
 }
 
+ul {
+  list-style-type: none;
+}
+
+li {
+  text-decoration: none;
+}
+
 ::selection {
 
 }
