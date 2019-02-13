@@ -4,11 +4,9 @@ import { Field, Form } from "react-final-form";
 import { Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import {
-  StyledError,
-  StyledInputWrapper,
-  StyledInput
-} from "../components/StyledError";
+import { StyledError } from "../components/StyledError";
+import { StyledInputWrapper } from "../components/StyledInputWrapper";
+import { StyledInput } from "../components/StyledInput";
 
 interface IngredientErrors {
   name: string | undefined;
