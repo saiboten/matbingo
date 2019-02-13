@@ -1,28 +1,18 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Field, Form } from "react-final-form";
-import { Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledError } from "../components/StyledError";
 import { StyledInputWrapper } from "../components/StyledInputWrapper";
 import { StyledInput } from "../components/StyledInput";
+import { StyledForm } from "../components/StyledForm";
+import { StyledFieldSet } from "../components/StyledFieldset";
+import { StyledButton } from "../components/StyledButton";
 
 interface IngredientErrors {
   name: string | undefined;
 }
-
-const StyledForm = styled.form`
-  text-align: left;
-  margin-bottom: 24px;
-`;
-
-const StyledFieldSet = styled.fieldset`
-  position: relative;
-  border: none;
-  margin-top: 24px;
-  margin-bottom: 24px;
-`;
 
 const StyledInputLabel = styled.label`
   padding: 10px;
@@ -70,17 +60,6 @@ const StyledRadio = styled(Field)`
 
   &:checked + ${StyledLabel}::before {
     opacity: 1;
-  }
-`;
-
-const StyledButton = styled.button`
-  padding: 10px;
-  border-radius: 5px;
-  background-color: white;
-  transition: all 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
   }
 `;
 

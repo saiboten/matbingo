@@ -6,38 +6,18 @@ import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledError } from "../components/StyledError";
 import { StyledInputWrapper } from "../components/StyledInputWrapper";
 import { StyledInput } from "../components/StyledInput";
+import { StyledForm } from "../components/StyledForm";
+import { StyledFieldSet } from "../components/StyledFieldset";
+import { StyledButton } from "../components/StyledButton";
 
 interface RecipeErrors {
   name: string | undefined;
   description: string | undefined;
 }
 
-const StyledForm = styled.form`
-  text-align: left;
-  margin-bottom: 24px;
-`;
-
-const StyledFieldSet = styled.fieldset`
-  position: relative;
-  border: none;
-  margin-top: 24px;
-  margin-bottom: 24px;
-`;
-
 const StyledInputLabel = styled.label`
   padding: 10px;
   display: inline-block;
-`;
-
-const StyledButton = styled.button`
-  padding: 10px;
-  border-radius: 5px;
-  background-color: white;
-  transition: all 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 const onSubmit = (values: any, form: any) => {
