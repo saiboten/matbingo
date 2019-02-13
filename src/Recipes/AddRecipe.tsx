@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import {
+  StyledError,
+  StyledInputWrapper,
+  StyledInput
+} from "../components/StyledError";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -12,13 +17,6 @@ interface RecipeErrors {
 const StyledForm = styled.form`
   text-align: left;
   margin-bottom: 24px;
-`;
-
-const StyledError = styled.div`
-  position: absolute;
-  color: red;
-  right: -188px;
-  top: 10px;
 `;
 
 const StyledFieldSet = styled.fieldset`
@@ -31,12 +29,6 @@ const StyledFieldSet = styled.fieldset`
 const StyledInputLabel = styled.label`
   padding: 10px;
   display: inline-block;
-`;
-
-const StyledInput = styled.input`
-  float: right;
-  padding: 10px;
-  text-align: center;
 `;
 
 const StyledButton = styled.button`
@@ -64,7 +56,7 @@ const validate = (values: any) => {
   let errors: RecipeErrors = { name: undefined, description: undefined };
 
   if (!values.name) {
-    errors.name = "<-- Ingrediens kan ikke være tom";
+    errors.name = "Oppskriften må ha et navn";
   }
 
   return errors;
@@ -91,14 +83,17 @@ export function AddRecipe() {
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Oppskrift</StyledInputLabel>
-                    <StyledInput
-                      autoComplete="off"
-                      placeholder="Navn på oppskrift"
-                      {...input}
-                    />
-                    {meta.error && meta.touched && (
-                      <StyledError>{meta.error}</StyledError>
-                    )}
+
+                    <StyledInputWrapper>
+                      {meta.error && meta.touched && (
+                        <StyledError>{meta.error}</StyledError>
+                      )}
+                      <StyledInput
+                        autoComplete="off"
+                        placeholder="Navn på oppskrift"
+                        {...input}
+                      />
+                    </StyledInputWrapper>
                   </>
                 )}
               </Field>
@@ -108,14 +103,16 @@ export function AddRecipe() {
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Beskrivelse</StyledInputLabel>
-                    <StyledInput
-                      autoComplete="off"
-                      placeholder="Beskrivelse"
-                      {...input}
-                    />
-                    {meta.error && meta.touched && (
-                      <StyledError>{meta.error}</StyledError>
-                    )}
+                    <StyledInputWrapper>
+                      {meta.error && meta.touched && (
+                        <StyledError>{meta.error}</StyledError>
+                      )}
+                      <StyledInput
+                        autoComplete="off"
+                        placeholder="Beskrivelse"
+                        {...input}
+                      />
+                    </StyledInputWrapper>
                   </>
                 )}
               </Field>

@@ -4,6 +4,11 @@ import { Field, Form } from "react-final-form";
 import { Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import {
+  StyledError,
+  StyledInputWrapper,
+  StyledInput
+} from "../components/StyledError";
 
 interface IngredientErrors {
   name: string | undefined;
@@ -12,13 +17,6 @@ interface IngredientErrors {
 const StyledForm = styled.form`
   text-align: left;
   margin-bottom: 24px;
-`;
-
-const StyledError = styled.div`
-  position: absolute;
-  color: red;
-  right: -188px;
-  top: 10px;
 `;
 
 const StyledFieldSet = styled.fieldset`
@@ -31,12 +29,6 @@ const StyledFieldSet = styled.fieldset`
 const StyledInputLabel = styled.label`
   padding: 10px;
   display: inline-block;
-`;
-
-const StyledInput = styled.input`
-  float: right;
-  padding: 10px;
-  text-align: center;
 `;
 
 const StyledUnits = styled.div`
@@ -108,7 +100,7 @@ const validate = (values: any) => {
   let errors: IngredientErrors = { name: undefined };
 
   if (!values.name) {
-    errors.name = "<-- Ingrediens kan ikke være tom";
+    errors.name = "Ingrediens kan ikke være tom";
   }
   return errors;
 };
@@ -127,14 +119,16 @@ export function AddIngredient() {
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Ingrediens</StyledInputLabel>
-                    <StyledInput
-                      autoComplete="off"
-                      placeholder="Navn på ingrediens"
-                      {...input}
-                    />
-                    {meta.error && meta.touched && (
-                      <StyledError>{meta.error}</StyledError>
-                    )}
+                    <StyledInputWrapper>
+                      {meta.error && meta.touched && (
+                        <StyledError>{meta.error}</StyledError>
+                      )}
+                      <StyledInput
+                        autoComplete="off"
+                        placeholder="Navn på ingrediens"
+                        {...input}
+                      />
+                    </StyledInputWrapper>
                   </>
                 )}
               </Field>
