@@ -6,24 +6,29 @@ export const ListRecipes = ({
   state,
   dispatch
 }: {
-  state: any;
+  state: RecipeType[];
   dispatch: any;
 }) => {
   useEffect(() => {
     const db = firebase.firestore();
-    db.collection("ingredients")
+    db.collection("recipes")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          dispatch({ type: "addRecipe", ingredient: doc.data() });
+          dispatch({ type: "addRecipe", key: doc.id, recipe: doc.data() });
         });
       });
 
     return () => {};
   }, []);
 
-  <div>
-    <h1>{data.name}</h1>
-    <p>{data.description}</p>
-  </div>;
+  return (
+    <ul>
+      {state.map(el => (
+        <li key={el.id}>
+          {el.name} - {el.description}
+        </li>
+      ))}
+    </ul>
+  );
 };

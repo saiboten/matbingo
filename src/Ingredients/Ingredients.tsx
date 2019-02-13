@@ -4,8 +4,6 @@ import { AddIngredient } from "./AddIngredient";
 import { ListIngredients } from "./ListIngredients";
 import { Ingredient } from "../types";
 
-const IngredientsContext = React.createContext([]);
-
 const initialState: Ingredient[] = [];
 
 function reducer(state: any, action: any) {
@@ -15,10 +13,6 @@ function reducer(state: any, action: any) {
     default:
       throw new Error();
   }
-}
-
-interface AppState {
-  ingredients: Ingredient[];
 }
 
 export function Ingredients() {

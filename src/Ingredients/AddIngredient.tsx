@@ -100,7 +100,6 @@ const StyledButton = styled.button`
 `;
 
 const onSubmit = (values: any) => {
-  console.log("Submit", values);
   const db = firebase.firestore();
 
   db.collection("ingredients").add({
@@ -110,8 +109,6 @@ const onSubmit = (values: any) => {
 
 const validate = (values: any) => {
   let errors: IngredientErrors = { name: undefined };
-
-  console.log(values);
 
   if (!values.name) {
     errors.name = "<-- Ingrediens kan ikke være tom";
@@ -133,7 +130,11 @@ export function AddIngredient() {
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Ingrediens</StyledInputLabel>
-                    <StyledInput placeholder="Navn på ingrediens" {...input} />
+                    <StyledInput
+                      autoComplete="off"
+                      placeholder="Navn på ingrediens"
+                      {...input}
+                    />
                     {meta.error && meta.touched && (
                       <StyledError>{meta.error}</StyledError>
                     )}

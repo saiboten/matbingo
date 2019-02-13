@@ -56,7 +56,6 @@ const StyledButton = styled.button`
 `;
 
 const onSubmit = (values: any) => {
-  console.log("Submit", values);
   const db = firebase.firestore();
 
   db.collection("recipes").add({
@@ -66,8 +65,6 @@ const onSubmit = (values: any) => {
 
 const validate = (values: any) => {
   let errors: RecipeErrors = { name: undefined, description: undefined };
-
-  console.log(values);
 
   if (!values.name) {
     errors.name = "<-- Ingrediens kan ikke være tom";
@@ -90,7 +87,11 @@ export function AddRecipe() {
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Oppskrift</StyledInputLabel>
-                    <StyledInput placeholder="Navn på oppskrift" {...input} />
+                    <StyledInput
+                      autoComplete="off"
+                      placeholder="Navn på oppskrift"
+                      {...input}
+                    />
                     {meta.error && meta.touched && (
                       <StyledError>{meta.error}</StyledError>
                     )}
@@ -101,7 +102,11 @@ export function AddRecipe() {
                 {({ input, meta }: { input: any; meta: any }) => (
                   <>
                     <StyledInputLabel>Beskrivelse</StyledInputLabel>
-                    <StyledInput placeholder="Beskrivelse" {...input} />
+                    <StyledInput
+                      autoComplete="off"
+                      placeholder="Beskrivelse"
+                      {...input}
+                    />
                     {meta.error && meta.touched && (
                       <StyledError>{meta.error}</StyledError>
                     )}
