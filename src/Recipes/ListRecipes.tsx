@@ -32,7 +32,6 @@ export const ListRecipes = () => {
         <RecipeContext.Consumer>
           {({ recipes }) =>
             recipes.map((el: any) => {
-              console.log(el);
               return (
                 <StyledListItemLink key={el.id} to={`/recipes/${el.id}`}>
                   {el.name}
