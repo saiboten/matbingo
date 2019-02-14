@@ -1,28 +1,25 @@
-import React, { useEffect } from "react";
-import { RecipeType } from "../types";
+import React, { useEffect, useContext } from "react";
 import { firebase } from "../firebase/firebase";
-import { StyledListItem } from "../components/StyledList";
+import { StyledListItemLink } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import { RecipeContext } from "../context/RecipeContext";
 
 function deleteItem(id: string) {
   const db = firebase.firestore();
-  const recipes = db
-    .collection("recipes")
+  db.collection("recipes")
     .doc(id)
     .delete();
 }
 
-export const ListRecipes = ({
-  state,
-  dispatch
-}: {
-  state: RecipeType[];
-  dispatch: any;
-}) => {
+export const ListRecipes = () => {
+  const recipes = useContext(RecipeContext);
+
   useEffect(() => {
     const db = firebase.firestore();
     db.collection("recipes").onSnapshot(querySnapshot => {
-      dispatch({ type: "setRecipes", recipes: querySnapshot.docs });
+      recipes.setRecipes(
+        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+      );
     });
 
     return () => {};
@@ -32,12 +29,19 @@ export const ListRecipes = ({
     <>
       <StyledHeaderH1>Oppskrifter</StyledHeaderH1>
       <ul>
-        {state.map(el => (
-          <StyledListItem key={el.id}>
-            {el.name}
-            <div onClick={() => deleteItem(el.id)}>Slett</div>
-          </StyledListItem>
-        ))}
+        <RecipeContext.Consumer>
+          {({ recipes }) =>
+            recipes.map((el: any) => {
+              console.log(el);
+              return (
+                <StyledListItemLink key={el.id} to={`/recipes/${el.id}`}>
+                  {el.name}
+                  <div onClick={() => deleteItem(el.id)}>Slett</div>
+                </StyledListItemLink>
+              );
+            })
+          }
+        </RecipeContext.Consumer>
       </ul>
     </>
   );
