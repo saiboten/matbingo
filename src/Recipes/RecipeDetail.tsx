@@ -16,8 +16,6 @@ export const RecipeDetails = ({
     params: { id }
   }
 }: Props) => {
-  const context = useContext(RecipeContext);
-
   const recipes = useContext(RecipeContext);
 
   useEffect(() => {
@@ -31,7 +29,7 @@ export const RecipeDetails = ({
     return () => {};
   }, []);
 
-  const recipeDetails: RecipeType = context.recipes.find(
+  const recipeDetails: RecipeType = recipes.recipes.find(
     recipe => recipe.id === id
   ) || { name: "", description: "", id: "" };
 
