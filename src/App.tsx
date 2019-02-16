@@ -11,6 +11,7 @@ import {
   IngredientsContext,
   IngredientsContextState
 } from "./context/IngredientsContext";
+import { primaryColor } from "./components/Constants";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -64,7 +65,7 @@ const StyledUl = styled.ul`
   display: flex;
   justify-content: flex-end;
   padding: 5px 0;
-  background-color: #1859ea;
+  background-color: ${primaryColor};
   align-items: center;
   font-size: 20px;
 `;
