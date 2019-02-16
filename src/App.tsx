@@ -5,8 +5,12 @@ import { Ingredients } from "./Ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./Recipes/Recipes";
 import { RecipeType } from "./types";
-import { ContextState, RecipeContext } from "./context/RecipeContext";
+import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
 import { RecipeDetails } from "./Recipes/RecipeDetail";
+import {
+  IngredientsContext,
+  IngredientsContextState
+} from "./context/IngredientsContext";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -74,33 +78,40 @@ const StyledLink = styled(Link)`
 
 const AppRouter = () => {
   const [recipes, setRecipes] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
-  const contextValue: ContextState = {
+  const contextValue: RecipeContextState = {
     recipes,
     setRecipes
+  };
+
+  const ingredientsContextValue: IngredientsContextState = {
+    ingredients,
+    setIngredients
   };
 
   return (
     <Router>
       <div>
         <RecipeContext.Provider value={contextValue}>
-          <GlobalStyle />
-
-          <StyledWrapper>
-            <nav>
-              <StyledUl>
-                <StyledLi>
-                  <StyledLink to="/">Oppskrifter</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/ingredients/">Ingredienser</StyledLink>
-                </StyledLi>
-              </StyledUl>
-            </nav>
-            <Route path="/" exact component={Recipes} />
-            <Route path="/recipes/:id" exact component={RecipeDetails} />
-            <Route path="/ingredients/" component={Ingredients} />
-          </StyledWrapper>
+          <IngredientsContext.Provider value={ingredientsContextValue}>
+            <GlobalStyle />
+            <StyledWrapper>
+              <nav>
+                <StyledUl>
+                  <StyledLi>
+                    <StyledLink to="/">Oppskrifter</StyledLink>
+                  </StyledLi>
+                  <StyledLi>
+                    <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+                  </StyledLi>
+                </StyledUl>
+              </nav>
+              <Route path="/" exact component={Recipes} />
+              <Route path="/recipes/:id" exact component={RecipeDetails} />
+              <Route path="/ingredients/" component={Ingredients} />
+            </StyledWrapper>
+          </IngredientsContext.Provider>
         </RecipeContext.Provider>
       </div>
     </Router>

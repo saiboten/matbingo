@@ -1,12 +1,12 @@
 import React from "react";
 import { RecipeType } from "../types";
 
-export interface ContextState {
+export interface RecipeContextState {
   recipes: RecipeType[];
   setRecipes: any;
 }
 
-const initalState: ContextState = {
+const initalState: RecipeContextState = {
   recipes: [],
   setRecipes: () => ({})
 };
