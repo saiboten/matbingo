@@ -5,9 +5,11 @@ import { StyledListItemLink } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { RecipeContext } from "../context/RecipeContext";
 import { Redirect } from "react-router";
+import { IngredientsContext } from "../context/IngredientsContext";
 
 export const ListRecipes = () => {
   const recipes = useContext(RecipeContext);
+  const ingredientsContext = useContext(IngredientsContext);
 
   const [selectedOption, setOption] = useState({
     label: "Velg",
@@ -16,13 +18,18 @@ export const ListRecipes = () => {
 
   const handleChange = (selectedOption: any) => {
     setOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
   };
 
   useEffect(() => {
     const db = firebase.firestore();
     db.collection("recipes").onSnapshot(querySnapshot => {
       recipes.setRecipes(
+        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+      );
+    });
+
+    db.collection("ingredients").onSnapshot(querySnapshot => {
+      ingredientsContext.setIngredients(
         querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
       );
     });

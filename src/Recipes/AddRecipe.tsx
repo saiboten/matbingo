@@ -9,6 +9,8 @@ import { StyledInput } from "../components/StyledInput";
 import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
+import SelectBase from "react-select";
+import { IngredientsContext } from "../context/IngredientsContext";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -40,7 +42,19 @@ const validate = (values: any) => {
   return errors;
 };
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 export function AddRecipe() {
+  const [recipeIngredients, setIngredients] = useState<Array<Option>>([]);
+
+  const handleChange = (selectedOptions: any) => {
+    console.log(selectedOptions);
+    setIngredients(selectedOptions);
+  };
+
   return (
     <Form
       onSubmit={(values, form) => onSubmit(values, form)}
@@ -95,6 +109,20 @@ export function AddRecipe() {
                 )}
               </Field>
             </StyledFieldSet>
+            <label>Legg til ingredienser</label>
+            <IngredientsContext.Consumer>
+              {({ ingredients }) => (
+                <SelectBase
+                  isMulti
+                  onChange={handleChange}
+                  options={ingredients.map(el => ({
+                    label: el.name,
+                    value: el.id
+                  }))}
+                />
+              )}
+            </IngredientsContext.Consumer>
+
             <StyledButton type="submit" disabled={pristine || submitting}>
               Legg til
             </StyledButton>
