@@ -49,8 +49,12 @@ const StyledWrapper = styled.div`
   max-width: 415px;
   margin: 20px auto;
   border: 1px solid #bbbbbb;
-  padding: 15px;
+  padding: 0;
   background-color: #fff;
+`;
+
+const StyledContentWrapper = styled.div`
+  padding: 15px;
 `;
 
 const StyledNav = styled.nav``;
@@ -58,22 +62,35 @@ const StyledNav = styled.nav``;
 const StyledUl = styled.ul`
   list-style-type: none;
   display: flex;
-  margin-top: 20px;
   justify-content: flex-end;
+  padding: 5px 0;
+  background-color: #1859ea;
+  align-items: center;
+  font-size: 20px;
+`;
+
+const StyledLeftItemLi = styled.li`
+  margin-right: auto;
 `;
 
 const StyledLi = styled.li`
   margin-right: 5px;
+  padding: 20px 0;
+  border: 2px solid transparent;
+
+  &:hover {
+    border: 2px solid grey;
+  }
 `;
 
 const StyledLink = styled(Link)`
   &:visited,
   &:link {
-    color: white;
+    color: #f3f3f3;
     text-decoration: none;
   }
   padding: 10px;
-  background-color: #1859ea;
+  /* background-color: #1859ea; */
 `;
 
 const AppRouter = () => {
@@ -96,20 +113,25 @@ const AppRouter = () => {
         <RecipeContext.Provider value={contextValue}>
           <IngredientsContext.Provider value={ingredientsContextValue}>
             <GlobalStyle />
+            <nav>
+              <StyledUl>
+                <StyledLeftItemLi>
+                  <StyledLink to="/">Food-Eureka!</StyledLink>
+                </StyledLeftItemLi>
+                <StyledLi>
+                  <StyledLink to="/">Oppskrifter</StyledLink>
+                </StyledLi>
+                <StyledLi>
+                  <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+                </StyledLi>
+              </StyledUl>
+            </nav>
             <StyledWrapper>
-              <nav>
-                <StyledUl>
-                  <StyledLi>
-                    <StyledLink to="/">Oppskrifter</StyledLink>
-                  </StyledLi>
-                  <StyledLi>
-                    <StyledLink to="/ingredients/">Ingredienser</StyledLink>
-                  </StyledLi>
-                </StyledUl>
-              </nav>
-              <Route path="/" exact component={Recipes} />
-              <Route path="/recipes/:id" exact component={RecipeDetails} />
-              <Route path="/ingredients/" component={Ingredients} />
+              <StyledContentWrapper>
+                <Route path="/" exact component={Recipes} />
+                <Route path="/recipes/:id" exact component={RecipeDetails} />
+                <Route path="/ingredients/" component={Ingredients} />
+              </StyledContentWrapper>
             </StyledWrapper>
           </IngredientsContext.Provider>
         </RecipeContext.Provider>
