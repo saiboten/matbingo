@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import SelectBase from "react-select";
 import { RecipeContext } from "../context/RecipeContext";
 import { RouteComponentProps, Redirect } from "react-router";
-import { RecipeType } from "../types";
+import { RecipeType, Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { primaryColor } from "../components/Constants";
@@ -17,6 +17,9 @@ import { StyledInput } from "../components/StyledInput";
 import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledButton } from "../components/StyledButton";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
+import { StyledTextArea } from "../components/StyledTextArea";
+import { Option } from "react-select/lib/filters";
+import { StyledLoader } from "../components/StyledLoader";
 
 interface Params {
   id: string;
@@ -24,13 +27,19 @@ interface Params {
 
 interface Props extends RouteComponentProps<Params> {}
 
-const onSubmit = (documentId: string, values: any, form: any) => {
+const onSubmit = (
+  documentId: string,
+  values: any,
+  recipeIngredients: Array<Option>,
+  form: any
+) => {
   const db = firebase.firestore();
 
   db.collection("recipes")
     .doc(documentId)
     .update({
-      ...values
+      ...values,
+      ingredients: recipeIngredients.map(el => el.value)
     });
 };
 
@@ -63,8 +72,10 @@ export const RecipeDetails = ({
   }
 }: Props) => {
   const recipes = useContext(RecipeContext);
+  const ingredients = useContext(IngredientsContext);
 
   const [nextPage, setNextPage] = useState("");
+  const [recipeIngredients, setIngredients] = useState<Array<Option>>([]);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -74,16 +85,42 @@ export const RecipeDetails = ({
       );
     });
 
+    db.collection("ingredients").onSnapshot(querySnapshot => {
+      ingredients.setIngredients(
+        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+      );
+    });
+
     return () => {};
   }, []);
 
+  if (ingredients.ingredients.length == 0) {
+    return <StyledLoader />;
+  }
+
   const handleChange = (selectedOptions: any) => {
     console.log(selectedOptions);
+    setIngredients(selectedOptions);
   };
 
   const recipeDetails: RecipeType = recipes.recipes.find(
     recipe => recipe.id === id
   ) || { name: "", description: "", id: "", ingredients: [], weekdays: [] };
+
+  const receipeIngredients = recipeDetails.ingredients.map(ingredientId => {
+    const foundIngredient = ingredients.ingredients.find(
+      (el: Ingredient) => el.id === ingredientId
+    );
+
+    if (!foundIngredient) {
+      return null;
+    }
+
+    return {
+      label: foundIngredient.name,
+      value: ingredientId
+    };
+  });
 
   if (nextPage !== "") {
     return <Redirect push to={nextPage} />;
@@ -97,11 +134,12 @@ export const RecipeDetails = ({
         initialValues={{
           ...recipeDetails
         }}
-        onSubmit={(values, form) => onSubmit(recipeDetails.id, values, form)}
+        onSubmit={(values, form) =>
+          onSubmit(recipeDetails.id, values, recipeIngredients, form)
+        }
         validate={validate}
         render={({ handleSubmit, submitting, pristine, reset }) => (
           <React.Fragment>
-            <StyledHeaderH1>Legg til oppskrift</StyledHeaderH1>
             <StyledForm
               onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) => {
                 const promise = handleSubmit(event);
@@ -139,7 +177,7 @@ export const RecipeDetails = ({
                         {meta.error && meta.touched && (
                           <StyledError>{meta.error}</StyledError>
                         )}
-                        <StyledInput
+                        <StyledTextArea
                           autoComplete="off"
                           placeholder="Beskrivelse"
                           {...input}
@@ -155,6 +193,7 @@ export const RecipeDetails = ({
                   <SelectWrapper>
                     <SelectBase
                       isMulti
+                      defaultValue={receipeIngredients}
                       onChange={handleChange}
                       options={ingredients.map(el => ({
                         label: el.name,

@@ -13,6 +13,7 @@ import SelectBase from "react-select";
 import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
+import { StyledTextArea } from "../components/StyledTextArea";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -97,7 +98,7 @@ export function AddRecipe() {
                       {meta.error && meta.touched && (
                         <StyledError>{meta.error}</StyledError>
                       )}
-                      <StyledInput
+                      <StyledTextArea
                         autoComplete="off"
                         placeholder="Beskrivelse"
                         {...input}

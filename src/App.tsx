@@ -10,7 +10,7 @@ import {
   IngredientsContext,
   IngredientsContextState
 } from "./context/IngredientsContext";
-import { primaryColor } from "./components/Constants";
+import { primaryColor, minBreakPoint } from "./components/Constants";
 import { WeekMenu } from "./menu/WeekMenu";
 
 const GlobalStyle = createGlobalStyle`
@@ -68,6 +68,10 @@ const StyledUl = styled.ul`
   background-color: ${primaryColor};
   align-items: center;
   font-size: 20px;
+
+  @media (max-width: ${minBreakPoint}px) {
+    flex-direction: column;
+  }
 `;
 
 const StyledLeftItemLi = styled.li`

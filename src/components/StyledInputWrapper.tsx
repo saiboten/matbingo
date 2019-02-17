@@ -4,4 +4,5 @@ export const StyledInputWrapper = styled.div`
   display: inline-flex;
   flex-direction: column;
   float: right;
+  width: 100%;
 `;
