@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Ingredients } from "./Ingredients/Ingredients";
+import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
-import { Recipes } from "./Recipes/Recipes";
+import { Recipes } from "./recipes/Recipes";
 import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
-import { RecipeDetails } from "./Recipes/RecipeDetail";
+import { RecipeDetails } from "./recipes/RecipeDetail";
 import {
   IngredientsContext,
   IngredientsContextState
