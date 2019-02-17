@@ -5,7 +5,6 @@ import { RouteComponentProps, Redirect } from "react-router";
 import { RecipeType, Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { primaryColor } from "../components/Constants";
 import { StyledActionButton } from "../components/StyledActionButton";
 import { Form, Field } from "react-final-form";
 import { StyledForm } from "../components/StyledForm";
@@ -105,7 +104,14 @@ export const RecipeDetails = ({
 
   const recipeDetails: RecipeType = recipes.recipes.find(
     recipe => recipe.id === id
-  ) || { name: "", description: "", id: "", ingredients: [], weekdays: [] };
+  ) || {
+    name: "",
+    description: "",
+    id: "",
+    ingredients: [],
+    weekdays: [],
+    lastTimeSelected: new Date()
+  };
 
   const receipeIngredients = recipeDetails.ingredients.map(ingredientId => {
     const foundIngredient = ingredients.ingredients.find(
@@ -272,9 +278,7 @@ export const RecipeDetails = ({
                 </div>
               </div>
 
-              <StyledButton type="submit" disabled={pristine || submitting}>
-                Oppdater
-              </StyledButton>
+              <StyledButton type="submit">Oppdater</StyledButton>
             </StyledForm>
           </React.Fragment>
         )}

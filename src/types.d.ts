@@ -17,4 +17,5 @@ export interface RecipeType {
   id: string;
   ingredients: string[];
   weekdays: string[];
+  lastTimeSelected: Date;
 }
