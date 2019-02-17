@@ -124,22 +124,22 @@ const AppRouter = () => {
                   <StyledLink to="/">Food-Eureka!</StyledLink>
                 </StyledLeftItemLi>
                 <StyledLi>
-                  <StyledLink to="/">Oppskrifter</StyledLink>
+                  <StyledLink to="/recipes">Oppskrifter</StyledLink>
                 </StyledLi>
                 <StyledLi>
                   <StyledLink to="/ingredients/">Ingredienser</StyledLink>
                 </StyledLi>
                 <StyledLi>
-                  <StyledLink to="/menu/">Ukesmeny</StyledLink>
+                  <StyledLink to="/">Ukesmeny</StyledLink>
                 </StyledLi>
               </StyledUl>
             </nav>
             <StyledWrapper>
               <StyledContentWrapper>
-                <Route path="/" exact component={Recipes} />
+                <Route path="/" exact component={WeekMenu} />
+                <Route path="/recipes" exact component={Recipes} />
                 <Route path="/recipes/:id" exact component={RecipeDetails} />
                 <Route path="/ingredients/" component={Ingredients} />
-                <Route path="/menu/" component={WeekMenu} />
               </StyledContentWrapper>
             </StyledWrapper>
           </IngredientsContext.Provider>

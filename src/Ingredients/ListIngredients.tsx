@@ -1,9 +1,9 @@
 import React, { useEffect, useContext } from "react";
-import { Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledListItem } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { IngredientsContext } from "../context/IngredientsContext";
+import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
 
 function deleteIngredient(id: string) {
   const db = firebase.firestore();
@@ -11,6 +11,7 @@ function deleteIngredient(id: string) {
     .doc(id)
     .delete();
 }
+
 export function ListIngredients() {
   const ingredientsContext = useContext(IngredientsContext);
 
@@ -33,8 +34,10 @@ export function ListIngredients() {
           {({ ingredients }) =>
             ingredients.map(el => (
               <StyledListItem key={el.id}>
-                {el.name} - {el.unit}
-                <span onClick={() => deleteIngredient(el.id)}>Slett</span>
+                {el.name}
+                <span onClick={() => deleteIngredient(el.id)}>
+                  <StyledDeleteIcon />
+                </span>
               </StyledListItem>
             ))
           }

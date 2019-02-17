@@ -4,7 +4,7 @@ import { AddRecipe } from "./AddRecipe";
 
 export const Recipes = () => (
   <div>
-    <AddRecipe />
     <ListRecipes />
+    <AddRecipe />
   </div>
 );

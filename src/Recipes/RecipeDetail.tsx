@@ -19,6 +19,7 @@ import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
 import { Option } from "react-select/lib/filters";
 import { StyledLoader } from "../components/StyledLoader";
+import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
 
 interface Params {
   id: string;
@@ -280,15 +281,14 @@ export const RecipeDetails = ({
 
               <StyledButton type="submit">Oppdater</StyledButton>
             </StyledForm>
+            <StyledActionButton
+              onClick={() => deleteItem(recipeDetails.id, setNextPage)}
+            >
+              <StyledDeleteIcon color="white" />
+            </StyledActionButton>
           </React.Fragment>
         )}
       />
-
-      <StyledActionButton
-        onClick={() => deleteItem(recipeDetails.id, setNextPage)}
-      >
-        Slett oppskrift
-      </StyledActionButton>
     </div>
   );
 };
