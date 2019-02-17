@@ -11,26 +11,20 @@ import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
 import SelectBase from "react-select";
 import { IngredientsContext } from "../context/IngredientsContext";
+import { StyledInputLabel } from "../components/StyledInputLabel";
+import { SelectWrapper } from "../components/StyledSelectWrapper";
 
 interface RecipeErrors {
   name: string | undefined;
   description: string | undefined;
 }
 
-const StyledInputLabel = styled.label`
-  padding: 10px;
-  display: inline-block;
-`;
-
-const SelectWrapper = styled.div`
-  margin: 20px 0;
-`;
-
-const onSubmit = (values: any, form: any) => {
+const onSubmit = (values: any, recipeIngredients: Array<Option>, form: any) => {
   const db = firebase.firestore();
 
   db.collection("recipes").add({
-    ...values
+    ...values,
+    ingredients: recipeIngredients.map(el => el.value)
   });
 
   form.reset();
@@ -61,7 +55,7 @@ export function AddRecipe() {
 
   return (
     <Form
-      onSubmit={(values, form) => onSubmit(values, form)}
+      onSubmit={(values, form) => onSubmit(values, recipeIngredients, form)}
       validate={validate}
       render={({ handleSubmit, submitting, pristine, reset }) => (
         <React.Fragment>
@@ -128,6 +122,74 @@ export function AddRecipe() {
                 </SelectWrapper>
               )}
             </IngredientsContext.Consumer>
+
+            <div>
+              <div>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="monday"
+                  />{" "}
+                  Mandag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="tuesday"
+                  />{" "}
+                  Tirsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="wednesday"
+                  />{" "}
+                  Onsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="thursday"
+                  />{" "}
+                  Torsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="friday"
+                  />{" "}
+                  Fredag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="saturday"
+                  />{" "}
+                  Lørdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="sunday"
+                  />{" "}
+                  Søndag
+                </StyledInputLabel>
+              </div>
+            </div>
 
             <StyledButton type="submit" disabled={pristine || submitting}>
               Legg til

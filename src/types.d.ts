@@ -15,4 +15,6 @@ export interface RecipeType {
   name: string;
   description: string;
   id: string;
+  ingredients: string[];
+  weekdays: string[];
 }
