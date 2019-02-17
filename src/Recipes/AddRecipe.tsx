@@ -22,6 +22,10 @@ const StyledInputLabel = styled.label`
   display: inline-block;
 `;
 
+const SelectWrapper = styled.div`
+  margin: 20px 0;
+`;
+
 const onSubmit = (values: any, form: any) => {
   const db = firebase.firestore();
 
@@ -112,14 +116,16 @@ export function AddRecipe() {
             <label>Legg til ingredienser</label>
             <IngredientsContext.Consumer>
               {({ ingredients }) => (
-                <SelectBase
-                  isMulti
-                  onChange={handleChange}
-                  options={ingredients.map(el => ({
-                    label: el.name,
-                    value: el.id
-                  }))}
-                />
+                <SelectWrapper>
+                  <SelectBase
+                    isMulti
+                    onChange={handleChange}
+                    options={ingredients.map(el => ({
+                      label: el.name,
+                      value: el.id
+                    }))}
+                  />
+                </SelectWrapper>
               )}
             </IngredientsContext.Consumer>
 

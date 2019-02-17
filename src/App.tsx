@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Ingredients } from "./Ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./Recipes/Recipes";
-import { RecipeType } from "./types";
 import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
 import { RecipeDetails } from "./Recipes/RecipeDetail";
 import {
@@ -12,6 +11,7 @@ import {
   IngredientsContextState
 } from "./context/IngredientsContext";
 import { primaryColor } from "./components/Constants";
+import { WeekMenu } from "./menu/WeekMenu";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -125,6 +125,9 @@ const AppRouter = () => {
                 <StyledLi>
                   <StyledLink to="/ingredients/">Ingredienser</StyledLink>
                 </StyledLi>
+                <StyledLi>
+                  <StyledLink to="/menu/">Ukesmeny</StyledLink>
+                </StyledLi>
               </StyledUl>
             </nav>
             <StyledWrapper>
@@ -132,6 +135,7 @@ const AppRouter = () => {
                 <Route path="/" exact component={Recipes} />
                 <Route path="/recipes/:id" exact component={RecipeDetails} />
                 <Route path="/ingredients/" component={Ingredients} />
+                <Route path="/menu/" component={WeekMenu} />
               </StyledContentWrapper>
             </StyledWrapper>
           </IngredientsContext.Provider>

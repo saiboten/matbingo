@@ -43,7 +43,7 @@ export const ListRecipes = () => {
 
   return (
     <>
-      <StyledHeaderH1>Oppskrifter</StyledHeaderH1>
+      <StyledHeaderH1>Finn oppskrift</StyledHeaderH1>
       <ul>
         <RecipeContext.Consumer>
           {({ recipes }) => (
