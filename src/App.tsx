@@ -52,6 +52,10 @@ const StyledWrapper = styled.div`
   border: 1px solid #bbbbbb;
   padding: 0;
   background-color: #fff;
+
+  @media screen and (max-width: ${minBreakPoint}px) {
+    margin: 0 auto;
+  }
 `;
 
 const StyledContentWrapper = styled.div`
@@ -67,19 +71,27 @@ const StyledUl = styled.ul`
   align-items: center;
   font-size: 20px;
 
-  @media (max-width: ${minBreakPoint}px) {
+  @media screen and (max-width: ${minBreakPoint}px) {
     flex-direction: column;
   }
 `;
 
 const StyledLeftItemLi = styled.li`
   margin-right: auto;
+
+  @media screen and (max-width: ${minBreakPoint}px) {
+    margin-right: 0;
+  }
 `;
 
 const StyledLi = styled.li`
   margin-right: 5px;
   padding: 20px 0;
   border: 2px solid transparent;
+
+  @media screen and (max-width: ${minBreakPoint}px) {
+    padding: 5px 0;
+  }
 
   &:hover {
     border: 2px solid grey;
