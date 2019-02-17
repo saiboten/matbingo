@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";

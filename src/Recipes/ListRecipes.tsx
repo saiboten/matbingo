@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { firebase } from "../firebase/firebase";
 import Select from "react-select";
-import { StyledListItemLink } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { RecipeContext } from "../context/RecipeContext";
 import { Redirect } from "react-router";

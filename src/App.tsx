@@ -58,8 +58,6 @@ const StyledContentWrapper = styled.div`
   padding: 15px;
 `;
 
-const StyledNav = styled.nav``;
-
 const StyledUl = styled.ul`
   list-style-type: none;
   display: flex;
@@ -95,7 +93,6 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
   padding: 10px;
-  /* background-color: #1859ea; */
 `;
 
 const AppRouter = () => {

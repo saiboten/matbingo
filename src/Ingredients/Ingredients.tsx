@@ -1,10 +1,7 @@
-import React, { useReducer } from "react";
+import React from "react";
 
 import { AddIngredient } from "./AddIngredient";
 import { ListIngredients } from "./ListIngredients";
-import { Ingredient } from "../types";
-
-const initialState: Ingredient[] = [];
 
 export function Ingredients() {
   return (
