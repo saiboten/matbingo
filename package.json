@@ -38,6 +38,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/jest": "^24.0.6",
     "prettier": "1.15.3"
   }
 }

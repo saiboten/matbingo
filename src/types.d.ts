@@ -11,11 +11,20 @@ export interface Ingredient {
   id: string;
 }
 
+export type WeekDay =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
 export interface RecipeType {
   name: string;
   description: string;
   id: string;
   ingredients: string[];
-  weekdays: string[];
+  weekdays: WeekDay[];
   lastTimeSelected: Date;
 }
