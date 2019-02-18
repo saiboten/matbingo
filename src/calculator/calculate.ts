@@ -12,12 +12,14 @@ const dayToNumber = [
   "sunday"
 ];
 
+const pointsForDateHit = 100;
+
 const addDateScore = (date: Date, weekDays: any[]) => {
   const todayNumber = getDay(date);
   console.log(todayNumber);
   const todayString = dayToNumber[todayNumber - 1];
 
-  return weekDays.includes(todayString) ? 5 : 0;
+  return weekDays.includes(todayString) ? pointsForDateHit : 0;
 };
 
 function getRandomInt(max: number) {
