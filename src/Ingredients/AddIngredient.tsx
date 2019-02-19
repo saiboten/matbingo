@@ -9,6 +9,7 @@ import { StyledInput } from "../components/StyledInput";
 import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
+import { StyledRadio, StyledRadioLabel } from "../components/StyledRadio";
 
 interface IngredientErrors {
   name: string | undefined;
@@ -22,45 +23,6 @@ const StyledInputLabel = styled.label`
 const StyledUnits = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const StyledLabel = styled.label`
-  position: relative;
-  padding: 10px 20px;
-  padding-left: 30px;
-  margin-right: 10px;
-
-  &:after {
-    position: absolute;
-    left: 0;
-    top: 7px;
-    content: "";
-    height: 24px;
-    width: 24px;
-    border: 1px solid blue;
-    border-radius: 50%;
-  }
-
-  &:before {
-    position: absolute;
-    left: 3px;
-    top: 10px;
-    content: "";
-    height: 18px;
-    width: 18px;
-    background-color: blue;
-    border-radius: 50%;
-    opacity: 0;
-    transition: all 0.2s ease-in;
-  }
-`;
-
-const StyledRadio = styled(Field)`
-  display: none;
-
-  &:checked + ${StyledLabel}::before {
-    opacity: 1;
-  }
 `;
 
 const onSubmit = (values: any, reset: () => void) => {
@@ -118,7 +80,7 @@ export function AddIngredient() {
                 type="radio"
                 value="kg"
               />
-              <StyledLabel htmlFor="kg">Kilo</StyledLabel>
+              <StyledRadioLabel htmlFor="kg">Kilo</StyledRadioLabel>
               <StyledRadio
                 id="liter"
                 name="unit"
@@ -126,7 +88,7 @@ export function AddIngredient() {
                 type="radio"
                 value="liter"
               />
-              <StyledLabel htmlFor="liter">Liter</StyledLabel>
+              <StyledRadioLabel htmlFor="liter">Liter</StyledRadioLabel>
               <StyledRadio
                 id="units"
                 name="unit"
@@ -134,7 +96,7 @@ export function AddIngredient() {
                 type="radio"
                 value="units"
               />
-              <StyledLabel htmlFor="units">Stk</StyledLabel>
+              <StyledRadioLabel htmlFor="units">Stk</StyledRadioLabel>
             </StyledUnits>
             <StyledButton type="submit" disabled={pristine || submitting}>
               Legg til

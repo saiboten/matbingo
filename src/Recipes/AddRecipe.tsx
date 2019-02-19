@@ -13,6 +13,7 @@ import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
+import { StyledRadio, StyledRadioLabel } from "../components/StyledRadio";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -123,75 +124,79 @@ export function AddRecipe() {
                 </SelectWrapper>
               )}
             </IngredientsContext.Consumer>
-
+            <StyledRadioLabel htmlFor="rating0">Kilo</StyledRadioLabel>
+            <StyledRadio
+              id="rating0"
+              name="rating"
+              component="input"
+              type="radio"
+              value="0"
+            />
             <div>
-              <div>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="monday"
-                  />{" "}
-                  Mandag
-                </StyledInputLabel>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="tuesday"
-                  />{" "}
-                  Tirsdag
-                </StyledInputLabel>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="wednesday"
-                  />{" "}
-                  Onsdag
-                </StyledInputLabel>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="thursday"
-                  />{" "}
-                  Torsdag
-                </StyledInputLabel>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="friday"
-                  />{" "}
-                  Fredag
-                </StyledInputLabel>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="saturday"
-                  />{" "}
-                  Lørdag
-                </StyledInputLabel>
-                <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="sunday"
-                  />{" "}
-                  Søndag
-                </StyledInputLabel>
-              </div>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="monday"
+                />{" "}
+                Mandag
+              </StyledInputLabel>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="tuesday"
+                />{" "}
+                Tirsdag
+              </StyledInputLabel>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="wednesday"
+                />{" "}
+                Onsdag
+              </StyledInputLabel>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="thursday"
+                />{" "}
+                Torsdag
+              </StyledInputLabel>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="friday"
+                />{" "}
+                Fredag
+              </StyledInputLabel>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="saturday"
+                />{" "}
+                Lørdag
+              </StyledInputLabel>
+              <StyledInputLabel>
+                <Field
+                  name="weekdays"
+                  component="input"
+                  type="checkbox"
+                  value="sunday"
+                />{" "}
+                Søndag
+              </StyledInputLabel>
             </div>
-
             <StyledButton type="submit" disabled={pristine || submitting}>
               Legg til
             </StyledButton>
