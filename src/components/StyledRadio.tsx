@@ -32,6 +32,22 @@ export const StyledRadioLabel = styled.label`
   }
 `;
 
+export const SmallStyledRadioLabel = styled(StyledRadioLabel)`
+  &:after {
+    left: 0;
+    top: 12px;
+    height: 12px;
+    width: 12px;
+  }
+
+  &:before {
+    left: 2px;
+    top: 14px;
+    height: 9px;
+    width: 9px;
+  }
+`;
+
 export const StyledRadio = styled(Field)`
   display: none;
 

@@ -13,7 +13,8 @@ import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
-import { StyledRadio, StyledRadioLabel } from "../components/StyledRadio";
+import { createRatings } from "../components/StyledRatings";
+import { StyledRatingContainer } from "../components/StyledRatingContainer";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -124,14 +125,8 @@ export function AddRecipe() {
                 </SelectWrapper>
               )}
             </IngredientsContext.Consumer>
-            <StyledRadioLabel htmlFor="rating0">Kilo</StyledRadioLabel>
-            <StyledRadio
-              id="rating0"
-              name="rating"
-              component="input"
-              type="radio"
-              value="0"
-            />
+            <label>Rating</label>
+            <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
             <div>
               <StyledInputLabel>
                 <Field

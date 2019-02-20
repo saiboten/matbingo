@@ -20,6 +20,8 @@ import { StyledTextArea } from "../components/StyledTextArea";
 import { Option } from "react-select/lib/filters";
 import { StyledLoader } from "../components/StyledLoader";
 import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
+import { StyledRatingContainer } from "../components/StyledRatingContainer";
+import { createRatings } from "../components/StyledRatings";
 
 interface Params {
   id: string;
@@ -194,6 +196,8 @@ export const RecipeDetails = ({
                   )}
                 </Field>
               </StyledFieldSet>
+              <label>Rating</label>
+              <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
               <label>Legg til ingredienser</label>
               <IngredientsContext.Consumer>
                 {({ ingredients }) => (
