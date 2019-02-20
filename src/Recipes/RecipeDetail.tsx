@@ -113,7 +113,8 @@ export const RecipeDetails = ({
     id: "",
     ingredients: [],
     weekdays: [],
-    lastTimeSelected: new Date()
+    lastTimeSelected: new Date(),
+    rating: 1
   };
 
   const receipeIngredients = recipeDetails.ingredients.map(ingredientId => {

@@ -1,6 +1,5 @@
 import { RecipeType } from "../types";
 import { differenceInWeeks, getDay } from "date-fns";
-import { WeekDay } from "../types";
 
 const dayToNumber = [
   "monday",
@@ -30,8 +29,12 @@ const addRandomScore = (randomSeed: number) => {
   return getRandomInt(randomSeed);
 };
 
-const addTimeSinceLastEnjoyed = (date: Date, lastTimeSelected: Date) => {
+const addTimeSinceLastEnjoyedScore = (date: Date, lastTimeSelected: Date) => {
   return differenceInWeeks(date, lastTimeSelected);
+};
+
+const addRatingScore = (rating: number) => {
+  return rating;
 };
 
 export const calculate = (
@@ -43,7 +46,8 @@ export const calculate = (
 
   sum += addDateScore(date, recipe.weekdays);
   sum += addRandomScore(randomSeed);
-  sum += addTimeSinceLastEnjoyed(date, recipe.lastTimeSelected);
+  sum += addTimeSinceLastEnjoyedScore(date, recipe.lastTimeSelected);
+  sum += addRatingScore(recipe.rating);
 
   return sum;
 };

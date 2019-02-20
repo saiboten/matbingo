@@ -8,13 +8,14 @@ test("Scoring one recipe against a date", () => {
     ingredients: [],
     lastTimeSelected: new Date("2019-02-01T12:00:00"),
     name: "Something",
-    weekdays: ["monday"]
+    weekdays: ["monday"],
+    rating: 5
   };
 
   // random 0
   // weekday: 100
   // weeks since: 2?
   expect(calculate(new Date("2019-02-18T12:00:00"), recipeToScore, 0)).toBe(
-    102
+    107
   );
 });
