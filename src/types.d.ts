@@ -20,6 +20,8 @@ export type WeekDay =
   | "saturday"
   | "sunday";
 
+export type RatingType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
 export interface RecipeType {
   name: string;
   description: string;
@@ -27,5 +29,5 @@ export interface RecipeType {
   ingredients: string[];
   weekdays: WeekDay[];
   lastTimeSelected: Date;
-  rating: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  rating: RatingType | number;
 }

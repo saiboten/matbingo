@@ -8,3 +8,7 @@ export const StyledActionButton = styled.button`
   background-color: ${primaryColor};
   color: #fff;
 `;
+
+export const StyledActionButtonWithMargins = styled(StyledActionButton)`
+  margin: 0 10px;
+`;
