@@ -46,22 +46,6 @@ li {
 }
 `;
 
-const StyledWrapper = styled.div`
-  max-width: 415px;
-  margin: 20px auto;
-  border: 1px solid #bbbbbb;
-  padding: 0;
-  background-color: #fff;
-
-  @media screen and (max-width: ${minBreakPoint}px) {
-    margin: 0 auto;
-  }
-`;
-
-const StyledContentWrapper = styled.div`
-  padding: 15px;
-`;
-
 const StyledUl = styled.ul`
   list-style-type: none;
   display: flex;
@@ -143,14 +127,12 @@ const AppRouter = () => {
                 </StyledLi>
               </StyledUl>
             </nav>
-            <StyledWrapper>
-              <StyledContentWrapper>
-                <Route path="/" exact component={WeekMenu} />
-                <Route path="/recipes" exact component={Recipes} />
-                <Route path="/recipes/:id" exact component={RecipeDetails} />
-                <Route path="/ingredients/" component={Ingredients} />
-              </StyledContentWrapper>
-            </StyledWrapper>
+            <div>
+              <Route path="/" exact component={WeekMenu} />
+              <Route path="/recipes" exact component={Recipes} />
+              <Route path="/recipes/:id" exact component={RecipeDetails} />
+              <Route path="/ingredients/" component={Ingredients} />
+            </div>
           </IngredientsContext.Provider>
         </RecipeContext.Provider>
       </div>

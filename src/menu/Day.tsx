@@ -38,7 +38,7 @@ export const Day = ({ date }: Props) => {
     () => {
       setRecipe(initialState);
       const db = firebase.firestore();
-      recipeFound(false);
+      setRecipeFound(false);
       const daysQuery = db.collection("days").where("date", "==", date);
       daysQuery.get().then(daysMatches => {
         daysMatches.forEach(daysMatch => {
@@ -46,7 +46,7 @@ export const Day = ({ date }: Props) => {
             .doc(daysMatch.data().recipe)
             .get()
             .then(doc => {
-              recipeFound(true);
+              setRecipeFound(true);
               setRecipe(doc.data());
             });
         });

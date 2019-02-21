@@ -3,6 +3,7 @@ import { Day } from "./Day";
 import { startOfWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
+import { StyledWideWrapper } from "../components/StyledWrapper";
 
 const StyledDayList = styled.div`
   display: flex;

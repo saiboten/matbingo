@@ -22,6 +22,7 @@ import { StyledLoader } from "../components/StyledLoader";
 import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { createRatings } from "../components/StyledRatings";
+import { StyledWrapper } from "../components/StyledWrapper";
 
 interface Params {
   id: string;
@@ -137,7 +138,7 @@ export const RecipeDetails = ({
   }
 
   return (
-    <div>
+    <StyledWrapper>
       <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>
 
       <Form
@@ -294,6 +295,6 @@ export const RecipeDetails = ({
           </React.Fragment>
         )}
       />
-    </div>
+    </StyledWrapper>
   );
 };
