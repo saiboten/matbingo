@@ -11,11 +11,10 @@ const dayToNumber = [
   "sunday"
 ];
 
-const pointsForDateHit = 100;
+const pointsForDateHit = 50;
 
 const addDateScore = (date: Date, weekDays: any[]) => {
   const todayNumber = getDay(date);
-  console.log(todayNumber);
   const todayString = dayToNumber[todayNumber - 1];
 
   return weekDays.includes(todayString) ? pointsForDateHit : 0;
@@ -30,6 +29,7 @@ const addRandomScore = (randomSeed: number) => {
 };
 
 const addTimeSinceLastEnjoyedScore = (date: Date, lastTimeSelected: Date) => {
+  console.log(date, lastTimeSelected);
   return differenceInWeeks(date, lastTimeSelected);
 };
 
@@ -47,7 +47,11 @@ export const calculate = (
   sum += addDateScore(date, recipe.weekdays);
   sum += addRandomScore(randomSeed);
   sum += addTimeSinceLastEnjoyedScore(date, recipe.lastTimeSelected);
+  console.log(sum);
   sum += addRatingScore(recipe.rating);
+  console.log(sum);
+
+  console.log(`recipe ${recipe.name} got a score of ${sum}`);
 
   return sum;
 };

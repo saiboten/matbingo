@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
 import { RecipeType } from "../types";
 import nbLocale from "date-fns/locale/nb";
+import { StyledActionButton } from "../components/StyledActionButton";
+import { calculate } from "../calculator/calculate";
 
 interface Props {
   date: Date;
@@ -28,7 +30,42 @@ const initialState: RecipeType = {
   rating: 0
 };
 
-const GenerateDay = () => <div>Lag dag</div>;
+const findRecipe = (date: Date) => {
+  return new Promise(resolve => {
+    firebase
+      .firestore()
+      .collection("recipes")
+      .onSnapshot(snapshot => {
+        const recipes = snapshot.docs.map((doc: any) => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        const bestRecipe = recipes.reduce(
+          (bestRecipe: RecipeType, testRecipe: RecipeType) => {
+            const scoreBestRecipe = calculate(date, bestRecipe, 100);
+            const scoreTestRecipe = calculate(date, bestRecipe, 100);
+            return scoreBestRecipe > scoreTestRecipe ? bestRecipe : testRecipe;
+          }
+        );
+        resolve(bestRecipe);
+      });
+  });
+};
+
+const GenerateDay = ({
+  date,
+  setRecipe
+}: {
+  date: Date;
+  setRecipe: (recipe: RecipeType) => void;
+}) => (
+  <StyledActionButton
+    onClick={() => findRecipe(date).then((recipe: any) => setRecipe(recipe))}
+  >
+    Lag dag
+  </StyledActionButton>
+);
 
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
@@ -58,7 +95,13 @@ export const Day = ({ date }: Props) => {
   return (
     <StyledDay>
       <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
-      <div>{recipe.name === "" ? <GenerateDay /> : recipe.name}</div>
+      <div>
+        {recipe.name === "" ? (
+          <GenerateDay date={date} setRecipe={setRecipe} />
+        ) : (
+          recipe.name
+        )}
+      </div>
     </StyledDay>
   );
 };
