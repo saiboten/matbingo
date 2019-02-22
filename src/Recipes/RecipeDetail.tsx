@@ -82,17 +82,21 @@ export const RecipeDetails = ({
 
   useEffect(() => {
     const db = firebase.firestore();
-    db.collection("recipes").onSnapshot(querySnapshot => {
-      recipes.setRecipes(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
+    db.collection("recipes")
+      .get()
+      .then(querySnapshot => {
+        recipes.setRecipes(
+          querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+        );
+      });
 
-    db.collection("ingredients").onSnapshot(querySnapshot => {
-      ingredients.setIngredients(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
+    db.collection("ingredients")
+      .get()
+      .then(querySnapshot => {
+        ingredients.setIngredients(
+          querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+        );
+      });
 
     return () => {};
   }, []);

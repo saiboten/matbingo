@@ -38,7 +38,8 @@ const findRecipe = (date: Date) => {
       .onSnapshot(snapshot => {
         const recipes = snapshot.docs.map((doc: any) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
+          lastTimeSelected: doc.data().lastTimeSelected.toDate()
         }));
 
         const bestRecipe = recipes.reduce(
