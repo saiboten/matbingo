@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
-import { RecipeType } from "../types";
+import { RecipeType, RecipeWithRatingType } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { StyledActionButton } from "../components/StyledActionButton";
 import { calculate } from "../calculator/calculate";
@@ -42,11 +42,22 @@ const findRecipe = (date: Date) => {
           lastTimeSelected: doc.data().lastTimeSelected.toDate()
         }));
 
-        const bestRecipe = recipes.reduce(
-          (bestRecipe: RecipeType, testRecipe: RecipeType) => {
-            const scoreBestRecipe = calculate(date, bestRecipe, 100);
-            const scoreTestRecipe = calculate(date, bestRecipe, 100);
-            return scoreBestRecipe > scoreTestRecipe ? bestRecipe : testRecipe;
+        const recipesWithRating = recipes.map(
+          (recipe: RecipeWithRatingType) => ({
+            ...recipe,
+            score: calculate(date, recipe, 50)
+          })
+        );
+        console.log(recipesWithRating);
+
+        const bestRecipe = recipesWithRating.reduce(
+          (
+            bestRecipe: RecipeWithRatingType,
+            testRecipe: RecipeWithRatingType
+          ) => {
+            return bestRecipe.score > testRecipe.score
+              ? bestRecipe
+              : testRecipe;
           }
         );
         resolve(bestRecipe);

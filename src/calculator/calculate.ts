@@ -11,7 +11,7 @@ const dayToNumber = [
   "sunday"
 ];
 
-const pointsForDateHit = 50;
+const pointsForDateHit = 100;
 
 const addDateScore = (date: Date, weekDays: any[]) => {
   const todayNumber = getDay(date);

@@ -22,6 +22,10 @@ export type WeekDay =
 
 export type RatingType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
+export interface RecipeWithRatingType extends RecipeType {
+  score: number;
+}
+
 export interface RecipeType {
   name: string;
   description: string;
