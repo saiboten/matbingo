@@ -27,7 +27,8 @@ const onSubmit = (values: any, recipeIngredients: Array<Option>, form: any) => {
   db.collection("recipes").add({
     ...values,
     ingredients: recipeIngredients.map(el => el.value),
-    lastTimeSelected: new Date()
+    lastTimeSelected: new Date(),
+    rating: parseInt(values.rating, 10)
   });
 
   form.reset();

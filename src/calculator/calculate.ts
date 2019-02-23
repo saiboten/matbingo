@@ -1,4 +1,4 @@
-import { RecipeType } from "../types";
+import { RecipeType, ScoreDetails } from "../types";
 import { differenceInWeeks, getDay } from "date-fns";
 
 const dayToNumber = [
@@ -36,21 +36,35 @@ const addTimeSinceLastEnjoyedScore = (date: Date, lastTimeSelected: Date) => {
   return differenceInWeeks(date, lastTimeSelected);
 };
 
-const addRatingScore = (rating: number) => {
-  return rating || 0;
-};
+const addRatingScore = (rating: number) => (rating ? rating : 0);
 
 export const calculate = (
   date: Date,
   recipe: RecipeType,
   randomSeed: number
 ) => {
-  let sum = 0;
+  let score: ScoreDetails = {
+    dateScore: 0,
+    randomScore: 0,
+    timeSinceLastEnjoyed: 0,
+    ratingScore: 0,
+    totalScore: 0
+  };
 
-  sum += addDateScore(date, recipe.weekdays);
-  sum += addRandomScore(randomSeed);
-  sum += addTimeSinceLastEnjoyedScore(date, recipe.lastTimeSelected);
-  sum += addRatingScore(recipe.rating);
+  score.dateScore = addDateScore(date, recipe.weekdays);
+  score.totalScore += score.dateScore;
 
-  return sum;
+  score.randomScore = addRandomScore(randomSeed);
+  score.totalScore += score.randomScore;
+
+  score.timeSinceLastEnjoyed = addTimeSinceLastEnjoyedScore(
+    date,
+    recipe.lastTimeSelected
+  );
+  score.totalScore += score.timeSinceLastEnjoyed;
+
+  score.ratingScore = addRatingScore(recipe.rating);
+  score.totalScore += score.ratingScore;
+
+  return score;
 };

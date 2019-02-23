@@ -22,8 +22,16 @@ export type WeekDay =
 
 export type RatingType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
+export interface ScoreDetails {
+  dateScore: number;
+  randomScore: number;
+  timeSinceLastEnjoyed: number;
+  ratingScore: number;
+  totalScore: number;
+}
+
 export interface RecipeWithRatingType extends RecipeType {
-  score: number;
+  score: ScoreDetails;
 }
 
 export interface RecipeType {
@@ -33,5 +41,5 @@ export interface RecipeType {
   ingredients: string[];
   weekdays: WeekDay[];
   lastTimeSelected: Date;
-  rating: RatingType | number;
+  rating: RatingType;
 }

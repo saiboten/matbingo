@@ -27,7 +27,7 @@ const initialState: RecipeType = {
   ingredients: [],
   weekdays: [],
   lastTimeSelected: new Date(),
-  rating: 0
+  rating: 1
 };
 
 const findRecipe = (date: Date) => {
@@ -48,7 +48,12 @@ const findRecipe = (date: Date) => {
             score: calculate(date, recipe, 50)
           })
         );
-        console.log(recipesWithRating);
+        const logThis = recipesWithRating.map(({ name, score }: any) => ({
+          ...score,
+          name
+        }));
+
+        console.log(logThis);
 
         const bestRecipe = recipesWithRating.reduce(
           (

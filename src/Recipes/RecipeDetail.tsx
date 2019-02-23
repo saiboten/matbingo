@@ -42,6 +42,7 @@ const onSubmit = (
     .doc(documentId)
     .update({
       ...values,
+      rating: parseInt(values.rating, 10),
       ingredients: recipeIngredients.map(el => el.value)
     });
 };
