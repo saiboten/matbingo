@@ -30,6 +30,16 @@ const initialState: RecipeType = {
   rating: 1
 };
 
+const storeSelectedRecipe = (date: Date, recipe: RecipeType) => {
+  firebase
+    .firestore()
+    .collection("days")
+    .add({
+      date,
+      recipe: recipe.id
+    });
+};
+
 const findRecipe = (date: Date) => {
   return new Promise(resolve => {
     firebase
@@ -45,7 +55,7 @@ const findRecipe = (date: Date) => {
         const recipesWithRating = recipes.map(
           (recipe: RecipeWithRatingType) => ({
             ...recipe,
-            score: calculate(new Date(), recipe, 50)
+            score: calculate(date, recipe, 50)
           })
         );
         const logThis = recipesWithRating.map(({ name, score }: any) => ({
@@ -69,23 +79,44 @@ const findRecipe = (date: Date) => {
   });
 };
 
-const GenerateDay = ({
-  date,
-  setRecipe
-}: {
-  date: Date;
-  setRecipe: (recipe: RecipeType) => void;
-}) => (
-  <StyledActionButton
-    onClick={() => findRecipe(date).then((recipe: any) => setRecipe(recipe))}
-  >
-    Lag dag
-  </StyledActionButton>
-);
+const GenerateDay = ({ date }: { date: Date }) => {
+  const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
+  const [showConfirm, setShowConfirm]: [boolean, any] = useState(false);
+  const [stored, setStored]: [boolean, any] = useState(false);
+
+  if (stored) {
+    return <div>{recipe.name}</div>;
+  }
+
+  return (
+    <div>
+      <div>{recipe.name}</div>
+      <StyledActionButton
+        onClick={() => {
+          setShowConfirm(true);
+          findRecipe(date).then((recipe: any) => setRecipe(recipe));
+        }}
+      >
+        Lag dag
+      </StyledActionButton>
+      {showConfirm && (
+        <StyledActionButton
+          onClick={() => {
+            storeSelectedRecipe(date, recipe);
+            setStored(true);
+          }}
+        >
+          Lagre dag
+        </StyledActionButton>
+      )}
+    </div>
+  );
+};
 
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [recipeFound, setRecipeFound]: any = useState(false);
+  const [showConfirm, setShowConfig]: [boolean, any] = useState(false);
 
   useEffect(
     () => {
@@ -112,11 +143,7 @@ export const Day = ({ date }: Props) => {
     <StyledDay>
       <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
       <div>
-        {recipe.name === "" ? (
-          <GenerateDay date={date} setRecipe={setRecipe} />
-        ) : (
-          recipe.name
-        )}
+        {recipe.name === "" ? <GenerateDay date={date} /> : recipe.name}
       </div>
     </StyledDay>
   );
