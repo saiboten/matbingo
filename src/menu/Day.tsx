@@ -45,7 +45,7 @@ const findRecipe = (date: Date) => {
         const recipesWithRating = recipes.map(
           (recipe: RecipeWithRatingType) => ({
             ...recipe,
-            score: calculate(date, recipe, 50)
+            score: calculate(new Date(), recipe, 50)
           })
         );
         const logThis = recipesWithRating.map(({ name, score }: any) => ({
@@ -59,11 +59,10 @@ const findRecipe = (date: Date) => {
           (
             bestRecipe: RecipeWithRatingType,
             testRecipe: RecipeWithRatingType
-          ) => {
-            return bestRecipe.score > testRecipe.score
+          ) =>
+            bestRecipe.score.totalScore > testRecipe.score.totalScore
               ? bestRecipe
-              : testRecipe;
-          }
+              : testRecipe
         );
         resolve(bestRecipe);
       });

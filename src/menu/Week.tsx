@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Day } from "./Day";
-import { startOfWeek, addDays, subWeeks, addWeeks } from "date-fns";
+import { startOfWeek, addDays, subWeeks, addHours, addWeeks } from "date-fns";
 import styled from "styled-components";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
 import { StyledWideWrapper } from "../components/StyledWrapper";
+import { start } from "repl";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const StyledButtonGroup = styled.div`
 
 export const Week = () => {
   const [selectedDay, setSelectedDay] = useState(
-    addDays(startOfWeek(new Date()), 1)
+    startOfWeek(new Date(), { weekStartsOn: 1 })
   );
 
   return (

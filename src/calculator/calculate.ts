@@ -2,20 +2,20 @@ import { RecipeType, ScoreDetails } from "../types";
 import { differenceInWeeks, getDay } from "date-fns";
 
 const dayToNumber = [
+  "sunday",
   "monday",
   "tuesday",
   "wednesday",
   "thursday",
   "friday",
-  "saturday",
-  "sunday"
+  "saturday"
 ];
 
 const pointsForDateHit = 100;
 
 const addDateScore = (date: Date, weekDays: any[]) => {
   const todayNumber = getDay(date);
-  const todayString = dayToNumber[todayNumber - 1];
+  const todayString = dayToNumber[todayNumber];
 
   if (!weekDays) {
     return 0;
