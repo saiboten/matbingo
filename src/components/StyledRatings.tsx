@@ -11,7 +11,8 @@ export const createRatings = () =>
           name="rating"
           component="input"
           type="radio"
-          value={`${rating}`}
+          value={rating}
+          parse={(value: any) => parseInt(value)}
         />
         <SmallStyledRadioLabel htmlFor={`rating${rating}`}>
           {rating}

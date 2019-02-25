@@ -5,7 +5,7 @@ import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
 import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
-import { RecipeDetails } from "./recipes/RecipeDetail";
+import { EditRecipeDetails } from "./recipes/EditRecipeDetail";
 import {
   IngredientsContext,
   IngredientsContextState
@@ -130,7 +130,7 @@ const AppRouter = () => {
             <div>
               <Route path="/" exact component={WeekMenu} />
               <Route path="/recipes" exact component={Recipes} />
-              <Route path="/recipes/:id" exact component={RecipeDetails} />
+              <Route path="/recipes/:id" exact component={EditRecipeDetails} />
               <Route path="/ingredients/" component={Ingredients} />
             </div>
           </IngredientsContext.Provider>

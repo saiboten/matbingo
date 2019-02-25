@@ -6,18 +6,25 @@ import { RecipeType, RecipeWithRatingType } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { StyledActionButton } from "../components/StyledActionButton";
 import { calculate } from "../calculator/calculate";
+import { RecipeDetails } from "../recipes/RecipeDetail";
+import { minBreakPoint } from "../components/Constants";
 
 interface Props {
   date: Date;
 }
 
 const StyledDay = styled.div`
-  width: 150px;
+  width: 48%;
   border: 1px solid black;
   display: inline-block;
   padding: 20px 10px;
   text-align: center;
   margin: 5px;
+  min-height: 400px;
+
+  @media screen and (max-width: 530px) {
+    width: 100%;
+  }
 `;
 
 const initialState: RecipeType = {
@@ -37,6 +44,15 @@ const storeSelectedRecipe = (date: Date, recipe: RecipeType) => {
     .add({
       date,
       recipe: recipe.id
+    });
+
+  firebase
+    .firestore()
+    .collection("recipes")
+    .doc(recipe.id)
+    .set({
+      ...recipe,
+      lastTimeSelected: date
     });
 };
 
@@ -79,36 +95,43 @@ const findRecipe = (date: Date) => {
   });
 };
 
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const GenerateDay = ({ date }: { date: Date }) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [showConfirm, setShowConfirm]: [boolean, any] = useState(false);
   const [stored, setStored]: [boolean, any] = useState(false);
 
   if (stored) {
-    return <div>{recipe.name}</div>;
+    return <RecipeDetails recipe={recipe} />;
   }
 
   return (
     <div>
-      <div>{recipe.name}</div>
-      <StyledActionButton
-        onClick={() => {
-          setShowConfirm(true);
-          findRecipe(date).then((recipe: any) => setRecipe(recipe));
-        }}
-      >
-        Lag dag
-      </StyledActionButton>
-      {showConfirm && (
+      <RecipeDetails recipe={recipe} />
+      <StyledButtonContainer>
         <StyledActionButton
           onClick={() => {
-            storeSelectedRecipe(date, recipe);
-            setStored(true);
+            setShowConfirm(true);
+            findRecipe(date).then((recipe: any) => setRecipe(recipe));
           }}
         >
-          Lagre dag
+          Lag dag
         </StyledActionButton>
-      )}
+        {showConfirm && (
+          <StyledActionButton
+            onClick={() => {
+              storeSelectedRecipe(date, recipe);
+              setStored(true);
+            }}
+          >
+            Lagre dag
+          </StyledActionButton>
+        )}
+      </StyledButtonContainer>
     </div>
   );
 };
@@ -131,7 +154,9 @@ export const Day = ({ date }: Props) => {
             .get()
             .then(doc => {
               setRecipeFound(true);
-              setRecipe(doc.data());
+              if (doc.data()) {
+                setRecipe(doc.data());
+              }
             });
         });
       });
@@ -143,7 +168,11 @@ export const Day = ({ date }: Props) => {
     <StyledDay>
       <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
       <div>
-        {recipe.name === "" ? <GenerateDay date={date} /> : recipe.name}
+        {recipe.name === "" ? (
+          <GenerateDay date={date} />
+        ) : (
+          <RecipeDetails recipe={recipe} />
+        )}
       </div>
     </StyledDay>
   );
