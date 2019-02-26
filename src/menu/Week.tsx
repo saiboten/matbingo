@@ -22,6 +22,8 @@ export const Week = () => {
     startOfWeek(new Date(), { weekStartsOn: 1 })
   );
 
+  const [days, setDays] = useState([{}]);
+
   return (
     <div>
       <StyledButtonGroup>
