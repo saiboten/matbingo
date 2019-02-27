@@ -18,7 +18,7 @@ const StyledDay = styled.div`
   padding: 20px 10px;
   text-align: center;
   margin: 5px;
-  min-height: 400px;
+  min-height: 100px;
 
   @media screen and (max-width: 530px) {
     width: 100%;
@@ -34,6 +34,8 @@ const initialState: RecipeType = {
   lastTimeSelected: new Date(),
   rating: 1
 };
+
+const StyledDayContent = styled.div``;
 
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
@@ -66,13 +68,13 @@ export const Day = ({ date }: Props) => {
   return (
     <StyledDay>
       <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
-      <div>
+      <StyledDayContent>
         {recipe.name === "" ? (
           <GenerateDay date={date} />
         ) : (
           <RecipeDetails recipe={recipe} />
         )}
-      </div>
+      </StyledDayContent>
     </StyledDay>
   );
 };

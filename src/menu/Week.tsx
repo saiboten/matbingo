@@ -14,7 +14,7 @@ const StyledDayList = styled.div`
 
 const StyledButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const Week = () => {

@@ -66,7 +66,8 @@ const findRecipe = (date: Date) => {
 
 const StyledButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 `;
 
 const initialState: RecipeType = {
@@ -79,6 +80,10 @@ const initialState: RecipeType = {
   rating: 1
 };
 
+const StyledActionButtonWithMargins = styled(StyledActionButton)`
+  margin: 10px;
+`;
+
 export const GenerateDay = ({ date }: { date: Date }) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [showConfirm, setShowConfirm]: [boolean, any] = useState(false);
@@ -89,28 +94,28 @@ export const GenerateDay = ({ date }: { date: Date }) => {
   }
 
   return (
-    <div>
+    <>
       <RecipeDetails recipe={recipe} />
       <StyledButtonContainer>
-        <StyledActionButton
+        <StyledActionButtonWithMargins
           onClick={() => {
             setShowConfirm(true);
             findRecipe(date).then((recipe: any) => setRecipe(recipe));
           }}
         >
-          Lag dag
-        </StyledActionButton>
+          Lag forslag
+        </StyledActionButtonWithMargins>
         {showConfirm && (
-          <StyledActionButton
+          <StyledActionButtonWithMargins
             onClick={() => {
               storeSelectedRecipe(date, recipe);
               setStored(true);
             }}
           >
             Lagre dag
-          </StyledActionButton>
+          </StyledActionButtonWithMargins>
         )}
       </StyledButtonContainer>
-    </div>
+    </>
   );
 };
