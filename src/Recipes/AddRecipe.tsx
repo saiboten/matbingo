@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
@@ -19,14 +19,19 @@ import { StyledRatingContainer } from "../components/StyledRatingContainer";
 interface RecipeErrors {
   name: string | undefined;
   description: string | undefined;
+  rating: string | undefined;
 }
 
-const onSubmit = (values: any, recipeIngredients: Array<Option>, form: any) => {
+const onSubmit = (values: any, form: any) => {
+  if (!values.recipes) {
+    values.recipes = [];
+  }
+
   const db = firebase.firestore();
 
   db.collection("recipes").add({
     ...values,
-    ingredients: recipeIngredients.map(el => el.value),
+    ingredients: values.recipes.map((el: Option) => el.value),
     lastTimeSelected: new Date(),
     rating: parseInt(values.rating, 10)
   });
@@ -35,10 +40,18 @@ const onSubmit = (values: any, recipeIngredients: Array<Option>, form: any) => {
 };
 
 const validate = (values: any) => {
-  let errors: RecipeErrors = { name: undefined, description: undefined };
+  let errors: RecipeErrors = {
+    name: undefined,
+    description: undefined,
+    rating: undefined
+  };
 
   if (!values.name) {
     errors.name = "Oppskriften må ha et navn";
+  }
+
+  if (!values.rating) {
+    errors.rating = "Du må oppgi en rating";
   }
 
   return errors;
@@ -49,28 +62,22 @@ interface Option {
   value: string;
 }
 
+const ReactSelectAdapter = ({ input, ...rest }: any) => {
+  return <SelectBase {...input} {...rest} />;
+};
+
 export function AddRecipe() {
-  const [recipeIngredients, setIngredients] = useState<Array<Option>>([]);
-
-  const handleChange = (selectedOptions: any) => {
-    console.log(selectedOptions);
-    setIngredients(selectedOptions);
-  };
-
   return (
     <Form
-      onSubmit={(values, form) => onSubmit(values, recipeIngredients, form)}
+      onSubmit={(values, form) => onSubmit(values, form)}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine, reset }) => (
+      render={({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>
           <StyledHeaderH1>Legg til oppskrift</StyledHeaderH1>
           <StyledForm
-            onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) => {
-              const promise = handleSubmit(event);
-              if (promise) {
-                promise.then(reset);
-              }
-            }}
+            onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) =>
+              handleSubmit(event)
+            }
           >
             <StyledFieldSet>
               <Field name="name" component="input" type="text">
@@ -115,9 +122,10 @@ export function AddRecipe() {
             <IngredientsContext.Consumer>
               {({ ingredients }) => (
                 <SelectWrapper>
-                  <SelectBase
+                  <Field
+                    name="recipes"
+                    component={ReactSelectAdapter}
                     isMulti
-                    onChange={handleChange}
                     options={ingredients.map(el => ({
                       label: el.name,
                       value: el.id

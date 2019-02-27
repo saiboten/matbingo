@@ -30,20 +30,16 @@ interface Params {
 
 interface Props extends RouteComponentProps<Params> {}
 
-const onSubmit = (
-  documentId: string,
-  values: any,
-  recipeIngredients: Array<Option>,
-  form: any
-) => {
+const onSubmit = (documentId: string, values: any, form: any) => {
   const db = firebase.firestore();
+  const recipes = values.recipes ? values.recipes : [];
 
   db.collection("recipes")
     .doc(documentId)
     .update({
       ...values,
       rating: parseInt(values.rating, 10),
-      ingredients: recipeIngredients.map(el => el.value)
+      ingredients: recipes.map((el: Option) => el.value)
     });
 };
 
@@ -70,6 +66,10 @@ function deleteItem(id: string, setNextPage: (nextPage: string) => void) {
   setNextPage("/");
 }
 
+const ReactSelectAdapter = ({ input, ...rest }: any) => {
+  return <SelectBase {...input} {...rest} />;
+};
+
 export const EditRecipeDetails = ({
   match: {
     params: { id }
@@ -79,7 +79,6 @@ export const EditRecipeDetails = ({
   const ingredients = useContext(IngredientsContext);
 
   const [nextPage, setNextPage] = useState("");
-  const [recipeIngredients, setIngredients] = useState<Array<Option>>([]);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -105,11 +104,6 @@ export const EditRecipeDetails = ({
   if (ingredients.ingredients.length == 0) {
     return <StyledLoader />;
   }
-
-  const handleChange = (selectedOptions: any) => {
-    console.log(selectedOptions);
-    setIngredients(selectedOptions);
-  };
 
   const recipeDetails: RecipeType = recipes.recipes.find(
     recipe => recipe.id === id
@@ -150,9 +144,7 @@ export const EditRecipeDetails = ({
         initialValues={{
           ...recipeDetails
         }}
-        onSubmit={(values, form) =>
-          onSubmit(recipeDetails.id, values, recipeIngredients, form)
-        }
+        onSubmit={(values, form) => onSubmit(recipeDetails.id, values, form)}
         validate={validate}
         render={({ handleSubmit, submitting, pristine, reset }) => (
           <React.Fragment>
@@ -209,10 +201,10 @@ export const EditRecipeDetails = ({
               <IngredientsContext.Consumer>
                 {({ ingredients }) => (
                   <SelectWrapper>
-                    <SelectBase
+                    <Field
+                      name="recipes"
+                      component={ReactSelectAdapter}
                       isMulti
-                      defaultValue={receipeIngredients}
-                      onChange={handleChange}
                       options={ingredients.map(el => ({
                         label: el.name,
                         value: el.id
