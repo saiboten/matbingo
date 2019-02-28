@@ -46,7 +46,6 @@ const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [loading, setLoading]: any = useState(false);
-  const [showConfirm, setShowConfig]: [boolean, any] = useState(false);
 
   useEffect(
     () => {
