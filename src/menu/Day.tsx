@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
 import { RecipeType } from "../types";
@@ -7,12 +7,17 @@ import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "../recipes/RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
+import { primaryColor } from "../components/Constants";
 
 interface Props {
   date: Date;
 }
 
-const StyledDay = styled.div`
+interface StyledDayProps {
+  active: boolean;
+}
+
+const StyledDay = styled.div<StyledDayProps>`
   width: 48%;
   border: 1px solid black;
   display: inline-block;
@@ -20,6 +25,9 @@ const StyledDay = styled.div`
   text-align: center;
   margin: 5px;
   min-height: 100px;
+
+  border: ${props =>
+    props.active ? `3px solid ${primaryColor}` : "1px solid black"};
 
   @media screen and (max-width: 530px) {
     width: 100%;
@@ -71,7 +79,7 @@ export const Day = ({ date }: Props) => {
   );
 
   return (
-    <StyledDay>
+    <StyledDay active={isToday(date)}>
       <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
       <StyledDayContent>
         {loading ? (
