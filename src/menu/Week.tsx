@@ -6,6 +6,7 @@ import { StyledActionButtonWithMargins } from "../components/StyledActionButton"
 import { StyledWideWrapper } from "../components/StyledWrapper";
 import { start } from "repl";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import { StyledNotification } from "../components/StyledNotification";
 
 const StyledDayList = styled.div`
   display: flex;

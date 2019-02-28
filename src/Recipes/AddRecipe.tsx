@@ -134,7 +134,7 @@ export function AddRecipe() {
                 </SelectWrapper>
               )}
             </IngredientsContext.Consumer>
-            <label>Rating</label>
+            <label>Frekvens</label>
             <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
             <div>
               <StyledInputLabel>

@@ -23,6 +23,7 @@ import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { createRatings } from "../components/StyledRatings";
 import { StyledWrapper } from "../components/StyledWrapper";
+import { StyledNotification } from "../components/StyledNotification";
 
 interface Params {
   id: string;
@@ -79,6 +80,7 @@ export const EditRecipeDetails = ({
   const ingredients = useContext(IngredientsContext);
 
   const [nextPage, setNextPage] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -138,13 +140,20 @@ export const EditRecipeDetails = ({
 
   return (
     <StyledWrapper>
+      <StyledNotification text="Oppskrift lagret" active={showNotification} />
       <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>
 
       <Form
         initialValues={{
           ...recipeDetails
         }}
-        onSubmit={(values, form) => onSubmit(recipeDetails.id, values, form)}
+        onSubmit={(values, form) => {
+          setShowNotification(true);
+          setTimeout(() => {
+            setShowNotification(false);
+          }, 2000);
+          onSubmit(recipeDetails.id, values, form);
+        }}
         validate={validate}
         render={({ handleSubmit, submitting, pristine, reset }) => (
           <React.Fragment>
@@ -195,7 +204,7 @@ export const EditRecipeDetails = ({
                   )}
                 </Field>
               </StyledFieldSet>
-              <label>Rating</label>
+              <label>Frekvens</label>
               <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
               <label>Legg til ingredienser</label>
               <IngredientsContext.Consumer>

@@ -12,6 +12,7 @@ import {
 } from "./context/IngredientsContext";
 import { primaryColor, minBreakPoint } from "./components/Constants";
 import { Week } from "./menu/Week";
+import { StyledNotification } from "./components/StyledNotification";
 
 const GlobalStyle = createGlobalStyle`
   *,
