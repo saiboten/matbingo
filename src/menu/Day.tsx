@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
-import { RecipeType, RecipeWithRatingType } from "../types";
+import { RecipeType } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "../recipes/RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
-import { StyledLoader } from "../components/StyledLoader";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 interface Props {
