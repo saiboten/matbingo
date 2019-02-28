@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Day } from "./Day";
-import { startOfWeek, addDays, subWeeks, addHours, addWeeks } from "date-fns";
+import { startOfWeek, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
 import { StyledWideWrapper } from "../components/StyledWrapper";
 import { start } from "repl";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -25,7 +26,8 @@ export const Week = () => {
   const [days, setDays] = useState([{}]);
 
   return (
-    <div>
+    <StyledWideWrapper>
+      <StyledHeaderH1>Ukesmeny uke {getISOWeek(selectedDay)} </StyledHeaderH1>
       <StyledButtonGroup>
         <StyledActionButtonWithMargins
           onClick={() => setSelectedDay(subWeeks(selectedDay, 1))}
@@ -47,6 +49,6 @@ export const Week = () => {
         <Day date={addDays(selectedDay, 5)} />
         <Day date={addDays(selectedDay, 6)} />
       </StyledDayList>
-    </div>
+    </StyledWideWrapper>
   );
 };

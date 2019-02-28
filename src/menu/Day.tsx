@@ -6,6 +6,8 @@ import { RecipeType, RecipeWithRatingType } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "../recipes/RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
+import { StyledLoader } from "../components/StyledLoader";
+import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 interface Props {
   date: Date;
@@ -37,24 +39,29 @@ const initialState: RecipeType = {
 
 const StyledDayContent = styled.div``;
 
+const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
+  margin-top: 42px;
+`;
+
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
-  const [recipeFound, setRecipeFound]: any = useState(false);
+  const [loading, setLoading]: any = useState(false);
   const [showConfirm, setShowConfig]: [boolean, any] = useState(false);
 
   useEffect(
     () => {
       setRecipe(initialState);
       const db = firebase.firestore();
-      setRecipeFound(false);
+      setLoading(true);
       const daysQuery = db.collection("days").where("date", "==", date);
-      daysQuery.get().then(daysMatches => {
-        daysMatches.forEach(daysMatch => {
+      daysQuery.get().then(daysMatchesDoc => {
+        setLoading(false);
+
+        daysMatchesDoc.forEach(daysMatch => {
           db.collection("recipes")
             .doc(daysMatch.data().recipe)
             .get()
             .then(doc => {
-              setRecipeFound(true);
               if (doc.data()) {
                 setRecipe(doc.data());
               }
@@ -69,10 +76,16 @@ export const Day = ({ date }: Props) => {
     <StyledDay>
       <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
       <StyledDayContent>
-        {recipe.name === "" ? (
-          <GenerateDay date={date} />
+        {loading ? (
+          <StyledLocalLoaderWithMarginTop />
         ) : (
-          <RecipeDetails recipe={recipe} />
+          <>
+            {recipe.name === "" ? (
+              <GenerateDay date={date} />
+            ) : (
+              <RecipeDetails recipe={recipe} />
+            )}
+          </>
         )}
       </StyledDayContent>
     </StyledDay>

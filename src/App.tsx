@@ -11,7 +11,7 @@ import {
   IngredientsContextState
 } from "./context/IngredientsContext";
 import { primaryColor, minBreakPoint } from "./components/Constants";
-import { WeekMenu } from "./menu/WeekMenu";
+import { Week } from "./menu/Week";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -128,7 +128,7 @@ const AppRouter = () => {
               </StyledUl>
             </nav>
             <div>
-              <Route path="/" exact component={WeekMenu} />
+              <Route path="/" exact component={Week} />
               <Route path="/recipes" exact component={Recipes} />
               <Route path="/recipes/:id" exact component={EditRecipeDetails} />
               <Route path="/ingredients/" component={Ingredients} />

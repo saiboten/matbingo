@@ -5,6 +5,9 @@ import { RecipeType, RecipeWithRatingType } from "../types";
 import { StyledActionButton } from "../components/StyledActionButton";
 import { calculate } from "../calculator/calculate";
 import { RecipeDetails } from "../recipes/RecipeDetail";
+import { ReactComponent as ConfirmIcon } from "../components/svg/check.svg";
+import { ReactComponent as PlusCircle } from "../components/svg/plus-circle.svg";
+import { ReactComponent as Rotate } from "../components/svg/rotate-ccw.svg";
 
 const storeSelectedRecipe = (date: Date, recipe: RecipeType) => {
   firebase
@@ -82,6 +85,27 @@ const initialState: RecipeType = {
 
 const StyledActionButtonWithMargins = styled(StyledActionButton)`
   margin: 10px;
+  padding: 5px;
+  padding-bottom: 2px;
+  border-radius: 5px;
+`;
+
+const StyledCheckIcon = styled(ConfirmIcon)`
+  width: 24px;
+  height: 24px;
+  fill: white;
+`;
+
+const StyledPlusCircle = styled(PlusCircle)`
+  width: 24px;
+  height: 24px;
+  fill: white;
+`;
+
+const StyledRotate = styled(Rotate)`
+  width: 24px;
+  height: 24px;
+  fill: white;
 `;
 
 export const GenerateDay = ({ date }: { date: Date }) => {
@@ -97,14 +121,6 @@ export const GenerateDay = ({ date }: { date: Date }) => {
     <>
       <RecipeDetails recipe={recipe} />
       <StyledButtonContainer>
-        <StyledActionButtonWithMargins
-          onClick={() => {
-            setShowConfirm(true);
-            findRecipe(date).then((recipe: any) => setRecipe(recipe));
-          }}
-        >
-          Lag forslag
-        </StyledActionButtonWithMargins>
         {showConfirm && (
           <StyledActionButtonWithMargins
             onClick={() => {
@@ -112,9 +128,17 @@ export const GenerateDay = ({ date }: { date: Date }) => {
               setStored(true);
             }}
           >
-            Lagre dag
+            <StyledCheckIcon />
           </StyledActionButtonWithMargins>
         )}
+        <StyledActionButtonWithMargins
+          onClick={() => {
+            setShowConfirm(true);
+            findRecipe(date).then((recipe: any) => setRecipe(recipe));
+          }}
+        >
+          {showConfirm ? <StyledRotate /> : <StyledPlusCircle />}
+        </StyledActionButtonWithMargins>
       </StyledButtonContainer>
     </>
   );
