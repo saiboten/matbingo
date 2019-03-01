@@ -32,12 +32,12 @@ export const RecipeDetails = ({
     () => {
       const db = firebase.firestore();
 
-      const res = ingredients.map(async el => {
-        return db
+      const res = ingredients.map(async el =>
+        db
           .collection("ingredients")
           .doc(el)
-          .get();
-      });
+          .get()
+      );
 
       Promise.all(res).then(values => {
         setIngredients(values.map(el => el.data()));
