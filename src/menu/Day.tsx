@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { format, isToday } from "date-fns";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
-import { RecipeType } from "../types";
+import { RecipeType, Ingredient } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "../recipes/RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
@@ -61,13 +61,16 @@ export const Day = ({ date }: Props) => {
       setLoading(true);
       const daysQuery = db.collection("days").where("date", "==", date);
       daysQuery.get().then(daysMatchesDoc => {
-        setLoading(false);
+        if (daysMatchesDoc.empty) {
+          setLoading(false);
+        }
 
         daysMatchesDoc.forEach(daysMatch => {
           db.collection("recipes")
             .doc(daysMatch.data().recipe)
             .get()
             .then(doc => {
+              setLoading(false);
               if (doc.data()) {
                 setRecipe(doc.data());
               }
