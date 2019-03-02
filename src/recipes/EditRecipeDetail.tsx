@@ -24,6 +24,7 @@ import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { createRatings } from "../components/StyledRatings";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledNotification } from "../components/StyledNotification";
+import { ListRecipes } from "./ListRecipes";
 
 interface Params {
   id: string;
@@ -64,7 +65,7 @@ function deleteItem(id: string, setNextPage: (nextPage: string) => void) {
   db.collection("recipes")
     .doc(id)
     .delete();
-  setNextPage("/");
+  setNextPage("/recipe-feedback/delete");
 }
 
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
@@ -119,21 +120,6 @@ export const EditRecipeDetails = ({
     rating: 1
   };
 
-  const receipeIngredients = recipeDetails.ingredients.map(ingredientId => {
-    const foundIngredient = ingredients.ingredients.find(
-      (el: Ingredient) => el.id === ingredientId
-    );
-
-    if (!foundIngredient) {
-      return null;
-    }
-
-    return {
-      label: foundIngredient.name,
-      value: ingredientId
-    };
-  });
-
   if (nextPage !== "") {
     return <Redirect push to={nextPage} />;
   }
@@ -141,6 +127,7 @@ export const EditRecipeDetails = ({
   return (
     <StyledWrapper>
       <StyledNotification text="Oppskrift lagret" active={showNotification} />
+      <ListRecipes />
       <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>
 
       <Form

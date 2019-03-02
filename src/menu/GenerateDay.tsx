@@ -8,6 +8,7 @@ import { RecipeDetails } from "../recipes/RecipeDetail";
 import { ReactComponent as ConfirmIcon } from "../components/svg/check.svg";
 import { ReactComponent as PlusCircle } from "../components/svg/plus-circle.svg";
 import { ReactComponent as Rotate } from "../components/svg/rotate-ccw.svg";
+import { emitKeypressEvents } from "readline";
 
 const storeSelectedRecipe = (date: Date, recipe: RecipeType) => {
   firebase
@@ -51,7 +52,9 @@ const findRecipe = (date: Date) => {
           name
         }));
 
-        console.log(logThis);
+        console.log(
+          logThis.sort((el1, el2) => el2.totalScore - el1.totalScore)
+        );
 
         const bestRecipe = recipesWithRating.reduce(
           (

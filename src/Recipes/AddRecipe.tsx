@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
@@ -8,13 +8,14 @@ import { StyledInput } from "../components/StyledInput";
 import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
-import SelectBase from "react-select";
+import CreatableSelect from "react-select/lib/Creatable";
 import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
 import { createRatings } from "../components/StyledRatings";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
+import { Redirect } from "react-router";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -22,19 +23,25 @@ interface RecipeErrors {
   rating: string | undefined;
 }
 
-const onSubmit = (values: any, form: any) => {
+const onSubmit = (values: any, form: any, setDetailsId: any) => {
   if (!values.recipes) {
     values.recipes = [];
   }
 
+  console.log(values);
+
   const db = firebase.firestore();
 
-  db.collection("recipes").add({
-    ...values,
-    ingredients: values.recipes.map((el: Option) => el.value),
-    lastTimeSelected: new Date(),
-    rating: parseInt(values.rating, 10)
-  });
+  db.collection("recipes")
+    .add({
+      ...values,
+      ingredients: values.recipes.map((el: Option) => el.value),
+      lastTimeSelected: new Date(),
+      rating: parseInt(values.rating, 10)
+    })
+    .then(docRef => {
+      setDetailsId(docRef.id);
+    });
 
   form.reset();
 };
@@ -63,13 +70,19 @@ interface Option {
 }
 
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
-  return <SelectBase {...input} {...rest} />;
+  return <CreatableSelect {...input} {...rest} />;
 };
 
 export function AddRecipe() {
+  const [detailsId, setDetailsId] = useState("");
+
+  if (detailsId !== "") {
+    return <Redirect to={`/recipes/${detailsId}`} push />;
+  }
+
   return (
     <Form
-      onSubmit={(values, form) => onSubmit(values, form)}
+      onSubmit={(values, form) => onSubmit(values, form, setDetailsId)}
       validate={validate}
       render={({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>

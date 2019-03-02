@@ -131,6 +131,11 @@ const AppRouter = () => {
             <div>
               <Route path="/" exact component={Week} />
               <Route path="/recipes" exact component={Recipes} />
+              <Route
+                path="/recipe-feedback/:feedback"
+                exact
+                component={Recipes}
+              />
               <Route path="/recipes/:id" exact component={EditRecipeDetails} />
               <Route path="/ingredients/" component={Ingredients} />
             </div>
