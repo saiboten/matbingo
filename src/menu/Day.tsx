@@ -25,6 +25,7 @@ const StyledDay = styled.div<StyledDayProps>`
   text-align: center;
   margin: 5px;
   min-height: 100px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
 
   border: ${props =>
     props.active ? `3px solid ${primaryColor}` : "1px solid black"};

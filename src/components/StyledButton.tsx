@@ -7,6 +7,7 @@ export const StyledButton = styled.button`
   background-color: white;
   border: 1px solid ${primaryColor};
   transition: all 0.2s;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
 
   &:hover {
     transform: scale(1.1);
