@@ -56,10 +56,14 @@ export const RecipeDetails = ({
         </>
       )}
       <StyledUl>
-        <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
-        {ingredientsStrings.map((i: Ingredient) => (
-          <li key={i.name}>{i.name}</li>
-        ))}
+        {ingredientsStrings.length > 0 && (
+          <>
+            <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
+            {ingredientsStrings.map((i: Ingredient) => (
+              <li key={i.name}>{i.name}</li>
+            ))}
+          </>
+        )}
       </StyledUl>
     </StyledWrapper>
   );

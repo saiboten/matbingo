@@ -36,7 +36,8 @@ const addTimeSinceLastEnjoyedScore = (date: Date, lastTimeSelected: Date) => {
   return differenceInWeeks(date, lastTimeSelected);
 };
 
-const addFrequencyScore = (rating: number) => (rating ? rating / 10 : 0.1);
+const addFrequencyScore = (timeSinceEnjoyedScore: number, frequency: number) =>
+  frequency * timeSinceEnjoyedScore;
 
 export const calculate = (
   date: Date,
@@ -61,10 +62,12 @@ export const calculate = (
     date,
     recipe.lastTimeSelected
   );
-  score.totalScore += score.timeSinceLastEnjoyed;
 
-  score.ratingScore = addFrequencyScore(recipe.rating);
-  score.totalScore = score.totalScore * score.ratingScore;
+  score.ratingScore = addFrequencyScore(
+    score.timeSinceLastEnjoyed,
+    recipe.rating
+  );
+  score.totalScore += score.ratingScore;
 
   return score;
 };
