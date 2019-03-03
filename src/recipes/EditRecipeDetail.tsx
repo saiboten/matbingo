@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import SelectBase from "react-select";
+import CreatableSelect from "react-select/lib/Creatable";
 import { RecipeContext } from "../context/RecipeContext";
 import { RouteComponentProps, Redirect } from "react-router";
 import { RecipeType, Ingredient } from "../types";
@@ -34,15 +34,35 @@ interface Props extends RouteComponentProps<Params> {}
 
 const onSubmit = (documentId: string, values: any, form: any) => {
   const db = firebase.firestore();
-  const recipes = values.recipes ? values.recipes : [];
+  values.ingredients = values.ingredients ? values.ingredients : [];
 
-  db.collection("recipes")
-    .doc(documentId)
-    .update({
-      ...values,
-      rating: parseInt(values.rating, 10),
-      ingredients: recipes.map((el: Option) => el.value)
-    });
+  const createThese = values.ingredients
+    .filter((el: any) => el.__isNew__)
+    .map((el: any) => el.label);
+
+  values.ingredients = values.ingredients.filter(
+    (el: any) => typeof el.__isNew__ === "undefined"
+  );
+
+  const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
+    db.collection("ingredients").add({
+      name: ingredientToBeCreated
+    })
+  );
+
+  Promise.all(createPromises).then((newDocs: any) => {
+    const newIds = newDocs.map((el: any) => el.id);
+
+    db.collection("recipes")
+      .doc(documentId)
+      .update({
+        ...values,
+        rating: parseInt(values.rating, 10),
+        ingredients: values.ingredients
+          .map((el: Option) => el.value)
+          .concat(newIds)
+      });
+  });
 };
 
 interface RecipeErrors {
@@ -69,7 +89,7 @@ function deleteItem(id: string, setNextPage: (nextPage: string) => void) {
 }
 
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
-  return <SelectBase {...input} {...rest} />;
+  return <CreatableSelect {...input} {...rest} />;
 };
 
 export const EditRecipeDetails = ({
@@ -132,7 +152,17 @@ export const EditRecipeDetails = ({
 
       <Form
         initialValues={{
-          ...recipeDetails
+          ...recipeDetails,
+          ingredients: recipeDetails.ingredients.map((el: string) => {
+            const found = ingredients.ingredients.find(
+              (option: Ingredient) => option.id === el
+            ) || { name: "", id: "" };
+
+            return {
+              label: found.name,
+              value: found.id
+            };
+          })
         }}
         onSubmit={(values, form) => {
           setShowNotification(true);
@@ -198,7 +228,7 @@ export const EditRecipeDetails = ({
                 {({ ingredients }) => (
                   <SelectWrapper>
                     <Field
-                      name="recipes"
+                      name="ingredients"
                       component={ReactSelectAdapter}
                       isMulti
                       options={ingredients.map(el => ({

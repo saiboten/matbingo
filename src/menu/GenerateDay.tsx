@@ -8,7 +8,6 @@ import { RecipeDetails } from "../recipes/RecipeDetail";
 import { ReactComponent as ConfirmIcon } from "../components/svg/check.svg";
 import { ReactComponent as PlusCircle } from "../components/svg/plus-circle.svg";
 import { ReactComponent as Rotate } from "../components/svg/rotate-ccw.svg";
-import { emitKeypressEvents } from "readline";
 
 const storeSelectedRecipe = (date: Date, recipe: RecipeType) => {
   firebase

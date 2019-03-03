@@ -24,26 +24,44 @@ interface RecipeErrors {
 }
 
 const onSubmit = (values: any, form: any, setDetailsId: any) => {
-  if (!values.recipes) {
-    values.recipes = [];
+  if (!values.ingredients) {
+    values.ingredients = [];
   }
 
-  console.log(values);
+  const createThese = values.ingredients
+    .filter((el: any) => el.__isNew__)
+    .map((el: any) => el.label);
+
+  values.ingredients = values.ingredients.filter(
+    (el: any) => typeof el.__isNew__ === "undefined"
+  );
 
   const db = firebase.firestore();
 
-  db.collection("recipes")
-    .add({
-      ...values,
-      ingredients: values.recipes.map((el: Option) => el.value),
-      lastTimeSelected: new Date(),
-      rating: parseInt(values.rating, 10)
+  const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
+    db.collection("ingredients").add({
+      name: ingredientToBeCreated
     })
-    .then(docRef => {
-      setDetailsId(docRef.id);
-    });
+  );
 
-  form.reset();
+  Promise.all(createPromises).then((newDocs: any) => {
+    const newIds = newDocs.map((el: any) => el.id);
+
+    db.collection("recipes")
+      .add({
+        ...values,
+        ingredients: values.ingredients
+          .map((el: Option) => el.value)
+          .concat(newIds),
+        lastTimeSelected: new Date(),
+        rating: parseInt(values.rating, 10)
+      })
+      .then(docRef => {
+        setDetailsId(docRef.id);
+      });
+
+    form.reset();
+  });
 };
 
 const validate = (values: any) => {
@@ -136,7 +154,7 @@ export function AddRecipe() {
               {({ ingredients }) => (
                 <SelectWrapper>
                   <Field
-                    name="recipes"
+                    name="ingredients"
                     component={ReactSelectAdapter}
                     isMulti
                     options={ingredients.map(el => ({
