@@ -9,6 +9,15 @@ export const StyledActionButton = styled.button`
   color: #fff;
 `;
 
+export const StyledSecondaryActionButton = styled.button`
+  cursor: pointer;
+  border: 1px solid ${primaryColor};
+  border-radius: 5px;
+  padding: 10px;
+  background-color: white;
+  color: ${primaryColor};
+`;
+
 export const StyledActionButtonWithMargins = styled(StyledActionButton)`
   margin: 0 10px;
 `;

@@ -21,7 +21,7 @@ export const ListRecipes = () => {
 
   useEffect(() => {
     const db = firebase.firestore();
-    db.collection("recipes").onSnapshot(querySnapshot => {
+    const unsub = db.collection("recipes").onSnapshot(querySnapshot => {
       recipes.setRecipes(
         querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
       );
@@ -33,7 +33,9 @@ export const ListRecipes = () => {
       );
     });
 
-    return () => {};
+    return () => {
+      unsub();
+    };
   }, []);
 
   if (selectedOption.value !== "0") {

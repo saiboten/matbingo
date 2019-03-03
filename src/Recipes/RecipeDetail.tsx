@@ -32,7 +32,7 @@ export const RecipeDetails = ({
     () => {
       const db = firebase.firestore();
 
-      const res = ingredients.map(async el =>
+      const res = ingredients.map(el =>
         db
           .collection("ingredients")
           .doc(el)

@@ -17,13 +17,17 @@ export function ListIngredients() {
 
   useEffect(() => {
     const db = firebase.firestore();
-    db.collection("ingredients").onSnapshot(querySnapshot => {
-      ingredientsContext.setIngredients(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
+    const unsubscribe = db
+      .collection("ingredients")
+      .onSnapshot(querySnapshot => {
+        ingredientsContext.setIngredients(
+          querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+        );
+      });
 
-    return () => {};
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

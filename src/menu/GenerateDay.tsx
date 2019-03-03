@@ -33,7 +33,8 @@ const findRecipe = (date: Date) => {
     firebase
       .firestore()
       .collection("recipes")
-      .onSnapshot(snapshot => {
+      .get()
+      .then(snapshot => {
         const recipes = snapshot.docs.map((doc: any) => ({
           id: doc.id,
           ...doc.data(),

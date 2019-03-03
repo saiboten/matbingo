@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
@@ -12,7 +12,10 @@ import {
 } from "./context/IngredientsContext";
 import { primaryColor, minBreakPoint } from "./components/Constants";
 import { Week } from "./menu/Week";
-import { StyledNotification } from "./components/StyledNotification";
+import { firebase } from "./firebase/firebase";
+import { StyledLoader } from "./components/StyledLoader";
+import { Login } from "./login/Login";
+import { StyledSecondaryActionButton } from "./components/StyledActionButton";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -92,9 +95,43 @@ const StyledLink = styled(Link)`
   padding: 10px;
 `;
 
+const LogOut = (setLoggedIn: (val: boolean) => void) => {
+  firebase
+    .auth()
+    .signOut()
+    .then(function() {
+      // Sign-out successful.
+    })
+    .catch(function(error) {
+      // An error happened.
+    });
+  setLoggedIn(false);
+};
+
 const AppRouter = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInStateClarified, setLoggedInStateClarified] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user: any) => {
+      setLoggedInStateClarified(true);
+      if (user) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    });
+  }, []);
+
+  if (!loggedInStateClarified) {
+    return <StyledLoader />;
+  }
+
+  if (!loggedIn) {
+    return <Login />;
+  }
 
   const contextValue: RecipeContextState = {
     recipes,
@@ -126,6 +163,13 @@ const AppRouter = () => {
                 <StyledLi>
                   <StyledLink to="/">Ukesmeny</StyledLink>
                 </StyledLi>
+                <StyledLi>
+                  <StyledSecondaryActionButton
+                    onClick={() => LogOut(setLoggedIn)}
+                  >
+                    Logg ut
+                  </StyledSecondaryActionButton>
+                </StyledLi>
               </StyledUl>
             </nav>
             <div>
@@ -138,6 +182,7 @@ const AppRouter = () => {
               />
               <Route path="/recipes/:id" exact component={EditRecipeDetails} />
               <Route path="/ingredients/" component={Ingredients} />
+              <Route path="/login/" component={Login} />
             </div>
           </IngredientsContext.Provider>
         </RecipeContext.Provider>
