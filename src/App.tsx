@@ -114,8 +114,32 @@ const LogOut = (setLoggedIn: (val: boolean) => void) => {
 };
 
 const App = () => {
+  return (
+    <Router>
+      <>
+        <GlobalStyle />
+        <AppRouter />
+      </>
+    </Router>
+  );
+};
+
+const AppRouter = () => {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInStateClarified, setLoggedInStateClarified] = useState(false);
+  const [user, setUser]: [User, any] = useState({
+    displayName: "",
+    email: "",
+    uid: ""
+  });
+
+  const userContextValue: UserContextState = {
+    user,
+    setUser
+  };
 
   const recipesContextValue: RecipeContextState = {
     recipes,
@@ -128,52 +152,29 @@ const App = () => {
   };
 
   useEffect(() => {
-    const db = firebase.firestore();
-    const unsub = db.collection("recipes").onSnapshot(querySnapshot => {
-      recipesContextValue.setRecipes(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
-
-    db.collection("ingredients").onSnapshot(querySnapshot => {
-      ingredientsContextValue.setIngredients(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
-
-    return () => {
-      unsub();
-    };
-  }, []);
-
-  return (
-    <Router>
-      <RecipeContext.Provider value={recipesContextValue}>
-        <IngredientsContext.Provider value={ingredientsContextValue}>
-          <GlobalStyle />
-          <AppRouter />
-        </IngredientsContext.Provider>
-      </RecipeContext.Provider>
-    </Router>
-  );
-};
-
-const AppRouter = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loggedInStateClarified, setLoggedInStateClarified] = useState(false);
-  const [user, setUser]: [User, any] = useState({
-    displayName: "",
-    email: "",
-    uid: ""
-  });
-
-  useEffect(() => {
     firebase.auth().onAuthStateChanged((user: any) => {
       setLoggedInStateClarified(true);
       if (user) {
-        console.log(user);
         setUser(user);
         setLoggedIn(true);
+        const db = firebase.firestore();
+        db.collection("recipes").onSnapshot(querySnapshot => {
+          recipesContextValue.setRecipes(
+            querySnapshot.docs.map((doc: any) => ({
+              id: doc.id,
+              ...doc.data()
+            }))
+          );
+        });
+
+        db.collection("ingredients").onSnapshot(querySnapshot => {
+          ingredientsContextValue.setIngredients(
+            querySnapshot.docs.map((doc: any) => ({
+              id: doc.id,
+              ...doc.data()
+            }))
+          );
+        });
       } else {
         setLoggedIn(false);
       }
@@ -188,44 +189,49 @@ const AppRouter = () => {
     return <Login />;
   }
 
-  const userContextValue: UserContextState = {
-    user,
-    setUser
-  };
-
   return (
     <div>
-      <UserContext.Provider value={userContextValue}>
-        <nav>
-          <StyledUl>
-            <StyledLeftItemLi>
-              <StyledLink to="/">Food-Eureka!</StyledLink>
-            </StyledLeftItemLi>
-            <StyledLi>
-              <StyledLink to="/recipes">Oppskrifter</StyledLink>
-            </StyledLi>
-            <StyledLi>
-              <StyledLink to="/ingredients/">Ingredienser</StyledLink>
-            </StyledLi>
-            <StyledLi>
-              <StyledLink to="/">Ukesmeny</StyledLink>
-            </StyledLi>
-            <StyledLi>
-              <StyledSecondaryActionButton onClick={() => LogOut(setLoggedIn)}>
-                Logg ut
-              </StyledSecondaryActionButton>
-            </StyledLi>
-          </StyledUl>
-        </nav>
-        <main>
-          <Route path="/" exact component={Week} />
-          <Route path="/recipes" exact component={Recipes} />
-          <Route path="/recipe-feedback/:feedback" exact component={Recipes} />
-          <Route path="/recipes/:id" exact component={EditRecipeDetails} />
-          <Route path="/ingredients/" component={Ingredients} />
-          <Route path="/login/" component={Login} />
-        </main>
-      </UserContext.Provider>
+      <RecipeContext.Provider value={recipesContextValue}>
+        <IngredientsContext.Provider value={ingredientsContextValue}>
+          <UserContext.Provider value={userContextValue}>
+            <nav>
+              <StyledUl>
+                <StyledLeftItemLi>
+                  <StyledLink to="/">Food-Eureka!</StyledLink>
+                </StyledLeftItemLi>
+                <StyledLi>
+                  <StyledLink to="/recipes">Oppskrifter</StyledLink>
+                </StyledLi>
+                <StyledLi>
+                  <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+                </StyledLi>
+                <StyledLi>
+                  <StyledLink to="/">Ukesmeny</StyledLink>
+                </StyledLi>
+                <StyledLi>
+                  <StyledSecondaryActionButton
+                    onClick={() => LogOut(setLoggedIn)}
+                  >
+                    Logg ut
+                  </StyledSecondaryActionButton>
+                </StyledLi>
+              </StyledUl>
+            </nav>
+            <main>
+              <Route path="/" exact component={Week} />
+              <Route path="/recipes" exact component={Recipes} />
+              <Route
+                path="/recipe-feedback/:feedback"
+                exact
+                component={Recipes}
+              />
+              <Route path="/recipes/:id" exact component={EditRecipeDetails} />
+              <Route path="/ingredients/" component={Ingredients} />
+              <Route path="/login/" component={Login} />
+            </main>
+          </UserContext.Provider>
+        </IngredientsContext.Provider>
+      </RecipeContext.Provider>
     </div>
   );
 };
