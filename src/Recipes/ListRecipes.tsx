@@ -1,46 +1,23 @@
-import React, { useEffect, useContext, useState } from "react";
-import { firebase } from "../firebase/firebase";
+import React from "react";
 import Select from "react-select";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { RecipeContext } from "../context/RecipeContext";
-import { Redirect } from "react-router";
-import { IngredientsContext } from "../context/IngredientsContext";
 
-export const ListRecipes = () => {
-  const recipes = useContext(RecipeContext);
-  const ingredientsContext = useContext(IngredientsContext);
+interface Option {
+  label: string;
+  value: string;
+}
 
-  const [selectedOption, setOption] = useState({
-    label: "Velg",
-    value: "0"
-  });
+interface Props {
+  onChange: (opt: Option) => void;
+}
 
+export const ListRecipes = ({ onChange }: Props) => {
   const handleChange = (selectedOption: any) => {
-    setOption(selectedOption);
+    if (selectedOption.value !== "0") {
+      onChange(selectedOption);
+    }
   };
-
-  useEffect(() => {
-    const db = firebase.firestore();
-    const unsub = db.collection("recipes").onSnapshot(querySnapshot => {
-      recipes.setRecipes(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
-
-    db.collection("ingredients").onSnapshot(querySnapshot => {
-      ingredientsContext.setIngredients(
-        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-      );
-    });
-
-    return () => {
-      unsub();
-    };
-  }, []);
-
-  if (selectedOption.value !== "0") {
-    return <Redirect push to={`/recipes/${selectedOption.value}`} />;
-  }
 
   return (
     <>
@@ -49,7 +26,10 @@ export const ListRecipes = () => {
         <RecipeContext.Consumer>
           {({ recipes }) => (
             <Select
-              value={selectedOption}
+              value={{
+                label: "Velg",
+                value: "0"
+              }}
               onChange={handleChange}
               options={recipes.map(el => ({
                 label: el.name,

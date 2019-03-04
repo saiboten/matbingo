@@ -8,22 +8,22 @@ import { RecipeDetails } from "../recipes/RecipeDetail";
 import { ReactComponent as ConfirmIcon } from "../components/svg/check.svg";
 import { ReactComponent as PlusCircle } from "../components/svg/plus-circle.svg";
 import { ReactComponent as Rotate } from "../components/svg/rotate-ccw.svg";
+import { ListRecipes } from "../recipes/ListRecipes";
 
-const storeSelectedRecipe = (date: Date, recipe: RecipeType) => {
+const storeSelectedRecipe = (date: Date, recipeId: string) => {
   firebase
     .firestore()
     .collection("days")
     .add({
       date,
-      recipe: recipe.id
+      recipe: recipeId
     });
 
   firebase
     .firestore()
     .collection("recipes")
-    .doc(recipe.id)
-    .set({
-      ...recipe,
+    .doc(recipeId)
+    .update({
       lastTimeSelected: date
     });
 };
@@ -162,7 +162,7 @@ export const GenerateDay = ({ date }: { date: Date }) => {
         <StyledButtonContainer>
           <StyledActionButtonWithMargins
             onClick={() => {
-              storeSelectedRecipe(date, recipe);
+              storeSelectedRecipe(date, recipe.id);
               setStored(true);
             }}
           >
@@ -172,7 +172,11 @@ export const GenerateDay = ({ date }: { date: Date }) => {
       </>
     );
   } else if (action === "find") {
-    return <p>Finn oppskrift</p>;
+    return (
+      <ListRecipes
+        onChange={(option: any) => storeSelectedRecipe(date, option.value)}
+      />
+    );
   } else if (action === "manual") {
     return <p>Skriv inn manuelt</p>;
   }

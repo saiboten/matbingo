@@ -117,7 +117,7 @@ const App = () => {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
 
-  const contextValue: RecipeContextState = {
+  const recipesContextValue: RecipeContextState = {
     recipes,
     setRecipes
   };
@@ -127,9 +127,28 @@ const App = () => {
     setIngredients
   };
 
+  useEffect(() => {
+    const db = firebase.firestore();
+    const unsub = db.collection("recipes").onSnapshot(querySnapshot => {
+      recipesContextValue.setRecipes(
+        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+      );
+    });
+
+    db.collection("ingredients").onSnapshot(querySnapshot => {
+      ingredientsContextValue.setIngredients(
+        querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
+      );
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
   return (
     <Router>
-      <RecipeContext.Provider value={contextValue}>
+      <RecipeContext.Provider value={recipesContextValue}>
         <IngredientsContext.Provider value={ingredientsContextValue}>
           <GlobalStyle />
           <AppRouter />

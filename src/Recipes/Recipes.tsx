@@ -4,6 +4,7 @@ import { AddRecipe } from "./AddRecipe";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { RouteComponentProps } from "react-router";
 import { StyledNotification } from "../components/StyledNotification";
+import { ListRecipesAndRedirect } from "./ListRecipesAndRedirect";
 
 interface MatchParams {
   feedback: string;
@@ -32,7 +33,7 @@ export const Recipes = ({
   return (
     <StyledWrapper>
       <StyledNotification text="Oppskrift slettet" active={feedbackActive} />
-      <ListRecipes />
+      <ListRecipesAndRedirect />
       <AddRecipe />
     </StyledWrapper>
   );

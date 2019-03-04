@@ -24,7 +24,7 @@ import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { createRatings } from "../components/StyledRatings";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledNotification } from "../components/StyledNotification";
-import { ListRecipes } from "./ListRecipes";
+import { ListRecipesAndRedirect } from "./ListRecipesAndRedirect";
 
 interface Params {
   id: string;
@@ -147,7 +147,7 @@ export const EditRecipeDetails = ({
   return (
     <StyledWrapper>
       <StyledNotification text="Oppskrift lagret" active={showNotification} />
-      <ListRecipes />
+      <ListRecipesAndRedirect />
       <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>
 
       <Form
