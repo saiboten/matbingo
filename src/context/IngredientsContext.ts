@@ -6,9 +6,9 @@ export interface IngredientsContextState {
   setIngredients: any;
 }
 
-const initalState: IngredientsContextState = {
+const initialState: IngredientsContextState = {
   ingredients: [],
   setIngredients: () => ({})
 };
 
-export const IngredientsContext = React.createContext(initalState);
+export const IngredientsContext = React.createContext(initialState);

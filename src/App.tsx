@@ -20,6 +20,7 @@ import { firebase } from "./firebase/firebase";
 import { StyledLoader } from "./components/StyledLoader";
 import { Login } from "./login/Login";
 import { StyledSecondaryActionButton } from "./components/StyledActionButton";
+import { UserContext, UserContextState, User } from "./context/UserContext";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -112,16 +113,47 @@ const LogOut = (setLoggedIn: (val: boolean) => void) => {
   setLoggedIn(false);
 };
 
+const App = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+
+  const contextValue: RecipeContextState = {
+    recipes,
+    setRecipes
+  };
+
+  const ingredientsContextValue: IngredientsContextState = {
+    ingredients,
+    setIngredients
+  };
+
+  return (
+    <Router>
+      <RecipeContext.Provider value={contextValue}>
+        <IngredientsContext.Provider value={ingredientsContextValue}>
+          <GlobalStyle />
+          <AppRouter />
+        </IngredientsContext.Provider>
+      </RecipeContext.Provider>
+    </Router>
+  );
+};
+
 const AppRouter = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loggedInStateClarified, setLoggedInStateClarified] = useState(false);
-  const [recipes, setRecipes] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
+  const [user, setUser]: [User, any] = useState({
+    displayName: "",
+    email: "",
+    uid: ""
+  });
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user: any) => {
       setLoggedInStateClarified(true);
       if (user) {
+        console.log(user);
+        setUser(user);
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
@@ -137,62 +169,46 @@ const AppRouter = () => {
     return <Login />;
   }
 
-  const contextValue: RecipeContextState = {
-    recipes,
-    setRecipes
-  };
-
-  const ingredientsContextValue: IngredientsContextState = {
-    ingredients,
-    setIngredients
+  const userContextValue: UserContextState = {
+    user,
+    setUser
   };
 
   return (
-    <Router>
-      <div>
-        <RecipeContext.Provider value={contextValue}>
-          <IngredientsContext.Provider value={ingredientsContextValue}>
-            <GlobalStyle />
-            <nav>
-              <StyledUl>
-                <StyledLeftItemLi>
-                  <StyledLink to="/">Food-Eureka!</StyledLink>
-                </StyledLeftItemLi>
-                <StyledLi>
-                  <StyledLink to="/recipes">Oppskrifter</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/ingredients/">Ingredienser</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/">Ukesmeny</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledSecondaryActionButton
-                    onClick={() => LogOut(setLoggedIn)}
-                  >
-                    Logg ut
-                  </StyledSecondaryActionButton>
-                </StyledLi>
-              </StyledUl>
-            </nav>
-            <div>
-              <Route path="/" exact component={Week} />
-              <Route path="/recipes" exact component={Recipes} />
-              <Route
-                path="/recipe-feedback/:feedback"
-                exact
-                component={Recipes}
-              />
-              <Route path="/recipes/:id" exact component={EditRecipeDetails} />
-              <Route path="/ingredients/" component={Ingredients} />
-              <Route path="/login/" component={Login} />
-            </div>
-          </IngredientsContext.Provider>
-        </RecipeContext.Provider>
-      </div>
-    </Router>
+    <div>
+      <UserContext.Provider value={userContextValue}>
+        <nav>
+          <StyledUl>
+            <StyledLeftItemLi>
+              <StyledLink to="/">Food-Eureka!</StyledLink>
+            </StyledLeftItemLi>
+            <StyledLi>
+              <StyledLink to="/recipes">Oppskrifter</StyledLink>
+            </StyledLi>
+            <StyledLi>
+              <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+            </StyledLi>
+            <StyledLi>
+              <StyledLink to="/">Ukesmeny</StyledLink>
+            </StyledLi>
+            <StyledLi>
+              <StyledSecondaryActionButton onClick={() => LogOut(setLoggedIn)}>
+                Logg ut
+              </StyledSecondaryActionButton>
+            </StyledLi>
+          </StyledUl>
+        </nav>
+        <main>
+          <Route path="/" exact component={Week} />
+          <Route path="/recipes" exact component={Recipes} />
+          <Route path="/recipe-feedback/:feedback" exact component={Recipes} />
+          <Route path="/recipes/:id" exact component={EditRecipeDetails} />
+          <Route path="/ingredients/" component={Ingredients} />
+          <Route path="/login/" component={Login} />
+        </main>
+      </UserContext.Provider>
+    </div>
   );
 };
 
-export default AppRouter;
+export default App;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
 import { RecipeType, RecipeWithRatingType } from "../types";
@@ -111,20 +111,55 @@ const StyledRotate = styled(Rotate)`
   fill: white;
 `;
 
+const SelectAction = ({
+  date,
+  setAction,
+  setRecipe
+}: {
+  setAction: (action: string) => void;
+  setRecipe: (recipe: RecipeType) => void;
+  date: Date;
+}) => (
+  <>
+    <StyledActionButtonWithMargins
+      onClick={() => {
+        setAction("random");
+        findRecipe(date).then((recipe: any) => setRecipe(recipe));
+      }}
+    >
+      <StyledPlusCircle />
+    </StyledActionButtonWithMargins>
+    <StyledActionButtonWithMargins
+      onClick={() => {
+        setAction("find");
+      }}
+    >
+      <p>Finn oppskrift</p>
+    </StyledActionButtonWithMargins>
+    <StyledActionButtonWithMargins
+      onClick={() => {
+        setAction("manual");
+      }}
+    >
+      <p>Skriv inn</p>
+    </StyledActionButtonWithMargins>
+  </>
+);
+
 export const GenerateDay = ({ date }: { date: Date }) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
-  const [showConfirm, setShowConfirm]: [boolean, any] = useState(false);
+  const [action, setAction]: [string, any] = useState("");
   const [stored, setStored]: [boolean, any] = useState(false);
 
   if (stored) {
     return <RecipeDetails recipe={recipe} />;
   }
 
-  return (
-    <>
-      <RecipeDetails recipe={recipe} />
-      <StyledButtonContainer>
-        {showConfirm && (
+  if (action === "random") {
+    return (
+      <>
+        <RecipeDetails recipe={recipe} />
+        <StyledButtonContainer>
           <StyledActionButtonWithMargins
             onClick={() => {
               storeSelectedRecipe(date, recipe);
@@ -133,16 +168,16 @@ export const GenerateDay = ({ date }: { date: Date }) => {
           >
             <StyledCheckIcon />
           </StyledActionButtonWithMargins>
-        )}
-        <StyledActionButtonWithMargins
-          onClick={() => {
-            setShowConfirm(true);
-            findRecipe(date).then((recipe: any) => setRecipe(recipe));
-          }}
-        >
-          {showConfirm ? <StyledRotate /> : <StyledPlusCircle />}
-        </StyledActionButtonWithMargins>
-      </StyledButtonContainer>
-    </>
+        </StyledButtonContainer>
+      </>
+    );
+  } else if (action === "find") {
+    return <p>Finn oppskrift</p>;
+  } else if (action === "manual") {
+    return <p>Skriv inn manuelt</p>;
+  }
+
+  return (
+    <SelectAction setAction={setAction} setRecipe={setRecipe} date={date} />
   );
 };
