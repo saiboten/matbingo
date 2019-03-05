@@ -9,6 +9,7 @@ import { ReactComponent as PlusCircle } from "../components/svg/plus-circle.svg"
 import { ListRecipes } from "../recipes/ListRecipes";
 import { Find } from "./AddOptions/Find";
 import { Random } from "./AddOptions/Random";
+import { Manual } from "./AddOptions/Manual";
 
 const initialState: RecipeType = {
   name: "",
@@ -66,12 +67,14 @@ const SelectAction = ({
 export const GenerateDay = ({ date }: { date: Date }) => {
   const [action, setAction]: [string, any] = useState("");
 
+  const resetAction = () => setAction("");
+
   if (action === "random") {
-    return <Random back={() => setAction("")} date={date} />;
+    return <Random back={resetAction} date={date} />;
   } else if (action === "find") {
-    return <Find date={date} back={() => setAction("")} />;
+    return <Find date={date} back={resetAction} />;
   } else if (action === "manual") {
-    return <p>Skriv inn manuelt</p>;
+    return <Manual date={date} back={resetAction} />;
   }
 
   return <SelectAction setAction={setAction} />;

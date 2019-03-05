@@ -53,6 +53,7 @@ const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
 
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
+  const [description, setDescription]: [string, any] = useState("");
   const [loading, setLoading]: any = useState(false);
 
   useEffect(
@@ -67,19 +68,26 @@ export const Day = ({ date }: Props) => {
         }
 
         daysMatchesDoc.forEach(daysMatch => {
-          db.collection("recipes")
-            .doc(daysMatch.data().recipe)
-            .get()
-            .then(doc => {
-              setLoading(false);
-              if (doc.data()) {
-                setRecipe(doc.data());
-              }
-            });
+          const dayData = daysMatch.data();
+
+          if (dayData.description) {
+            setDescription(dayData.description);
+            setLoading(false);
+          } else {
+            db.collection("recipes")
+              .doc(dayData.recipe)
+              .get()
+              .then(doc => {
+                setLoading(false);
+                if (doc.data()) {
+                  setRecipe(doc.data());
+                }
+              });
+          }
         });
       });
     },
-    [date]
+    [date, description]
   );
 
   return (
@@ -90,10 +98,10 @@ export const Day = ({ date }: Props) => {
           <StyledLocalLoaderWithMarginTop />
         ) : (
           <>
-            {recipe.name === "" ? (
+            {description !== "" && <p>{description}</p>}
+            {recipe.name !== "" && <RecipeDetails recipe={recipe} />}
+            {recipe.name === "" && description === "" && (
               <GenerateDay date={date} />
-            ) : (
-              <RecipeDetails recipe={recipe} />
             )}
           </>
         )}
