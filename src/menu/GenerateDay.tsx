@@ -1,37 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { firebase } from "../firebase/firebase";
-import { RecipeType, RecipeWithRatingType } from "../types";
-import { StyledActionButton } from "../components/StyledActionButton";
-import { calculate } from "../calculator/calculate";
-import { RecipeDetails } from "../recipes/RecipeDetail";
-import { ReactComponent as PlusCircle } from "../components/svg/plus-circle.svg";
-import { ListRecipes } from "../recipes/ListRecipes";
 import { Find } from "./AddOptions/Find";
 import { Random } from "./AddOptions/Random";
 import { Manual } from "./AddOptions/Manual";
+import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
+import {
+  StyledPlusCircle,
+  StyledSearch,
+  StyledWrite
+} from "../components/StyledSvgIcons";
 
-const initialState: RecipeType = {
-  name: "",
-  description: "",
-  id: "",
-  ingredients: [],
-  weekdays: [],
-  lastTimeSelected: new Date(),
-  rating: 1
-};
-
-const StyledActionButtonWithMargins = styled(StyledActionButton)`
-  margin: 10px;
-  padding: 5px;
-  padding-bottom: 2px;
-  border-radius: 5px;
-`;
-
-const StyledPlusCircle = styled(PlusCircle)`
-  width: 24px;
-  height: 24px;
-  fill: white;
+const StyledButtons = styled.div`
+  margin-top: 1rem;
 `;
 
 const SelectAction = ({
@@ -39,7 +19,7 @@ const SelectAction = ({
 }: {
   setAction: (action: string) => void;
 }) => (
-  <>
+  <StyledButtons>
     <StyledActionButtonWithMargins
       onClick={() => {
         setAction("random");
@@ -52,16 +32,16 @@ const SelectAction = ({
         setAction("find");
       }}
     >
-      <p>Finn oppskrift</p>
+      <StyledSearch />
     </StyledActionButtonWithMargins>
     <StyledActionButtonWithMargins
       onClick={() => {
         setAction("manual");
       }}
     >
-      <p>Skriv inn</p>
+      <StyledWrite />
     </StyledActionButtonWithMargins>
-  </>
+  </StyledButtons>
 );
 
 export const GenerateDay = ({ date }: { date: Date }) => {

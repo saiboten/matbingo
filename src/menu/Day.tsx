@@ -35,6 +35,11 @@ const StyledDay = styled.div<StyledDayProps>`
   }
 `;
 
+const StyledSpacedParagraph = styled.p`
+  margin-top: 1rem;
+  font-weight: bold;
+`;
+
 const initialState: RecipeType = {
   name: "",
   description: "",
@@ -98,7 +103,9 @@ export const Day = ({ date }: Props) => {
           <StyledLocalLoaderWithMarginTop />
         ) : (
           <>
-            {description !== "" && <p>{description}</p>}
+            {description !== "" && (
+              <StyledSpacedParagraph>{description}</StyledSpacedParagraph>
+            )}
             {recipe.name !== "" && <RecipeDetails recipe={recipe} />}
             {recipe.name === "" && description === "" && (
               <GenerateDay date={date} />

@@ -3,7 +3,7 @@ import { firebase } from "../firebase/firebase";
 import { StyledListItem } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { IngredientsContext } from "../context/IngredientsContext";
-import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
+import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 
 function deleteIngredient(id: string) {
   const db = firebase.firestore();

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { RecipeType, RecipeWithRatingType } from "../../types";
 import { RecipeDetails } from "../../recipes/RecipeDetail";
-import { StyledActionButtonWithMargins } from "../../components/StyledActionButton";
+import {
+  StyledActionButtonWithMargins,
+  StyledSecondaryActionButtonWithMargins
+} from "../../components/StyledActionButton";
 import { firebase } from "../../firebase/firebase";
 import styled from "styled-components";
-import { ReactComponent as ConfirmIcon } from "../../components/svg/check.svg";
 import { calculate } from "../../calculator/calculate";
-import { ReactComponent as Rotate } from "../../components/svg/rotate-ccw.svg";
+import {
+  StyledBack,
+  StyledCheck,
+  StyledRotate
+} from "../../components/StyledSvgIcons";
 
 interface Props {
   date: Date;
@@ -36,18 +42,6 @@ const StyledButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
-`;
-
-const StyledCheckIcon = styled(ConfirmIcon)`
-  width: 24px;
-  height: 24px;
-  fill: white;
-`;
-
-const StyledRotate = styled(Rotate)`
-  width: 24px;
-  height: 24px;
-  fill: white;
 `;
 
 const findRecipe = (date: Date) => {
@@ -113,20 +107,20 @@ export const Random = ({ date, back }: Props) => {
     <>
       <RecipeDetails recipe={recipe} />
       <StyledButtonContainer>
+        <StyledSecondaryActionButtonWithMargins onClick={back}>
+          <StyledBack />
+        </StyledSecondaryActionButtonWithMargins>
         <StyledActionButtonWithMargins
           onClick={() => {
             storeSelectedRecipe(date, recipe.id);
           }}
         >
-          <StyledCheckIcon />
+          <StyledCheck />
         </StyledActionButtonWithMargins>
         <StyledActionButtonWithMargins
           onClick={() => findRecipe(date).then(recipe => setRecipe(recipe))}
         >
           <StyledRotate />
-        </StyledActionButtonWithMargins>
-        <StyledActionButtonWithMargins onClick={back}>
-          Gå tilbake
         </StyledActionButtonWithMargins>
       </StyledButtonContainer>
     </>

@@ -3,11 +3,13 @@ import { ListRecipes } from "../../recipes/ListRecipes";
 import { firebase } from "../../firebase/firebase";
 import {
   StyledActionButton,
-  StyledActionButtonWithMargins
+  StyledActionButtonWithMargins,
+  StyledSecondaryActionButtonWithMargins
 } from "../../components/StyledActionButton";
 import { RecipeType } from "../../types";
 import { RecipeDetails } from "../../recipes/RecipeDetail";
 import styled from "styled-components";
+import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
 
 const storeSelectedRecipe = (date: Date, recipeId: string) => {
   firebase
@@ -71,16 +73,16 @@ export const Find = ({ date, back }: Props) => {
       )}
 
       <StyledActionBox>
+        <StyledSecondaryActionButtonWithMargins onClick={back}>
+          <StyledBack />
+        </StyledSecondaryActionButtonWithMargins>
         {confirm && (
           <StyledActionButtonWithMargins
             onClick={() => storeSelectedRecipe(date, recipe.id)}
           >
-            Lagre
+            <StyledCheck />
           </StyledActionButtonWithMargins>
         )}
-        <StyledActionButtonWithMargins onClick={back}>
-          Gå tilbake
-        </StyledActionButtonWithMargins>
       </StyledActionBox>
     </>
   );

@@ -7,6 +7,7 @@ import { StyledWideWrapper } from "../components/StyledWrapper";
 import { start } from "repl";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledNotification } from "../components/StyledNotification";
+import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -33,12 +34,12 @@ export const Week = () => {
         <StyledActionButtonWithMargins
           onClick={() => setSelectedDay(subWeeks(selectedDay, 1))}
         >
-          Forrige uke
+          <StyledPrevious />
         </StyledActionButtonWithMargins>
         <StyledActionButtonWithMargins
           onClick={() => setSelectedDay(addWeeks(selectedDay, 1))}
         >
-          Neste uke
+          <StyledNext />
         </StyledActionButtonWithMargins>
       </StyledButtonGroup>
       <StyledDayList>

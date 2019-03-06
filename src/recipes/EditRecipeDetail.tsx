@@ -19,12 +19,12 @@ import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
 import { Option } from "react-select/lib/filters";
 import { StyledLoader } from "../components/StyledLoader";
-import { StyledDeleteIcon } from "../components/StyledDeleteIcon";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { createRatings } from "../components/StyledRatings";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledNotification } from "../components/StyledNotification";
 import { ListRecipesAndRedirect } from "./ListRecipesAndRedirect";
+import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 
 interface Params {
   id: string;
