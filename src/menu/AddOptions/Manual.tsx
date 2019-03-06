@@ -11,7 +11,7 @@ import { StyledInputLabel } from "../../components/StyledInputLabel";
 import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
 
 const StyledWrapper = styled.div`
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 
 const StyledButtons = styled.div``;
@@ -53,14 +53,6 @@ export const Manual = ({ date, back }: Props) => {
         onSubmit={onSubmit}
         render={({ handleSubmit, pristine, invalid }) => (
           <form onSubmit={handleSubmit}>
-            <StyledFieldSet>
-              <StyledInputLabel>Hva skjer denne dagen?</StyledInputLabel>
-              <Field
-                name="description"
-                component={StyledInput}
-                placeholder="Hva skjer?"
-              />
-            </StyledFieldSet>
             <StyledButtons>
               <StyledSecondaryActionButtonWithMargins onClick={back}>
                 <StyledBack />
@@ -72,6 +64,14 @@ export const Manual = ({ date, back }: Props) => {
                 <StyledCheck />
               </StyledActionButtonWithMargins>
             </StyledButtons>
+            <StyledFieldSet>
+              <StyledInputLabel>Hva skjer denne dagen?</StyledInputLabel>
+              <Field
+                name="description"
+                component={StyledInput}
+                placeholder="Hva skjer?"
+              />
+            </StyledFieldSet>
           </form>
         )}
       />

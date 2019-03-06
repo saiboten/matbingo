@@ -66,12 +66,6 @@ export const Find = ({ date, back }: Props) => {
 
   return (
     <>
-      {confirm ? (
-        <RecipeDetails recipe={recipe} />
-      ) : (
-        <ListRecipes onChange={(option: any) => confirmCheck(option.value)} />
-      )}
-
       <StyledActionBox>
         <StyledSecondaryActionButtonWithMargins onClick={back}>
           <StyledBack />
@@ -84,6 +78,12 @@ export const Find = ({ date, back }: Props) => {
           </StyledActionButtonWithMargins>
         )}
       </StyledActionBox>
+
+      {confirm ? (
+        <RecipeDetails recipe={recipe} />
+      ) : (
+        <ListRecipes onChange={(option: any) => confirmCheck(option.value)} />
+      )}
     </>
   );
 };

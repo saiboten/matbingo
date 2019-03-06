@@ -105,7 +105,6 @@ export const Random = ({ date, back }: Props) => {
 
   return (
     <>
-      <RecipeDetails recipe={recipe} />
       <StyledButtonContainer>
         <StyledSecondaryActionButtonWithMargins onClick={back}>
           <StyledBack />
@@ -123,6 +122,7 @@ export const Random = ({ date, back }: Props) => {
           <StyledRotate />
         </StyledActionButtonWithMargins>
       </StyledButtonContainer>
+      <RecipeDetails recipe={recipe} />
     </>
   );
 };

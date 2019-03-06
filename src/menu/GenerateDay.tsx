@@ -11,7 +11,7 @@ import {
 } from "../components/StyledSvgIcons";
 
 const StyledButtons = styled.div`
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 
 const SelectAction = ({
