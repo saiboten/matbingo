@@ -21,6 +21,7 @@ import { StyledLoader } from "./components/StyledLoader";
 import { Login } from "./login/Login";
 import { StyledSecondaryActionButton } from "./components/StyledActionButton";
 import { UserContext, UserContextState, User } from "./context/UserContext";
+import { StyledHamburger } from "./components/StyledHamburger";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -55,7 +56,11 @@ li {
 }
 `;
 
-const StyledUl = styled.ul`
+interface NavProps {
+  active: boolean;
+}
+
+const StyledUl = styled.ul<NavProps>`
   list-style-type: none;
   display: flex;
   justify-content: flex-end;
@@ -63,9 +68,22 @@ const StyledUl = styled.ul`
   background-color: ${primaryColor};
   align-items: center;
   font-size: 20px;
+  transition: all 0.5s ease-in-out;
+  z-index: 10;
 
   @media screen and (max-width: ${minBreakPoint}px) {
-    flex-direction: column;
+    display: ${props => (props.active ? "block" : "none")};
+
+    position: fixed;
+    transform: translateX(-100vw);
+    width: 70%;
+    height: 100vh;
+
+    ${props =>
+      props.active &&
+      `
+      transform: translateX(0);
+    `}
   }
 `;
 
@@ -125,6 +143,7 @@ const App = () => {
 };
 
 const AppRouter = () => {
+  const [menuActive, setMenuActive] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
 
@@ -195,7 +214,8 @@ const AppRouter = () => {
         <IngredientsContext.Provider value={ingredientsContextValue}>
           <UserContext.Provider value={userContextValue}>
             <nav>
-              <StyledUl>
+              <StyledHamburger onClick={() => setMenuActive(!menuActive)} />
+              <StyledUl active={menuActive}>
                 <StyledLeftItemLi>
                   <StyledLink to="/">Food-Eureka!</StyledLink>
                 </StyledLeftItemLi>
