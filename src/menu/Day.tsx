@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { format, isToday } from "date-fns";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
@@ -8,6 +8,7 @@ import { RecipeDetails } from "../recipes/RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor } from "../components/Constants";
+import { RecipeContext } from "../context/RecipeContext";
 
 interface Props {
   date: Date;
@@ -61,6 +62,7 @@ export const Day = ({ date }: Props) => {
   const [description, setDescription]: [string, any] = useState("");
   const [loading, setLoading]: any = useState(false);
 
+  const recipeContext = useContext(RecipeContext);
   useEffect(
     () => {
       setDescription("");
@@ -68,30 +70,31 @@ export const Day = ({ date }: Props) => {
       const db = firebase.firestore();
       setLoading(true);
       const daysQuery = db.collection("days").where("date", "==", date);
-      daysQuery.get().then(daysMatchesDoc => {
+      const unsub = daysQuery.onSnapshot(daysMatchesDoc => {
         if (daysMatchesDoc.empty) {
           setLoading(false);
         }
 
         daysMatchesDoc.forEach(daysMatch => {
           const dayData = daysMatch.data();
+          setLoading(false);
 
           if (dayData.description) {
             setDescription(dayData.description);
-            setLoading(false);
           } else {
-            db.collection("recipes")
-              .doc(dayData.recipe)
-              .get()
-              .then(doc => {
-                setLoading(false);
-                if (doc.data()) {
-                  setRecipe(doc.data());
-                }
-              });
+            const recipe = recipeContext.recipes.find(
+              el => el.id === dayData.recipe
+            );
+
+            if (recipe) {
+              setRecipe(recipe);
+            }
           }
         });
       });
+      return () => {
+        unsub();
+      };
     },
     [date]
   );

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { RecipeType, Ingredient } from "../types";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { firebase } from "../firebase/firebase";
+import { IngredientsContext } from "../context/IngredientsContext";
 
 const StyledWrapper = styled.div`
   max-width: 480px;
@@ -26,25 +27,18 @@ const StyledEmpesizedP = styled.p`
 export const RecipeDetails = ({
   recipe: { name, description, ingredients }
 }: Props) => {
-  const [ingredientsStrings, setIngredients]: any = useState([]);
+  const ingredientsFromContext = useContext(IngredientsContext).ingredients;
 
-  useEffect(
-    () => {
-      const db = firebase.firestore();
-
-      const res = ingredients.map(el =>
-        db
-          .collection("ingredients")
-          .doc(el)
-          .get()
-      );
-
-      Promise.all(res).then(values => {
-        setIngredients(values.map(el => el.data()));
-      });
-    },
-    [ingredients]
-  );
+  const ingredientsStrings = ingredients.map(ingredient => {
+    const res = ingredientsFromContext.find(el => el.id === ingredient);
+    return (
+      res || {
+        name: "",
+        unit: "Units",
+        id: ""
+      }
+    );
+  });
 
   return (
     <StyledWrapper>
@@ -59,7 +53,7 @@ export const RecipeDetails = ({
         {ingredientsStrings.length > 0 && (
           <>
             <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
-            {ingredientsStrings.map((i: Ingredient) => (
+            {ingredientsStrings.map((i: any) => (
               <li key={i.name}>{i.name}</li>
             ))}
           </>
