@@ -63,6 +63,7 @@ export const Day = ({ date }: Props) => {
 
   useEffect(
     () => {
+      setDescription("");
       setRecipe(initialState);
       const db = firebase.firestore();
       setLoading(true);
@@ -92,7 +93,7 @@ export const Day = ({ date }: Props) => {
         });
       });
     },
-    [date, description]
+    [date]
   );
 
   return (
