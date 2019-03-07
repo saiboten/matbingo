@@ -42,7 +42,10 @@ const storeSelectedRecipe = (date: Date, description: string) => {
 };
 
 export const Manual = ({ date, back }: Props) => {
-  const onSubmit = ({ description }: any) => {
+  const onSubmit = (data: any) => {
+    console.log(data);
+    const { description } = data;
+
     storeSelectedRecipe(date, description);
     back();
   };
@@ -51,26 +54,27 @@ export const Manual = ({ date, back }: Props) => {
     <StyledWrapper>
       <Form
         onSubmit={onSubmit}
-        render={({ handleSubmit, pristine, invalid }) => (
+        render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <StyledButtons>
               <StyledSecondaryActionButtonWithMargins onClick={back}>
                 <StyledBack />
               </StyledSecondaryActionButtonWithMargins>
-              <StyledActionButtonWithMargins
-                type="submit"
-                disabled={pristine || invalid}
-              >
+              <StyledActionButtonWithMargins type="submit">
                 <StyledCheck />
               </StyledActionButtonWithMargins>
             </StyledButtons>
             <StyledFieldSet>
               <StyledInputLabel>Hva skjer denne dagen?</StyledInputLabel>
-              <Field
-                name="description"
-                component={StyledInput}
-                placeholder="Hva skjer?"
-              />
+              <Field name="description" component="input" type="text">
+                {({ input }: { input: any }) => (
+                  <StyledInput
+                    autoComplete="off"
+                    placeholder="Hva skjer?"
+                    {...input}
+                  />
+                )}
+              </Field>
             </StyledFieldSet>
           </form>
         )}

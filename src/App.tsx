@@ -22,6 +22,7 @@ import { Login } from "./login/Login";
 import { StyledSecondaryActionButton } from "./components/StyledActionButton";
 import { UserContext, UserContextState, User } from "./context/UserContext";
 import { StyledHamburger } from "./components/StyledHamburger";
+import { DayContextState, DaysContext } from "./context/DaysContext";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -145,6 +146,7 @@ const App = () => {
 const AppRouter = () => {
   const [menuActive, setMenuActive] = useState(false);
   const [recipes, setRecipes] = useState([]);
+  const [days, setDays] = useState([]);
   const [ingredients, setIngredients] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
@@ -170,6 +172,11 @@ const AppRouter = () => {
     setIngredients
   };
 
+  const dayContextValue: DayContextState = {
+    days,
+    setDays
+  };
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user: any) => {
       setLoggedInStateClarified(true);
@@ -179,6 +186,15 @@ const AppRouter = () => {
         const db = firebase.firestore();
         db.collection("recipes").onSnapshot(querySnapshot => {
           recipesContextValue.setRecipes(
+            querySnapshot.docs.map((doc: any) => ({
+              id: doc.id,
+              ...doc.data()
+            }))
+          );
+        });
+
+        db.collection("days").onSnapshot(querySnapshot => {
+          dayContextValue.setDays(
             querySnapshot.docs.map((doc: any) => ({
               id: doc.id,
               ...doc.data()
@@ -210,48 +226,54 @@ const AppRouter = () => {
 
   return (
     <div>
-      <RecipeContext.Provider value={recipesContextValue}>
-        <IngredientsContext.Provider value={ingredientsContextValue}>
-          <UserContext.Provider value={userContextValue}>
-            <nav>
-              <StyledHamburger onClick={() => setMenuActive(!menuActive)} />
-              <StyledUl active={menuActive}>
-                <StyledLeftItemLi>
-                  <StyledLink to="/">Food-Eureka!</StyledLink>
-                </StyledLeftItemLi>
-                <StyledLi>
-                  <StyledLink to="/recipes">Oppskrifter</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/ingredients/">Ingredienser</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/">Ukesmeny</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledSecondaryActionButton
-                    onClick={() => LogOut(setLoggedIn)}
-                  >
-                    Logg ut
-                  </StyledSecondaryActionButton>
-                </StyledLi>
-              </StyledUl>
-            </nav>
-            <main>
-              <Route path="/" exact component={Week} />
-              <Route path="/recipes" exact component={Recipes} />
-              <Route
-                path="/recipe-feedback/:feedback"
-                exact
-                component={Recipes}
-              />
-              <Route path="/recipes/:id" exact component={EditRecipeDetails} />
-              <Route path="/ingredients/" component={Ingredients} />
-              <Route path="/login/" component={Login} />
-            </main>
-          </UserContext.Provider>
-        </IngredientsContext.Provider>
-      </RecipeContext.Provider>
+      <DaysContext.Provider value={dayContextValue}>
+        <RecipeContext.Provider value={recipesContextValue}>
+          <IngredientsContext.Provider value={ingredientsContextValue}>
+            <UserContext.Provider value={userContextValue}>
+              <nav>
+                <StyledHamburger onClick={() => setMenuActive(!menuActive)} />
+                <StyledUl active={menuActive}>
+                  <StyledLeftItemLi>
+                    <StyledLink to="/">Food-Eureka!</StyledLink>
+                  </StyledLeftItemLi>
+                  <StyledLi>
+                    <StyledLink to="/recipes">Oppskrifter</StyledLink>
+                  </StyledLi>
+                  <StyledLi>
+                    <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+                  </StyledLi>
+                  <StyledLi>
+                    <StyledLink to="/">Ukesmeny</StyledLink>
+                  </StyledLi>
+                  <StyledLi>
+                    <StyledSecondaryActionButton
+                      onClick={() => LogOut(setLoggedIn)}
+                    >
+                      Logg ut
+                    </StyledSecondaryActionButton>
+                  </StyledLi>
+                </StyledUl>
+              </nav>
+              <main>
+                <Route path="/" exact component={Week} />
+                <Route path="/recipes" exact component={Recipes} />
+                <Route
+                  path="/recipe-feedback/:feedback"
+                  exact
+                  component={Recipes}
+                />
+                <Route
+                  path="/recipes/:id"
+                  exact
+                  component={EditRecipeDetails}
+                />
+                <Route path="/ingredients/" component={Ingredients} />
+                <Route path="/login/" component={Login} />
+              </main>
+            </UserContext.Provider>
+          </IngredientsContext.Provider>
+        </RecipeContext.Provider>
+      </DaysContext.Provider>
     </div>
   );
 };
