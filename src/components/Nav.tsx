@@ -17,7 +17,6 @@ const StyledNav = styled(animated.nav)`
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: red;
   }
 `;
 
