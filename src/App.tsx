@@ -145,7 +145,8 @@ const App = () => {
 const AppRouter = () => {
   const [menuActive, setMenuActive] = useState(false);
   const [recipes, setRecipes] = useState([]);
-  const [days, setDays] = useState([]);
+  const [recipesLoading, setRecipesLoading] = useState(true);
+  const [ingredientsLoading, setIngredientsLoading] = useState(true);
   const [ingredients, setIngredients] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
@@ -179,6 +180,7 @@ const AppRouter = () => {
         setLoggedIn(true);
         const db = firebase.firestore();
         db.collection("recipes").onSnapshot(querySnapshot => {
+          setRecipesLoading(false);
           recipesContextValue.setRecipes(
             querySnapshot.docs.map((doc: any) => ({
               id: doc.id,
@@ -188,6 +190,7 @@ const AppRouter = () => {
         });
 
         db.collection("ingredients").onSnapshot(querySnapshot => {
+          setIngredientsLoading(false);
           ingredientsContextValue.setIngredients(
             querySnapshot.docs.map((doc: any) => ({
               id: doc.id,
@@ -207,6 +210,10 @@ const AppRouter = () => {
 
   if (!loggedIn) {
     return <Login />;
+  }
+
+  if (ingredientsLoading || recipesLoading) {
+    return <StyledLoader />;
   }
 
   return (
