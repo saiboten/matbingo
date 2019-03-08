@@ -32,7 +32,7 @@ export const StyledLines = styled.div`
 `;
 
 export const StyledWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 20px;
   background-color: white;

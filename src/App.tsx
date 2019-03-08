@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
@@ -10,18 +9,13 @@ import {
   IngredientsContext,
   IngredientsContextState
 } from "./context/IngredientsContext";
-import {
-  primaryColor,
-  minBreakPoint,
-  secondaryColor
-} from "./components/Constants";
+import { secondaryColor } from "./components/Constants";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
 import { StyledLoader } from "./components/StyledLoader";
 import { Login } from "./login/Login";
-import { StyledSecondaryActionButton } from "./components/StyledActionButton";
 import { UserContext, UserContextState, User } from "./context/UserContext";
-import { StyledHamburger } from "./components/StyledHamburger";
+import { Nav } from "./components/Nav";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -56,81 +50,6 @@ li {
 }
 `;
 
-interface NavProps {
-  active: boolean;
-}
-
-const StyledUl = styled.ul<NavProps>`
-  list-style-type: none;
-  display: flex;
-  justify-content: flex-end;
-  padding: 5px 0;
-  background-color: ${primaryColor};
-  align-items: center;
-  font-size: 20px;
-  transition: all 0.5s ease-in-out;
-  z-index: 10;
-
-  @media screen and (max-width: ${minBreakPoint}px) {
-    display: ${props => (props.active ? "block" : "none")};
-
-    position: fixed;
-    transform: translateX(-100vw);
-    width: 70%;
-    height: 100vh;
-
-    ${props =>
-      props.active &&
-      `
-      transform: translateX(0);
-    `}
-  }
-`;
-
-const StyledLeftItemLi = styled.li`
-  margin-right: auto;
-
-  @media screen and (max-width: ${minBreakPoint}px) {
-    margin-right: 0;
-  }
-`;
-
-const StyledLi = styled.li`
-  margin-right: 5px;
-  padding: 20px 0;
-  border: 2px solid transparent;
-
-  @media screen and (max-width: ${minBreakPoint}px) {
-    padding: 5px 0;
-  }
-
-  &:hover {
-    border: 2px solid grey;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  &:visited,
-  &:link {
-    color: #f3f3f3;
-    text-decoration: none;
-  }
-  padding: 10px;
-`;
-
-const LogOut = (setLoggedIn: (val: boolean) => void) => {
-  firebase
-    .auth()
-    .signOut()
-    .then(function() {
-      // Sign-out successful.
-    })
-    .catch(function(error) {
-      // An error happened.
-    });
-  setLoggedIn(false);
-};
-
 const App = () => {
   return (
     <Router>
@@ -143,7 +62,6 @@ const App = () => {
 };
 
 const AppRouter = () => {
-  const [menuActive, setMenuActive] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [recipesLoading, setRecipesLoading] = useState(true);
   const [ingredientsLoading, setIngredientsLoading] = useState(true);
@@ -221,30 +139,7 @@ const AppRouter = () => {
       <RecipeContext.Provider value={recipesContextValue}>
         <IngredientsContext.Provider value={ingredientsContextValue}>
           <UserContext.Provider value={userContextValue}>
-            <nav>
-              <StyledHamburger onClick={() => setMenuActive(!menuActive)} />
-              <StyledUl active={menuActive}>
-                <StyledLeftItemLi>
-                  <StyledLink to="/">Food-Eureka!</StyledLink>
-                </StyledLeftItemLi>
-                <StyledLi>
-                  <StyledLink to="/recipes">Oppskrifter</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/ingredients/">Ingredienser</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledLink to="/">Ukesmeny</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                  <StyledSecondaryActionButton
-                    onClick={() => LogOut(setLoggedIn)}
-                  >
-                    Logg ut
-                  </StyledSecondaryActionButton>
-                </StyledLi>
-              </StyledUl>
-            </nav>
+            <Nav setLoggedIn={setLoggedIn} />
             <main>
               <Route path="/" exact component={Week} />
               <Route path="/recipes" exact component={Recipes} />
