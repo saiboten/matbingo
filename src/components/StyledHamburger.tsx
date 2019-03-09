@@ -2,15 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { primaryColor, minBreakPoint } from "./Constants";
 
-export const StyledLines = styled.div`
+interface Props {
+  active: boolean;
+}
+
+export const StyledLines = styled.div<Props>`
   width: 20px;
-  height: 3px;
   background-color: ${primaryColor};
   position: absolute;
   top: 10px;
   border-radius: 2px;
+  height: ${props => (props.active ? "0" : "3px")};
 
   &::after {
+    transition: transform 0.5s;
     content: "";
     width: 20px;
     height: 3px;
@@ -18,16 +23,19 @@ export const StyledLines = styled.div`
     top: 8px;
     background-color: ${primaryColor};
     border-radius: 2px;
+    transform: rotate(${props => (props.active ? "45" : "0")}deg);
   }
 
   &::before {
+    transition: transform 0.5s;
     content: "";
     width: 20px;
     height: 3px;
     position: absolute;
-    top: 16px;
+    top: ${props => (props.active ? "8px" : "16px")};
     background-color: ${primaryColor};
     border-radius: 2px;
+    transform: rotate(${props => (props.active ? "-45" : "0")}deg);
   }
 `;
 
@@ -49,8 +57,13 @@ export const StyledWrapper = styled.div`
   }
 `;
 
-export const StyledHamburger = ({ onClick }: any) => (
+interface HamburgerProps {
+  onClick: () => void;
+  active: boolean;
+}
+
+export const StyledHamburger = ({ onClick, active }: HamburgerProps) => (
   <StyledWrapper onClick={onClick}>
-    <StyledLines />
+    <StyledLines active={active} />
   </StyledWrapper>
 );

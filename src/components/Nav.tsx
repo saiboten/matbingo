@@ -107,7 +107,10 @@ export const Nav = ({
 
   return (
     <>
-      <StyledHamburger onClick={() => setMenuActive(!menuActive)} />
+      <StyledHamburger
+        onClick={() => setMenuActive(!menuActive)}
+        active={menuActive}
+      />
       <StyledNav style={props} onClick={() => setMenuActive(false)} />
       <StyledTranslateResetDesktop>
         <StyledUl style={props}>
