@@ -39,6 +39,9 @@ const addTimeSinceLastEnjoyedScore = (date: Date, lastTimeSelected: Date) => {
 const addFrequencyScore = (timeSinceEnjoyedScore: number, frequency: number) =>
   frequency * timeSinceEnjoyedScore;
 
+const addNeverEatenScore = (hasBeenEaten: boolean | undefined) =>
+  hasBeenEaten ? 0 : 1000;
+
 export const calculate = (
   date: Date,
   recipe: RecipeType,
@@ -49,7 +52,8 @@ export const calculate = (
     randomScore: 0,
     timeSinceLastEnjoyed: 0,
     ratingScore: 0,
-    totalScore: 0
+    totalScore: 0,
+    neverEatenScore: 0
   };
 
   score.dateScore = addDateScore(date, recipe.weekdays);
@@ -68,6 +72,9 @@ export const calculate = (
     recipe.rating
   );
   score.totalScore += score.ratingScore;
+
+  score.neverEatenScore = addNeverEatenScore(recipe.hasBeenSelected);
+  score.totalScore += score.neverEatenScore;
 
   return score;
 };

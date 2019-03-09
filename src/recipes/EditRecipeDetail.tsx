@@ -137,7 +137,8 @@ export const EditRecipeDetails = ({
     ingredients: [],
     weekdays: [],
     lastTimeSelected: new Date(),
-    rating: 1
+    rating: 1,
+    hasBeenSelected: false
   };
 
   if (nextPage !== "") {

@@ -48,7 +48,8 @@ const initialState: RecipeType = {
   ingredients: [],
   weekdays: [],
   lastTimeSelected: new Date(),
-  rating: 1
+  rating: 1,
+  hasBeenSelected: false
 };
 
 const StyledDayContent = styled.div``;

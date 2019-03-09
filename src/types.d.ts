@@ -27,6 +27,7 @@ export interface ScoreDetails {
   randomScore: number;
   timeSinceLastEnjoyed: number;
   ratingScore: number;
+  neverEatenScore: number;
   totalScore: number;
 }
 
@@ -42,4 +43,5 @@ export interface RecipeType {
   weekdays: WeekDay[];
   lastTimeSelected: Date;
   rating: RatingType;
+  hasBeenSelected: boolean;
 }

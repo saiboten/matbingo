@@ -25,7 +25,8 @@ const storeSelectedRecipe = (date: Date, recipeId: string) => {
     .collection("recipes")
     .doc(recipeId)
     .update({
-      lastTimeSelected: date
+      lastTimeSelected: date,
+      hasBeenSelected: true
     });
 };
 
@@ -41,7 +42,8 @@ const initialState: RecipeType = {
   ingredients: [],
   weekdays: [],
   lastTimeSelected: new Date(),
-  rating: 1
+  rating: 1,
+  hasBeenSelected: false
 };
 
 const StyledActionBox = styled.div`
