@@ -44,7 +44,11 @@ const StyledLink = styled(Link)`
   padding: 10px;
 `;
 
-const StyledTranslateResetDesktop = styled.div`
+interface ActiveProps {
+  active: boolean;
+}
+
+const StyledTranslateResetDesktop = styled.div<ActiveProps>`
   transform: translateX(100vw);
 
   @media screen and (max-width: ${minBreakPoint}px) {
@@ -52,7 +56,7 @@ const StyledTranslateResetDesktop = styled.div`
     transform: translateX(0);
     width: 70vw;
     height: 100vh;
-    z-index: 10;
+    z-index: ${props => (props.active ? 10 : -5)};
   }
 `;
 
@@ -112,7 +116,7 @@ export const Nav = ({
         active={menuActive}
       />
       <StyledNav style={props} onClick={() => setMenuActive(false)} />
-      <StyledTranslateResetDesktop>
+      <StyledTranslateResetDesktop active={menuActive}>
         <StyledUl style={props}>
           <StyledLeftItemLi>
             <StyledLink to="/">Food-Eureka!</StyledLink>
