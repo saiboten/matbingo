@@ -17,6 +17,7 @@ const StyledNav = styled(animated.nav)`
     height: 100vh;
     top: 0;
     left: 0;
+    z-index: 5;
   }
 `;
 
@@ -47,7 +48,11 @@ const StyledTranslateResetDesktop = styled.div`
   transform: translateX(100vw);
 
   @media screen and (max-width: ${minBreakPoint}px) {
+    position: fixed;
     transform: translateX(0);
+    width: 70vw;
+    height: 100vh;
+    z-index: 10;
   }
 `;
 
@@ -59,14 +64,12 @@ const StyledUl = styled(animated.ul)`
   background-color: ${primaryColor};
   align-items: center;
   font-size: 20px;
-  z-index: 10;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     flex-direction: column;
     justify-content: flex-start;
-    position: fixed;
-    width: 70%;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -112,16 +115,27 @@ export const Nav = ({
             <StyledLink to="/">Food-Eureka!</StyledLink>
           </StyledLeftItemLi>
           <StyledLi>
-            <StyledLink to="/recipes">Oppskrifter</StyledLink>
+            <StyledLink onClick={() => setMenuActive(false)} to="/recipes">
+              Oppskrifter
+            </StyledLink>
           </StyledLi>
           <StyledLi>
-            <StyledLink to="/ingredients/">Ingredienser</StyledLink>
+            <StyledLink onClick={() => setMenuActive(false)} to="/ingredients/">
+              Ingredienser
+            </StyledLink>
           </StyledLi>
           <StyledLi>
-            <StyledLink to="/">Ukesmeny</StyledLink>
+            <StyledLink onClick={() => setMenuActive(false)} to="/">
+              Ukesmeny
+            </StyledLink>
           </StyledLi>
           <StyledLi>
-            <StyledSecondaryActionButton onClick={() => LogOut(setLoggedIn)}>
+            <StyledSecondaryActionButton
+              onClick={() => {
+                setMenuActive(false);
+                LogOut(setLoggedIn);
+              }}
+            >
               Logg ut
             </StyledSecondaryActionButton>
           </StyledLi>
