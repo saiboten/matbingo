@@ -56,7 +56,8 @@ const StyledTranslateResetDesktop = styled.div<ActiveProps>`
     transform: translateX(0);
     width: 70vw;
     height: 100vh;
-    z-index: ${props => (props.active ? 10 : -5)};
+    z-index: 10;
+    pointer-events: none;
   }
 `;
 
@@ -68,6 +69,7 @@ const StyledUl = styled(animated.ul)`
   background-color: ${primaryColor};
   align-items: center;
   font-size: 20px;
+  pointer-events: auto;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     flex-direction: column;
@@ -115,7 +117,6 @@ export const Nav = ({
         onClick={() => setMenuActive(!menuActive)}
         active={menuActive}
       />
-      <StyledNav style={props} onClick={() => setMenuActive(false)} />
       <StyledTranslateResetDesktop active={menuActive}>
         <StyledUl style={props}>
           <StyledLeftItemLi>
@@ -148,6 +149,7 @@ export const Nav = ({
           </StyledLi>
         </StyledUl>
       </StyledTranslateResetDesktop>
+      <StyledNav style={props} onClick={() => setMenuActive(false)} />
     </>
   );
 };
