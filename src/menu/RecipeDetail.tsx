@@ -25,69 +25,10 @@ const StyledEmpesizedP = styled.p`
   margin-bottom: 10px;
 `;
 
-interface CreateCardResponse {
-  id: string;
-}
-interface CreateChecklistResponse {
-  id: string;
-}
-
-const AddIngredients = (
-  ingredients: Ingredient[],
-  userdata: UserData,
-  checklistId: string
-) => {
-  ingredients.forEach(ingredient => {
-    fetch(
-      `https://api.trello.com/1/checklists/${checklistId}/checkItems?key=${
-        userdata.trelloApiKey
-      }&token=${userdata.trelloApiToken}&name=${ingredient.name}`,
-      {
-        method: "POST"
-      }
-    );
-  });
-};
-
-const AddChecklist = (
-  ingredients: Ingredient[],
-  userdata: UserData,
-  id: string
-) => {
-  fetch(
-    `https://api.trello.com/1/checklists/?key=${userdata.trelloApiKey}&token=${
-      userdata.trelloApiToken
-    }&idCard=${id}`,
-    {
-      method: "POST"
-    }
-  )
-    .then(data => data.json())
-    .then((data: CreateChecklistResponse) => {
-      AddIngredients(ingredients, userdata, data.id);
-    });
-};
-
-const Generate = (ingredients: Ingredient[], userdata: UserData) => {
-  fetch(
-    `https://api.trello.com/1/cards?name=Handleliste&pos=top&idList=${
-      userdata.trelloList
-    }&key=${userdata.trelloApiKey}&token=${userdata.trelloApiToken}`,
-    {
-      method: "POST"
-    }
-  )
-    .then((data: any) => data.json())
-    .then((data: CreateCardResponse) => {
-      AddChecklist(ingredients, userdata, data.id);
-    });
-};
-
 export const RecipeDetails = ({
   recipe: { name, description, ingredients }
 }: Props) => {
   const ingredientsFromContext = useContext(IngredientsContext).ingredients;
-  const userdata = useContext(UserDataContext).userdata;
 
   const ingredientsStrings: Ingredient[] = ingredients.map(ingredient => {
     const res = ingredientsFromContext.find(el => el.id === ingredient);
@@ -103,11 +44,6 @@ export const RecipeDetails = ({
   return (
     <StyledWrapper>
       <StyledHeaderH1>{name}</StyledHeaderH1>
-      <StyledActionButton
-        onClick={() => Generate(ingredientsStrings, userdata)}
-      >
-        Generer
-      </StyledActionButton>
       {description && (
         <>
           <StyledEmpesizedP>Beskrivelse</StyledEmpesizedP>
