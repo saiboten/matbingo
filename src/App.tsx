@@ -16,6 +16,7 @@ import { StyledLoader } from "./components/StyledLoader";
 import { Login } from "./login/Login";
 import { UserContext, UserContextState, User } from "./context/UserContext";
 import { Nav } from "./components/Nav";
+import { UserData, UserDataContext } from "./context/UserDataContext";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -75,9 +76,20 @@ const AppRouter = () => {
     uid: ""
   });
 
+  const [userdata, setUserdata]: [UserData, any] = useState({
+    trelloApiKey: "",
+    trelloApiToken: "",
+    trelloList: ""
+  });
+
   const userContextValue: UserContextState = {
     user,
     setUser
+  };
+
+  const userDataContextValue: UserDataContext = {
+    userdata,
+    setUserdata
   };
 
   const recipesContextValue: RecipeContextState = {
@@ -116,6 +128,11 @@ const AppRouter = () => {
             }))
           );
         });
+        db.collection("userdata")
+          .where("owner", "==", user.uid)
+          .onSnapshot(querySnapshot => {
+            setUserdata(querySnapshot.docs[0].data());
+          });
       } else {
         setLoggedIn(false);
       }
@@ -139,19 +156,25 @@ const AppRouter = () => {
       <RecipeContext.Provider value={recipesContextValue}>
         <IngredientsContext.Provider value={ingredientsContextValue}>
           <UserContext.Provider value={userContextValue}>
-            <Nav setLoggedIn={setLoggedIn} />
-            <main>
-              <Route path="/" exact component={Week} />
-              <Route path="/recipes" exact component={Recipes} />
-              <Route
-                path="/recipe-feedback/:feedback"
-                exact
-                component={Recipes}
-              />
-              <Route path="/recipes/:id" exact component={EditRecipeDetails} />
-              <Route path="/ingredients/" component={Ingredients} />
-              <Route path="/login/" component={Login} />
-            </main>
+            <UserDataContext.Provider value={userDataContextValue}>
+              <Nav setLoggedIn={setLoggedIn} />
+              <main>
+                <Route path="/" exact component={Week} />
+                <Route path="/recipes" exact component={Recipes} />
+                <Route
+                  path="/recipe-feedback/:feedback"
+                  exact
+                  component={Recipes}
+                />
+                <Route
+                  path="/recipes/:id"
+                  exact
+                  component={EditRecipeDetails}
+                />
+                <Route path="/ingredients/" component={Ingredients} />
+                <Route path="/login/" component={Login} />
+              </main>
+            </UserDataContext.Provider>
           </UserContext.Provider>
         </IngredientsContext.Provider>
       </RecipeContext.Provider>

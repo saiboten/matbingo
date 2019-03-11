@@ -7,7 +7,7 @@ import {
   StyledSecondaryActionButtonWithMargins
 } from "../../components/StyledActionButton";
 import { RecipeType } from "../../types";
-import { RecipeDetails } from "../../recipes/RecipeDetail";
+import { RecipeDetails } from "../RecipeDetail";
 import styled from "styled-components";
 import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
 import { RecipeContext } from "../../context/RecipeContext";

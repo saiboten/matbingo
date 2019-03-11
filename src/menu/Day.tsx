@@ -4,11 +4,13 @@ import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
 import { RecipeType, Ingredient } from "../types";
 import nbLocale from "date-fns/locale/nb";
-import { RecipeDetails } from "../recipes/RecipeDetail";
+import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
+import { UserContext } from "../context/UserContext";
+import { UserDataContext } from "../context/UserDataContext";
 
 interface Props {
   date: Date;

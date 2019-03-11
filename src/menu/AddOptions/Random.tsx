@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RecipeType, RecipeWithRatingType } from "../../types";
-import { RecipeDetails } from "../../recipes/RecipeDetail";
+import { RecipeDetails } from "../RecipeDetail";
 import {
   StyledActionButtonWithMargins,
   StyledSecondaryActionButtonWithMargins
