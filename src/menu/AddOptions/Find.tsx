@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { ListRecipes } from "../../recipes/ListRecipes";
 import { firebase } from "../../firebase/firebase";
 import {
-  StyledActionButton,
   StyledActionButtonWithMargins,
   StyledSecondaryActionButtonWithMargins
 } from "../../components/StyledActionButton";

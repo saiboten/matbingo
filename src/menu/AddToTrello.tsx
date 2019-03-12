@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StyledActionButton } from "../components/StyledActionButton";
 import { UserDataContext } from "../context/UserDataContext";
 import { RecipeContext } from "../context/RecipeContext";
@@ -21,6 +21,14 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   const userdata = useContext(UserDataContext).userdata;
   const recipes = useContext(RecipeContext).recipes;
   const ingredients = useContext(IngredientsContext).ingredients;
+
+  useEffect(
+    () => {
+      setLoading(false);
+      setDone(false);
+    },
+    [listOfDays]
+  );
 
   const addIngredients = async (ingredients: string[], checklistId: string) => {
     for (let i = 0; i < ingredients.length; i++) {

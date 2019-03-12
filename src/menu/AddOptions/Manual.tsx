@@ -3,7 +3,6 @@ import { Form, Field } from "react-final-form";
 import { firebase } from "../../firebase/firebase";
 import styled from "styled-components";
 import {
-  StyledActionButton,
   StyledActionButtonWithMargins,
   StyledSecondaryActionButtonWithMargins
 } from "../../components/StyledActionButton";

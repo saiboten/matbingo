@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { RecipeType, Ingredient, Unit } from "../types";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { IngredientsContext } from "../context/IngredientsContext";
-import { StyledActionButton } from "../components/StyledActionButton";
-import { UserData, UserDataContext } from "../context/UserDataContext";
 
 const StyledWrapper = styled.div`
   max-width: 480px;

@@ -9,8 +9,6 @@ import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
-import { UserContext } from "../context/UserContext";
-import { UserDataContext } from "../context/UserDataContext";
 
 interface Props {
   date: Date;
