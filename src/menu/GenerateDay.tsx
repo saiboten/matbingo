@@ -5,9 +5,9 @@ import { Random } from "./AddOptions/Random";
 import { Manual } from "./AddOptions/Manual";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
 import {
-  StyledPlusCircle,
   StyledSearch,
-  StyledWrite
+  StyledWrite,
+  StyledDice
 } from "../components/StyledSvgIcons";
 
 const StyledButtons = styled.div`
@@ -25,7 +25,7 @@ const SelectAction = ({
         setAction("random");
       }}
     >
-      <StyledPlusCircle />
+      <StyledDice />
     </StyledActionButtonWithMargins>
     <StyledActionButtonWithMargins
       onClick={() => {

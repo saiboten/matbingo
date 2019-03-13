@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { primaryColor } from "./Constants";
 
 import { ReactComponent as PlusCircle } from "./svg/plus-circle.svg";
+import { ReactComponent as Dice } from "./svg/dice.svg";
 import { ReactComponent as Search } from "./svg/search.svg";
 import { ReactComponent as Write } from "./svg/edit.svg";
 import { ReactComponent as Next } from "./svg/arrow-right.svg";
@@ -14,6 +15,12 @@ import { ReactComponent as Rotate } from "./svg/rotate-ccw.svg";
 import { ReactComponent as DeleteIcon } from "./svg/trash-2.svg";
 
 export const StyledPlusCircle = styled(PlusCircle)`
+  width: 24px;
+  height: 24px;
+  fill: white;
+`;
+
+export const StyledDice = styled(Dice)`
   width: 24px;
   height: 24px;
   fill: white;
