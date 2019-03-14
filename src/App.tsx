@@ -129,9 +129,9 @@ const AppRouter = () => {
           );
         });
         db.collection("userdata")
-          .where("owner", "==", user.uid)
+          .doc(user.uid)
           .onSnapshot(querySnapshot => {
-            setUserdata(querySnapshot.docs[0].data());
+            setUserdata(querySnapshot.data());
           });
       } else {
         setLoggedIn(false);
