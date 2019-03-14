@@ -6,6 +6,7 @@ import { IngredientsContext } from "../context/IngredientsContext";
 import { Ingredient, RecipeType } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
+import { GroupDataContext } from "../context/GroupDataContext";
 
 interface CreateCardResponse {
   id: string;
@@ -19,6 +20,7 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   const [done, setDone]: [boolean, any] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
+  const groupData = useContext(GroupDataContext).groupData;
   const recipes = useContext(RecipeContext).recipes;
   const ingredients = useContext(IngredientsContext).ingredients;
 
@@ -34,8 +36,8 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
     for (let i = 0; i < ingredients.length; i++) {
       await fetch(
         `https://api.trello.com/1/checklists/${checklistId}/checkItems?key=${
-          userdata.trelloApiKey
-        }&token=${userdata.trelloApiToken}&name=${ingredients[i]}`,
+          groupData.trelloApiKey
+        }&token=${groupData.trelloApiToken}&name=${ingredients[i]}`,
         {
           method: "POST"
         }
@@ -48,8 +50,8 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   const addChecklist = (ingredients: string[], id: string) => {
     fetch(
       `https://api.trello.com/1/checklists/?key=${
-        userdata.trelloApiKey
-      }&token=${userdata.trelloApiToken}&idCard=${id}`,
+        groupData.trelloApiKey
+      }&token=${groupData.trelloApiToken}&idCard=${id}`,
       {
         method: "POST"
       }
@@ -63,8 +65,8 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   const addCard = (ingredients: string[]) => {
     fetch(
       `https://api.trello.com/1/cards?name=Handleliste&pos=top&idList=${
-        userdata.trelloList
-      }&key=${userdata.trelloApiKey}&token=${userdata.trelloApiToken}`,
+        groupData.trelloList
+      }&key=${groupData.trelloApiKey}&token=${groupData.trelloApiToken}`,
       {
         method: "POST"
       }

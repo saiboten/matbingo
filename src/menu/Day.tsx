@@ -9,6 +9,7 @@ import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
+import { UserDataContext } from "../context/UserDataContext";
 
 interface Props {
   date: Date;
@@ -64,13 +65,18 @@ export const Day = ({ date }: Props) => {
   const [loading, setLoading]: any = useState(false);
 
   const recipeContext = useContext(RecipeContext);
+  const userdata = useContext(UserDataContext).userdata;
+
   useEffect(
     () => {
       setDescription("");
       setRecipe(initialState);
       const db = firebase.firestore();
       setLoading(true);
-      const daysQuery = db.collection("days").where("date", "==", date);
+      const daysQuery = db
+        .collection("days")
+        .where("date", "==", date)
+        .where("group", "==", userdata.group);
       const unsub = daysQuery.onSnapshot(daysMatchesDoc => {
         if (daysMatchesDoc.empty) {
           setLoading(false);

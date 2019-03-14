@@ -77,9 +77,7 @@ const AppRouter = () => {
   });
 
   const [userdata, setUserdata]: [UserData, any] = useState({
-    trelloApiKey: "",
-    trelloApiToken: "",
-    trelloList: ""
+    group: ""
   });
 
   const userContextValue: UserContextState = {
@@ -109,29 +107,36 @@ const AppRouter = () => {
         setUser(user);
         setLoggedIn(true);
         const db = firebase.firestore();
-        db.collection("recipes").onSnapshot(querySnapshot => {
-          setRecipesLoading(false);
-          recipesContextValue.setRecipes(
-            querySnapshot.docs.map((doc: any) => ({
-              id: doc.id,
-              ...doc.data()
-            }))
-          );
-        });
 
-        db.collection("ingredients").onSnapshot(querySnapshot => {
-          setIngredientsLoading(false);
-          ingredientsContextValue.setIngredients(
-            querySnapshot.docs.map((doc: any) => ({
-              id: doc.id,
-              ...doc.data()
-            }))
-          );
-        });
         db.collection("userdata")
           .doc(user.uid)
           .onSnapshot(querySnapshot => {
-            setUserdata(querySnapshot.data());
+            const userdata: any = querySnapshot.data() || { group: "" };
+
+            setUserdata(userdata);
+
+            db.collection("recipes")
+              .where("group", "==", userdata.group)
+              .onSnapshot(querySnapshot => {
+                console.log("Recipes OK");
+                setRecipesLoading(false);
+                recipesContextValue.setRecipes(
+                  querySnapshot.docs.map((doc: any) => ({
+                    id: doc.id,
+                    ...doc.data()
+                  }))
+                );
+              });
+
+            db.collection("ingredients").onSnapshot(querySnapshot => {
+              setIngredientsLoading(false);
+              ingredientsContextValue.setIngredients(
+                querySnapshot.docs.map((doc: any) => ({
+                  id: doc.id,
+                  ...doc.data()
+                }))
+              );
+            });
           });
       } else {
         setLoggedIn(false);

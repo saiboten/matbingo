@@ -1,6 +1,10 @@
 import React from "react";
 
 export interface UserData {
+  group: string;
+}
+
+export interface GroupData {
   trelloApiKey: string;
   trelloApiToken: string;
   trelloList: string;
@@ -13,9 +17,7 @@ export interface UserDataContext {
 
 const initialState: UserDataContext = {
   userdata: {
-    trelloApiKey: "",
-    trelloApiToken: "",
-    trelloList: ""
+    group: ""
   },
   setUserdata: () => {}
 };
