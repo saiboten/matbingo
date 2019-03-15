@@ -1,8 +1,0 @@
-{
-  "apps" : [{
-    "name"        : "Ønsk Deg",
-    "script"      : "npx",
-    "interpreter"  : "none",
-    "args"  : "serve -p 3010 build/"
-  }]
-}
