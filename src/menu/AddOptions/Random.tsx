@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { RecipeType, RecipeWithRatingType } from "../../types";
 import { RecipeDetails } from "../RecipeDetail";
 import {
@@ -13,19 +13,21 @@ import {
   StyledCheck,
   StyledRotate
 } from "../../components/StyledSvgIcons";
+import { UserDataContext } from "../../context/UserDataContext";
 
 interface Props {
   date: Date;
   back: () => void;
 }
 
-const storeSelectedRecipe = (date: Date, recipeId: string) => {
+const storeSelectedRecipe = (date: Date, recipeId: string, group: string) => {
   firebase
     .firestore()
     .collection("days")
     .add({
       date,
-      recipe: recipeId
+      recipe: recipeId,
+      group
     });
 
   firebase
@@ -101,6 +103,8 @@ const initialState: RecipeType = {
 export const Random = ({ date, back }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
 
+  const userdata = useContext(UserDataContext).userdata;
+
   useEffect(() => {
     findRecipe(date).then(recipe => setRecipe(recipe));
   }, []);
@@ -113,7 +117,7 @@ export const Random = ({ date, back }: Props) => {
         </StyledSecondaryActionButtonWithMargins>
         <StyledActionButtonWithMargins
           onClick={() => {
-            storeSelectedRecipe(date, recipe.id);
+            storeSelectedRecipe(date, recipe.id, userdata.group);
           }}
         >
           <StyledCheck />

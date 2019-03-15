@@ -17,6 +17,7 @@ import { Login } from "./login/Login";
 import { UserContext, UserContextState, User } from "./context/UserContext";
 import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
+import { GroupData, GroupDataContext } from "./context/GroupDataContext";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -31,6 +32,7 @@ html {
     // This defines what 1 rem is
     font-size: 62.5%; // 1 rem == 10px
     background-color: ${secondaryColor};
+    font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif;
 }
 
 body {
@@ -76,6 +78,12 @@ const AppRouter = () => {
     uid: ""
   });
 
+  const [groupData, setGroupdata]: [GroupData, any] = useState({
+    trelloApiKey: "",
+    trelloApiToken: "",
+    trelloList: ""
+  });
+
   const [userdata, setUserdata]: [UserData, any] = useState({
     group: ""
   });
@@ -100,6 +108,11 @@ const AppRouter = () => {
     setIngredients
   };
 
+  const groupDataContextValue: GroupDataContext = {
+    groupData,
+    setGroupdata
+  };
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user: any) => {
       setLoggedInStateClarified(true);
@@ -118,7 +131,6 @@ const AppRouter = () => {
             db.collection("recipes")
               .where("group", "==", userdata.group)
               .onSnapshot(querySnapshot => {
-                console.log("Recipes OK");
                 setRecipesLoading(false);
                 recipesContextValue.setRecipes(
                   querySnapshot.docs.map((doc: any) => ({
@@ -137,6 +149,17 @@ const AppRouter = () => {
                 }))
               );
             });
+
+            db.collection("groups")
+              .doc(userdata.group)
+              .onSnapshot(querySnapshot => {
+                const groupData: any = querySnapshot.data();
+
+                groupDataContextValue.setGroupdata({
+                  id: querySnapshot.id,
+                  ...groupData
+                });
+              });
           });
       } else {
         setLoggedIn(false);
@@ -162,23 +185,25 @@ const AppRouter = () => {
         <IngredientsContext.Provider value={ingredientsContextValue}>
           <UserContext.Provider value={userContextValue}>
             <UserDataContext.Provider value={userDataContextValue}>
-              <Nav setLoggedIn={setLoggedIn} />
-              <main>
-                <Route path="/" exact component={Week} />
-                <Route path="/recipes" exact component={Recipes} />
-                <Route
-                  path="/recipe-feedback/:feedback"
-                  exact
-                  component={Recipes}
-                />
-                <Route
-                  path="/recipes/:id"
-                  exact
-                  component={EditRecipeDetails}
-                />
-                <Route path="/ingredients/" component={Ingredients} />
-                <Route path="/login/" component={Login} />
-              </main>
+              <GroupDataContext.Provider value={groupDataContextValue}>
+                <Nav setLoggedIn={setLoggedIn} />
+                <main>
+                  <Route path="/" exact component={Week} />
+                  <Route path="/recipes" exact component={Recipes} />
+                  <Route
+                    path="/recipe-feedback/:feedback"
+                    exact
+                    component={Recipes}
+                  />
+                  <Route
+                    path="/recipes/:id"
+                    exact
+                    component={EditRecipeDetails}
+                  />
+                  <Route path="/ingredients/" component={Ingredients} />
+                  <Route path="/login/" component={Login} />
+                </main>
+              </GroupDataContext.Provider>
             </UserDataContext.Provider>
           </UserContext.Provider>
         </IngredientsContext.Provider>

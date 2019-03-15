@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Field } from "react-final-form";
 import { firebase } from "../../firebase/firebase";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import {
 } from "../../components/StyledActionButton";
 import { StyledInputLabel } from "../../components/StyledInputLabel";
 import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
+import { UserDataContext } from "../../context/UserDataContext";
 
 const StyledWrapper = styled.div`
   margin-top: 2rem;
@@ -30,22 +31,28 @@ interface Props {
   back: () => void;
 }
 
-const storeSelectedRecipe = (date: Date, description: string) => {
+const storeSelectedRecipe = (
+  date: Date,
+  description: string,
+  group: string
+) => {
   firebase
     .firestore()
     .collection("days")
     .add({
       date,
-      description
+      description,
+      group
     });
 };
 
 export const Manual = ({ date, back }: Props) => {
+  const userData = useContext(UserDataContext).userdata;
+
   const onSubmit = (data: any) => {
-    console.log(data);
     const { description } = data;
 
-    storeSelectedRecipe(date, description);
+    storeSelectedRecipe(date, description, userData.group);
     back();
   };
 

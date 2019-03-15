@@ -10,14 +10,16 @@ import { RecipeDetails } from "../RecipeDetail";
 import styled from "styled-components";
 import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
 import { RecipeContext } from "../../context/RecipeContext";
+import { UserDataContext } from "../../context/UserDataContext";
 
-const storeSelectedRecipe = (date: Date, recipeId: string) => {
+const storeSelectedRecipe = (date: Date, recipeId: string, group: string) => {
   firebase
     .firestore()
     .collection("days")
     .add({
       date,
-      recipe: recipeId
+      recipe: recipeId,
+      group
     });
 
   firebase
@@ -53,7 +55,9 @@ const StyledActionBox = styled.div`
 export const Find = ({ date, back }: Props) => {
   const [confirm, setConfirm]: [boolean, any] = useState(false);
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
+
   const recipeContext = useContext(RecipeContext);
+  const userData = useContext(UserDataContext).userdata;
 
   const confirmCheck = (recipeId: string) => {
     setConfirm(true);
@@ -68,7 +72,7 @@ export const Find = ({ date, back }: Props) => {
         </StyledSecondaryActionButtonWithMargins>
         {confirm && (
           <StyledActionButtonWithMargins
-            onClick={() => storeSelectedRecipe(date, recipe.id)}
+            onClick={() => storeSelectedRecipe(date, recipe.id, userData.group)}
           >
             <StyledCheck />
           </StyledActionButtonWithMargins>

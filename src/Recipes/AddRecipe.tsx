@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
@@ -16,6 +16,7 @@ import { StyledTextArea } from "../components/StyledTextArea";
 import { createRatings } from "../components/StyledRatings";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { Redirect } from "react-router";
+import { UserDataContext } from "../context/UserDataContext";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -23,7 +24,7 @@ interface RecipeErrors {
   rating: string | undefined;
 }
 
-const onSubmit = (values: any, form: any, setDetailsId: any) => {
+const onSubmit = (values: any, form: any, setDetailsId: any, group: string) => {
   if (!values.ingredients) {
     values.ingredients = [];
   }
@@ -54,7 +55,8 @@ const onSubmit = (values: any, form: any, setDetailsId: any) => {
           .map((el: Option) => el.value)
           .concat(newIds),
         lastTimeSelected: new Date(),
-        rating: parseInt(values.rating, 10)
+        rating: parseInt(values.rating, 10),
+        group
       })
       .then(docRef => {
         setDetailsId(docRef.id);
@@ -93,6 +95,7 @@ const ReactSelectAdapter = ({ input, ...rest }: any) => {
 
 export function AddRecipe() {
   const [detailsId, setDetailsId] = useState("");
+  const userData = useContext(UserDataContext).userdata;
 
   if (detailsId !== "") {
     return <Redirect to={`/recipes/${detailsId}`} push />;
@@ -100,7 +103,9 @@ export function AddRecipe() {
 
   return (
     <Form
-      onSubmit={(values, form) => onSubmit(values, form, setDetailsId)}
+      onSubmit={(values, form) =>
+        onSubmit(values, form, setDetailsId, userData.group)
+      }
       validate={validate}
       render={({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>

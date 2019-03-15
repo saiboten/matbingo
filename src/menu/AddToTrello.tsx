@@ -7,6 +7,7 @@ import { Ingredient, RecipeType } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { GroupDataContext } from "../context/GroupDataContext";
+import { StyledButton } from "../components/StyledButton";
 
 interface CreateCardResponse {
   id: string;
@@ -19,7 +20,7 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   const [loading, setLoading]: [boolean, any] = useState(false);
   const [done, setDone]: [boolean, any] = useState(false);
 
-  const userdata = useContext(UserDataContext).userdata;
+  const userData = useContext(UserDataContext).userdata;
   const groupData = useContext(GroupDataContext).groupData;
   const recipes = useContext(RecipeContext).recipes;
   const ingredients = useContext(IngredientsContext).ingredients;
@@ -85,6 +86,7 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
       promiseList.push(
         db
           .collection("days")
+          .where("group", "==", userData.group)
           .where("date", "==", day)
           .get()
       );
@@ -125,8 +127,8 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   }
 
   return (
-    <StyledActionButton onClick={() => addWeekToTrello(listOfDays)}>
+    <StyledButton onClick={() => addWeekToTrello(listOfDays)}>
       Generer handleliste
-    </StyledActionButton>
+    </StyledButton>
   );
 };
