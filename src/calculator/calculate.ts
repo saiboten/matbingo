@@ -50,8 +50,7 @@ export const calculate = (
   let score: ScoreDetails = {
     dateScore: 0,
     randomScore: 0,
-    timeSinceLastEnjoyed: 0,
-    ratingScore: 0,
+    frequencyScore: 0,
     totalScore: 0,
     neverEatenScore: 0
   };
@@ -62,16 +61,13 @@ export const calculate = (
   score.randomScore = addRandomScore(randomSeed);
   score.totalScore += score.randomScore;
 
-  score.timeSinceLastEnjoyed = addTimeSinceLastEnjoyedScore(
+  const timeSinceLastEnjoyed = addTimeSinceLastEnjoyedScore(
     date,
     recipe.lastTimeSelected
   );
 
-  score.ratingScore = addFrequencyScore(
-    score.timeSinceLastEnjoyed,
-    recipe.rating
-  );
-  score.totalScore += score.ratingScore;
+  score.frequencyScore = addFrequencyScore(timeSinceLastEnjoyed, recipe.rating);
+  score.totalScore += score.frequencyScore;
 
   score.neverEatenScore = addNeverEatenScore(recipe.hasBeenSelected);
   score.totalScore += score.neverEatenScore;

@@ -20,8 +20,7 @@ export type RatingType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export interface ScoreDetails {
   dateScore: number;
   randomScore: number;
-  timeSinceLastEnjoyed: number;
-  ratingScore: number;
+  frequencyScore: number;
   neverEatenScore: number;
   totalScore: number;
 }
