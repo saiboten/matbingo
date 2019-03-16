@@ -13,7 +13,7 @@ import {
   StyledCheck,
   StyledRotate
 } from "../../components/StyledSvgIcons";
-import { UserDataContext } from "../../context/UserDataContext";
+import { UserDataContext, UserData } from "../../context/UserDataContext";
 
 interface Props {
   date: Date;
@@ -47,11 +47,12 @@ const StyledButtonContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const findRecipe = (date: Date) => {
+const findRecipe = (date: Date, userData: UserData) => {
   return new Promise(resolve => {
     firebase
       .firestore()
       .collection("recipes")
+      .where("group", "==", userData.group)
       .get()
       .then(snapshot => {
         const recipes = snapshot.docs.map((doc: any) => ({
@@ -106,7 +107,7 @@ export const Random = ({ date, back }: Props) => {
   const userdata = useContext(UserDataContext).userdata;
 
   useEffect(() => {
-    findRecipe(date).then(recipe => setRecipe(recipe));
+    findRecipe(date, userdata).then(recipe => setRecipe(recipe));
   }, []);
 
   return (
@@ -123,7 +124,9 @@ export const Random = ({ date, back }: Props) => {
           <StyledCheck />
         </StyledActionButtonWithMargins>
         <StyledActionButtonWithMargins
-          onClick={() => findRecipe(date).then(recipe => setRecipe(recipe))}
+          onClick={() =>
+            findRecipe(date, userdata).then(recipe => setRecipe(recipe))
+          }
         >
           <StyledRotate />
         </StyledActionButtonWithMargins>
