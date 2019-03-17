@@ -18,6 +18,7 @@ import { UserContext, UserContextState, User } from "./context/UserContext";
 import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
+import { JoinOrCreateGroup } from "./group/JoinOrCreateGroup";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -81,7 +82,11 @@ const AppRouter = () => {
   const [groupData, setGroupdata]: [GroupData, any] = useState({
     trelloApiKey: "",
     trelloApiToken: "",
-    trelloList: ""
+    trelloList: "",
+    owner: "",
+    name: "",
+    invites: [],
+    members: []
   });
 
   const [userdata, setUserdata]: [UserData, any] = useState({
@@ -150,16 +155,18 @@ const AppRouter = () => {
               );
             });
 
-            db.collection("groups")
-              .doc(userdata.group)
-              .onSnapshot(querySnapshot => {
-                const groupData: any = querySnapshot.data();
+            if (userdata.group) {
+              db.collection("groups")
+                .doc(userdata.group)
+                .onSnapshot(querySnapshot => {
+                  const groupData: any = querySnapshot.data();
 
-                groupDataContextValue.setGroupdata({
-                  id: querySnapshot.id,
-                  ...groupData
+                  groupDataContextValue.setGroupdata({
+                    id: querySnapshot.id,
+                    ...groupData
+                  });
                 });
-              });
+            }
           });
       } else {
         setLoggedIn(false);
@@ -173,6 +180,14 @@ const AppRouter = () => {
 
   if (!loggedIn) {
     return <Login />;
+  }
+
+  if (!userdata.group) {
+    return (
+      <UserContext.Provider value={userContextValue}>
+        <JoinOrCreateGroup />
+      </UserContext.Provider>
+    );
   }
 
   if (ingredientsLoading || recipesLoading) {

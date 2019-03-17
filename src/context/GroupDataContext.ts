@@ -4,6 +4,10 @@ export interface GroupData {
   trelloApiKey: string;
   trelloApiToken: string;
   trelloList: string;
+  name: string;
+  owner: string;
+  invites: string[];
+  members: string[];
 }
 
 export interface GroupDataContext {
@@ -15,7 +19,11 @@ const initialState: GroupDataContext = {
   groupData: {
     trelloApiKey: "",
     trelloApiToken: "",
-    trelloList: ""
+    trelloList: "",
+    name: "",
+    owner: "",
+    invites: [],
+    members: []
   },
   setGroupdata: () => {}
 };
