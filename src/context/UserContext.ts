@@ -1,9 +1,9 @@
 import React from "react";
 
 export interface User {
-  displayName: String;
-  email: String;
-  uid: String;
+  displayName: string;
+  email: string;
+  uid: string;
 }
 
 export interface UserContextState {

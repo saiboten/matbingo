@@ -10,10 +10,27 @@ import { GroupData } from "../context/GroupDataContext";
 
 export const JoinOrCreateGroup = () => {
   const user = useContext(UserContext).user;
-  const [invites, setInvites]: [GroupData[], any] = useState([]);
+  const [groups, setGroups]: [GroupData[], any] = useState([]);
 
-  const acceptInvite = () => {
-    // todo accept
+  const acceptInvite = (groupId: string) => {
+    const db = firebase.firestore();
+    const doc = db.collection("groups").doc(groupId);
+    // Update members in group
+    doc.get().then(groupDetails => {
+      const data = groupDetails.data();
+      const members = data ? data.members : [];
+      members.push(user.uid);
+      doc.update({
+        members
+      });
+    });
+
+    //Update user
+    db.collection("userdata")
+      .doc(user.uid)
+      .set({
+        group: groupId
+      });
   };
 
   useEffect(() => {
@@ -23,7 +40,12 @@ export const JoinOrCreateGroup = () => {
       .where("invites", "array-contains", user.email)
       .get()
       .then(snapshot => {
-        setInvites(snapshot.docs.map(el => el.data()));
+        setGroups(
+          snapshot.docs.map(el => ({
+            ...el.data(),
+            id: el.id
+          }))
+        );
       });
   });
 
@@ -32,10 +54,10 @@ export const JoinOrCreateGroup = () => {
       <StyledActionButtonWithMargins>
         Opprett gruppe
       </StyledActionButtonWithMargins>
-      {invites.map(el => (
+      {groups.map(el => (
         <li key={el.owner}>
           {el.name}
-          <StyledActionButton onClick={acceptInvite}>
+          <StyledActionButton onClick={() => acceptInvite(el.id)}>
             Aksepter
           </StyledActionButton>
         </li>

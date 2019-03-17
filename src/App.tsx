@@ -80,6 +80,7 @@ const AppRouter = () => {
   });
 
   const [groupData, setGroupdata]: [GroupData, any] = useState({
+    id: "",
     trelloApiKey: "",
     trelloApiToken: "",
     trelloList: "",
