@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
@@ -19,6 +19,7 @@ import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
 import { JoinOrCreateGroup } from "./group/JoinOrCreateGroup";
+import { RecipeType, Ingredient } from "./types";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -65,14 +66,62 @@ const App = () => {
   );
 };
 
-const AppRouter = () => {
-  const [recipes, setRecipes] = useState([]);
-  const [recipesLoading, setRecipesLoading] = useState(true);
-  const [ingredientsLoading, setIngredientsLoading] = useState(true);
-  const [ingredients, setIngredients] = useState([]);
+interface State {
+  recipesLoading: boolean;
+  ingredientsLoading: boolean;
+  userdataLoaded: boolean;
+  loggedIn: boolean;
+  loggedInStateClarified: boolean;
+}
 
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loggedInStateClarified, setLoggedInStateClarified] = useState(false);
+const initialState: State = {
+  recipesLoading: true,
+  ingredientsLoading: true,
+  userdataLoaded: false,
+  loggedIn: false,
+  loggedInStateClarified: false
+};
+
+function reducer(state: State, action: any) {
+  switch (action.type) {
+    case "loggedInStateClarified":
+      return {
+        ...state,
+        loggedInStateClarified: true
+      };
+    case "userLoggedIn":
+      return {
+        ...state,
+        loggedIn: true
+      };
+    case "userLoggedOut":
+      return {
+        ...state,
+        loggedIn: false
+      };
+    case "userdataLoaded":
+      return {
+        ...state,
+        userdataLoaded: true
+      };
+    case "recipesLoaded":
+      return {
+        ...state,
+        recipesLoading: false
+      };
+    case "ingredientsLoaded":
+      return {
+        ...state,
+        ingredientsLoading: false
+      };
+    default:
+      throw new Error();
+  }
+}
+
+const AppRouter = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const [user, setUser]: [User, any] = useState({
     displayName: "",
     email: "",
@@ -93,6 +142,9 @@ const AppRouter = () => {
   const [userdata, setUserdata]: [UserData, any] = useState({
     group: ""
   });
+
+  const [recipes, setRecipes] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
   const userContextValue: UserContextState = {
     user,
@@ -119,80 +171,107 @@ const AppRouter = () => {
     setGroupdata
   };
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user: any) => {
-      setLoggedInStateClarified(true);
-      if (user) {
-        setUser(user);
-        setLoggedIn(true);
-        const db = firebase.firestore();
+  useEffect(
+    () => {
+      let unsubUserData = () => {};
+      let unsubRecipes = () => {};
+      let unsubIngredients = () => {};
+      let unsubGroupData = () => {};
 
-        db.collection("userdata")
-          .doc(user.uid)
-          .onSnapshot(querySnapshot => {
-            const userdata: any = querySnapshot.data() || { group: "" };
+      let unsubAuthChange = firebase.auth().onAuthStateChanged((user: any) => {
+        dispatch({ type: "loggedInStateClarified" });
+        if (user) {
+          setUser(user);
+          dispatch({ type: "userLoggedIn" });
+          const db = firebase.firestore();
 
-            setUserdata(userdata);
+          unsubUserData = db
+            .collection("userdata")
+            .doc(user.uid)
+            .onSnapshot(querySnapshot => {
+              const userdata: any = querySnapshot.data() || { group: "" };
 
-            db.collection("recipes")
-              .where("group", "==", userdata.group)
-              .onSnapshot(querySnapshot => {
-                setRecipesLoading(false);
-                recipesContextValue.setRecipes(
-                  querySnapshot.docs.map((doc: any) => ({
-                    id: doc.id,
-                    ...doc.data()
-                  }))
-                );
-              });
-
-            db.collection("ingredients").onSnapshot(querySnapshot => {
-              setIngredientsLoading(false);
-              ingredientsContextValue.setIngredients(
-                querySnapshot.docs.map((doc: any) => ({
-                  id: doc.id,
-                  ...doc.data()
-                }))
-              );
-            });
-
-            if (userdata.group) {
-              db.collection("groups")
-                .doc(userdata.group)
-                .onSnapshot(querySnapshot => {
-                  const groupData: any = querySnapshot.data();
-
-                  groupDataContextValue.setGroupdata({
-                    id: querySnapshot.id,
-                    ...groupData
+              setUserdata(userdata);
+              dispatch({ type: "userdataLoaded" });
+              if (userdata.group) {
+                unsubRecipes = db
+                  .collection("recipes")
+                  .where("group", "==", userdata.group)
+                  .onSnapshot(querySnapshot => {
+                    dispatch({ type: "recipesLoaded" });
+                    recipesContextValue.setRecipes(
+                      querySnapshot.docs.map((doc: any) => ({
+                        id: doc.id,
+                        ...doc.data()
+                      }))
+                    );
                   });
-                });
-            }
-          });
-      } else {
-        setLoggedIn(false);
-      }
-    });
-  }, []);
+              }
 
-  if (!loggedInStateClarified) {
+              unsubIngredients = db
+                .collection("ingredients")
+                .onSnapshot(querySnapshot => {
+                  dispatch({ type: "ingredientsLoaded" });
+                  ingredientsContextValue.setIngredients(
+                    querySnapshot.docs.map((doc: any) => ({
+                      id: doc.id,
+                      ...doc.data()
+                    }))
+                  );
+                });
+
+              if (userdata.group) {
+                unsubGroupData = db
+                  .collection("groups")
+                  .doc(userdata.group)
+                  .onSnapshot(querySnapshot => {
+                    const groupData: any = querySnapshot.data();
+
+                    groupDataContextValue.setGroupdata({
+                      id: querySnapshot.id,
+                      ...groupData
+                    });
+                  });
+              }
+            });
+        } else {
+          dispatch({ type: "userLoggedOut" });
+        }
+      });
+
+      return () => {
+        unsubUserData();
+        unsubAuthChange();
+        unsubGroupData();
+        unsubRecipes();
+        unsubIngredients();
+      };
+    },
+    [userdata.group]
+  );
+
+  if (!state.loggedInStateClarified) {
     return <StyledLoader />;
   }
 
-  if (!loggedIn) {
+  if (!state.loggedIn) {
     return <Login />;
   }
 
-  if (ingredientsLoading || recipesLoading) {
-    return <StyledLoader />;
-  }
-
-  if (!userdata.group) {
+  if (state.userdataLoaded && !userdata.group) {
     return (
       <UserContext.Provider value={userContextValue}>
         <JoinOrCreateGroup />
       </UserContext.Provider>
     );
+  }
+
+  if (
+    state.ingredientsLoading ||
+    state.recipesLoading ||
+    !state.userdataLoaded
+  ) {
+    return <StyledLoader />;
   }
 
   return (
@@ -202,7 +281,7 @@ const AppRouter = () => {
           <UserContext.Provider value={userContextValue}>
             <UserDataContext.Provider value={userDataContextValue}>
               <GroupDataContext.Provider value={groupDataContextValue}>
-                <Nav setLoggedIn={setLoggedIn} />
+                <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
                 <main>
                   <Route path="/" exact component={Week} />
                   <Route path="/recipes" exact component={Recipes} />

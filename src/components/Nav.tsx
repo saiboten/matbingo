@@ -87,7 +87,7 @@ const StyledLeftItemLi = styled.li`
   }
 `;
 
-const LogOut = (setLoggedIn: (val: boolean) => void) => {
+const LogOut = (setLoggedIn: () => void) => {
   firebase
     .auth()
     .signOut()
@@ -97,14 +97,10 @@ const LogOut = (setLoggedIn: (val: boolean) => void) => {
     .catch(function(error) {
       // An error happened.
     });
-  setLoggedIn(false);
+  setLoggedIn();
 };
 
-export const Nav = ({
-  setLoggedIn
-}: {
-  setLoggedIn: (tja: boolean) => void;
-}) => {
+export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
   const [menuActive, setMenuActive] = useState(false);
 
   const props = useSpring({
