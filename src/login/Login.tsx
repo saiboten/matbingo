@@ -8,12 +8,18 @@ import {
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { ReactComponent as GoogleIcon } from "./google.svg";
+import { ReactComponent as FacebookIcon } from "./facebook.svg";
 import { StyledSecondaryActionButtonWithMargins } from "../components/StyledActionButton";
+import { primaryColor } from "../components/Constants";
+
+const StyledFacebookIcon = styled(FacebookIcon)`
+  fill: #4267b2;
+`;
 
 const loginWithGoogle = () => {
   firebase
     .auth()
-    .signInWithPopup(googleAuthProvider)
+    .signInWithRedirect(googleAuthProvider)
     .then(function(result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
       // var token = result.credential.accessToken;
@@ -38,12 +44,12 @@ const loginWithFacebook = () => {
   firebase.auth().languageCode = "nb_NO";
   firebase
     .auth()
-    .signInWithPopup(facebookAuthProvider)
+    .signInWithRedirect(facebookAuthProvider)
     .then(function(result) {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       // var token = result.credential.accessToken;
       // The signed-in user info.
-      var user = result.user;
+      // var user = result.user;
       // ...
     })
     .catch(function(error) {
@@ -72,7 +78,7 @@ export const Login = () => {
           <GoogleIcon />
         </StyledSecondaryActionButtonWithMargins>
         <StyledSecondaryActionButtonWithMargins onClick={loginWithFacebook}>
-          FB
+          <StyledFacebookIcon />
         </StyledSecondaryActionButtonWithMargins>
       </StyledActions>
     </StyledWrapper>

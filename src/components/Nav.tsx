@@ -25,6 +25,7 @@ const StyledLi = styled.li`
   margin-right: 5px;
   padding: 20px 0;
   border: 2px solid transparent;
+  margin: 10px 0;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     padding: 5px 0;
@@ -83,6 +84,7 @@ const StyledLeftItemLi = styled.li`
   margin-right: auto;
 
   @media screen and (max-width: ${minBreakPoint}px) {
+    margin: 40px 0;
     margin-right: 0;
   }
 `;
