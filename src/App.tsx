@@ -19,7 +19,6 @@ import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
 import { JoinOrCreateGroup } from "./group/JoinOrCreateGroup";
-import { RecipeType, Ingredient } from "./types";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -53,6 +52,7 @@ li {
 ::selection {
 
 }
+
 `;
 
 const App = () => {

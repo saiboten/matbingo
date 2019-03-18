@@ -123,11 +123,11 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
               Oppskrifter
             </StyledLink>
           </StyledLi>
-          <StyledLi>
+          {/* <StyledLi>
             <StyledLink onClick={() => setMenuActive(false)} to="/ingredients/">
               Ingredienser
             </StyledLink>
-          </StyledLi>
+          </StyledLi> */}
           <StyledLi>
             <StyledLink onClick={() => setMenuActive(false)} to="/">
               Ukesmeny

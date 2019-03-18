@@ -6,6 +6,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 export const googleAuthProvider = new firebaseApp.auth.GoogleAuthProvider();
+export const facebookAuthProvider = new firebaseApp.auth.FacebookAuthProvider();
 
 const config = {
   apiKey: "AIzaSyBmoWBsrp_L7fqrMR29OgooExzPxwbojLw",
