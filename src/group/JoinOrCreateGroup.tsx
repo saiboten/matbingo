@@ -23,6 +23,7 @@ export const JoinOrCreateGroup = () => {
       doc.update({
         members
       });
+      window.location.reload();
     });
 
     //Update user

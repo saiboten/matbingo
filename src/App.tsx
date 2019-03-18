@@ -183,16 +183,16 @@ const AppRouter = () => {
     return <Login />;
   }
 
+  if (ingredientsLoading || recipesLoading) {
+    return <StyledLoader />;
+  }
+
   if (!userdata.group) {
     return (
       <UserContext.Provider value={userContextValue}>
         <JoinOrCreateGroup />
       </UserContext.Provider>
     );
-  }
-
-  if (ingredientsLoading || recipesLoading) {
-    return <StyledLoader />;
   }
 
   return (

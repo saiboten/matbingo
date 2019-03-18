@@ -122,6 +122,10 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
     return <StyledLocalLoader />;
   }
 
+  if (groupData.trelloApiToken === "") {
+    return <div />;
+  }
+
   if (done) {
     return <div>Handleliste generert</div>;
   }
