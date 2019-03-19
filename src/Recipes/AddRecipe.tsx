@@ -41,7 +41,8 @@ const onSubmit = (values: any, form: any, setDetailsId: any, group: string) => {
 
   const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
     db.collection("ingredients").add({
-      name: ingredientToBeCreated
+      name: ingredientToBeCreated,
+      group
     })
   );
 

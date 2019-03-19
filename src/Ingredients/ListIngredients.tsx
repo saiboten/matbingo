@@ -13,23 +13,6 @@ function deleteIngredient(id: string) {
 }
 
 export function ListIngredients() {
-  const ingredientsContext = useContext(IngredientsContext);
-
-  useEffect(() => {
-    const db = firebase.firestore();
-    const unsubscribe = db
-      .collection("ingredients")
-      .onSnapshot(querySnapshot => {
-        ingredientsContext.setIngredients(
-          querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-        );
-      });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
   return (
     <>
       <StyledHeaderH1>Ingredienser</StyledHeaderH1>

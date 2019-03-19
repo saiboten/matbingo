@@ -210,6 +210,7 @@ const AppRouter = () => {
 
               unsubIngredients = db
                 .collection("ingredients")
+                .where("group", "==", userdata.group)
                 .onSnapshot(querySnapshot => {
                   dispatch({ type: "ingredientsLoaded" });
                   ingredientsContextValue.setIngredients(

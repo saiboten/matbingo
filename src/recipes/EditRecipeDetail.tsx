@@ -25,6 +25,7 @@ import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledNotification } from "../components/StyledNotification";
 import { ListRecipesAndRedirect } from "./ListRecipesAndRedirect";
 import { StyledDeleteIcon } from "../components/StyledSvgIcons";
+import { UserDataContext } from "../context/UserDataContext";
 
 interface Params {
   id: string;
@@ -32,7 +33,12 @@ interface Params {
 
 interface Props extends RouteComponentProps<Params> {}
 
-const onSubmit = (documentId: string, values: any, form: any) => {
+const onSubmit = (
+  documentId: string,
+  values: any,
+  form: any,
+  group: string
+) => {
   const db = firebase.firestore();
   values.ingredients = values.ingredients ? values.ingredients : [];
 
@@ -46,7 +52,8 @@ const onSubmit = (documentId: string, values: any, form: any) => {
 
   const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
     db.collection("ingredients").add({
-      name: ingredientToBeCreated
+      name: ingredientToBeCreated,
+      group
     })
   );
 
@@ -99,30 +106,10 @@ export const EditRecipeDetails = ({
 }: Props) => {
   const recipes = useContext(RecipeContext);
   const ingredients = useContext(IngredientsContext);
+  const userdata = useContext(UserDataContext).userdata;
 
   const [nextPage, setNextPage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
-
-  useEffect(() => {
-    const db = firebase.firestore();
-    db.collection("recipes")
-      .get()
-      .then(querySnapshot => {
-        recipes.setRecipes(
-          querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-        );
-      });
-
-    db.collection("ingredients")
-      .get()
-      .then(querySnapshot => {
-        ingredients.setIngredients(
-          querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-        );
-      });
-
-    return () => {};
-  }, []);
 
   if (ingredients.ingredients.length == 0) {
     return <StyledLoader />;
@@ -170,7 +157,7 @@ export const EditRecipeDetails = ({
           setTimeout(() => {
             setShowNotification(false);
           }, 2000);
-          onSubmit(recipeDetails.id, values, form);
+          onSubmit(recipeDetails.id, values, form, userdata.group);
         }}
         validate={validate}
         render={({ handleSubmit, submitting, pristine, reset }) => (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Field, Form } from "react-final-form";
 import { firebase } from "../firebase/firebase";
@@ -11,6 +11,7 @@ import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
 import { StyledRadio, StyledRadioLabel } from "../components/StyledRadio";
 import { UserContext } from "../context/UserContext";
+import { UserDataContext } from "../context/UserDataContext";
 
 interface IngredientErrors {
   name: string | undefined;
@@ -26,11 +27,12 @@ const StyledUnits = styled.div`
   justify-content: center;
 `;
 
-const onSubmit = (values: any, reset: () => void) => {
+const onSubmit = (values: any, group: string, reset: () => void) => {
   const db = firebase.firestore();
 
   db.collection("ingredients").add({
-    ...values
+    ...values,
+    group
   });
 
   reset();
@@ -46,11 +48,15 @@ const validate = (values: any) => {
 };
 
 export function AddIngredient() {
+  const userData = useContext(UserDataContext).userdata;
+
   return (
     <UserContext.Consumer>
       {({ user }) => (
         <Form
-          onSubmit={(values, form) => onSubmit(values, form.reset)}
+          onSubmit={(values, form) =>
+            onSubmit(values, userData.group, form.reset)
+          }
           validate={validate}
           render={({ handleSubmit, submitting, pristine }) => (
             <React.Fragment>
