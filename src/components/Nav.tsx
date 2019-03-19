@@ -118,7 +118,9 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
       <StyledTranslateResetDesktop active={menuActive}>
         <StyledUl style={props}>
           <StyledLeftItemLi>
-            <StyledLink to="/">Food-Eureka!</StyledLink>
+            <StyledLink onClick={() => setMenuActive(false)} to="/">
+              Food-Eureka!
+            </StyledLink>
           </StyledLeftItemLi>
           <StyledLi>
             <StyledLink onClick={() => setMenuActive(false)} to="/recipes">
