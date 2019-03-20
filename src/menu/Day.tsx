@@ -62,7 +62,7 @@ const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [description, setDescription]: [string, any] = useState("");
-  const [loading, setLoading]: any = useState(false);
+  const [loading, setLoading]: any = useState(true);
 
   const recipeContext = useContext(RecipeContext);
   const userdata = useContext(UserDataContext).userdata;
@@ -72,7 +72,6 @@ export const Day = ({ date }: Props) => {
       setDescription("");
       setRecipe(initialState);
       const db = firebase.firestore();
-      setLoading(true);
       const daysQuery = db
         .collection("days")
         .where("date", "==", date)
