@@ -13,3 +13,7 @@ export const StyledButton = styled.button`
     transform: scale(1.1);
   }
 `;
+
+export const StyledButtonWithMargins = styled(StyledButton)`
+  margin: 2rem 0;
+`;

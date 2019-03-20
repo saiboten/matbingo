@@ -12,3 +12,15 @@ export const StyledHeaderH1 = styled.h1`
     margin-bottom: 12px;
   }
 `;
+
+export const StyledHeaderH2 = styled.h1`
+  font-size: 18px;
+  margin-top: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+
+  @media screen and (max-width: ${minBreakPoint}px) {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+`;

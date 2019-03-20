@@ -18,7 +18,8 @@ import { UserContext, UserContextState, User } from "./context/UserContext";
 import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
-import { JoinOrCreateGroup } from "./group/JoinOrCreateGroup";
+import { JoinOrCreateGroup, JoinGroupRouter } from "./group/JoinOrCreateGroup";
+import { CreateGroup } from "./group/CreateGroup";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -262,7 +263,7 @@ const AppRouter = () => {
   if (state.userdataLoaded && !userdata.group) {
     return (
       <UserContext.Provider value={userContextValue}>
-        <JoinOrCreateGroup />
+        <JoinGroupRouter />
       </UserContext.Provider>
     );
   }
