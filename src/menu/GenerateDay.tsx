@@ -12,6 +12,15 @@ import {
 
 const StyledButtons = styled.div`
   margin-top: 2rem;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const StyledAction = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const SelectAction = ({
@@ -20,27 +29,36 @@ const SelectAction = ({
   setAction: (action: string) => void;
 }) => (
   <StyledButtons>
-    <StyledActionButtonWithMargins
-      onClick={() => {
-        setAction("random");
-      }}
-    >
-      <StyledDice />
-    </StyledActionButtonWithMargins>
-    <StyledActionButtonWithMargins
-      onClick={() => {
-        setAction("find");
-      }}
-    >
-      <StyledSearch />
-    </StyledActionButtonWithMargins>
-    <StyledActionButtonWithMargins
-      onClick={() => {
-        setAction("manual");
-      }}
-    >
-      <StyledWrite />
-    </StyledActionButtonWithMargins>
+    <StyledAction>
+      <StyledActionButtonWithMargins
+        onClick={() => {
+          setAction("random");
+        }}
+      >
+        <StyledDice />
+      </StyledActionButtonWithMargins>
+      Tilfeldig
+    </StyledAction>
+    <StyledAction>
+      <StyledActionButtonWithMargins
+        onClick={() => {
+          setAction("find");
+        }}
+      >
+        <StyledSearch />
+      </StyledActionButtonWithMargins>
+      Søk
+    </StyledAction>
+    <StyledAction>
+      <StyledActionButtonWithMargins
+        onClick={() => {
+          setAction("manual");
+        }}
+      >
+        <StyledWrite />
+      </StyledActionButtonWithMargins>
+      Annet
+    </StyledAction>
   </StyledButtons>
 );
 

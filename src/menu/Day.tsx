@@ -115,13 +115,13 @@ export const Day = ({ date }: Props) => {
           <StyledLocalLoaderWithMarginTop />
         ) : (
           <>
-            {description !== "" && (
+            {/* {description !== "" && (
               <StyledSpacedParagraph>{description}</StyledSpacedParagraph>
             )}
             {recipe.name !== "" && <RecipeDetails recipe={recipe} />}
-            {recipe.name === "" && description === "" && (
-              <GenerateDay date={date} />
-            )}
+            {recipe.name === "" && description === "" && ( */}
+            <GenerateDay date={date} />
+            {/* )} */}
           </>
         )}
       </StyledDayContent>

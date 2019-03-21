@@ -68,7 +68,8 @@ const StyledUl = styled(animated.ul)`
   justify-content: flex-end;
   padding: 5px 0;
   background-color: ${primaryColor};
-  align-items: center;
+  align-items: left;
+  padding-left: 3rem;
   font-size: 20px;
   pointer-events: auto;
 
@@ -82,10 +83,12 @@ const StyledUl = styled(animated.ul)`
 
 const StyledLeftItemLi = styled.li`
   margin-right: auto;
+  padding-top: 3rem;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     margin: 40px 0;
     margin-right: 0;
+    padding-top: 0;
   }
 `;
 
