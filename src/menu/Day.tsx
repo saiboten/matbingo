@@ -10,6 +10,7 @@ import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor, secondaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 
 interface Props {
   date: Date;
@@ -37,11 +38,6 @@ const StyledDay = styled.div<StyledDayProps>`
   @media screen and (max-width: 530px) {
     width: 100%;
   }
-`;
-
-const StyledSpacedParagraph = styled.p`
-  margin-top: 1rem;
-  font-weight: bold;
 `;
 
 const initialState: RecipeType = {
@@ -116,7 +112,10 @@ export const Day = ({ date }: Props) => {
         ) : (
           <>
             {description !== "" && (
-              <StyledSpacedParagraph>{description}</StyledSpacedParagraph>
+              <>
+                <StyledHeaderH1>{description}</StyledHeaderH1>
+                <p>Ingen oppskrift denne dagen</p>
+              </>
             )}
             {recipe.name !== "" && <RecipeDetails recipe={recipe} />}
             {recipe.name === "" && description === "" && (

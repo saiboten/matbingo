@@ -18,12 +18,12 @@ interface Props {
 
 const StyledUl = styled.ul`
   margin-top: 10px;
-  max-width: 20rem;
+  max-width: 25rem;
 `;
 
 const StyledLi = styled.li`
   display: inline-block;
-  margin-right: 1rem;
+  margin-right: 1.4rem;
 `;
 
 const StyledEmpesizedP = styled.p`
