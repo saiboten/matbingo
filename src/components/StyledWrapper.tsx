@@ -13,7 +13,6 @@ export const StyledWrapper = styled.div<Props>`
 
   @media screen and (max-width: ${minBreakPoint}px) {
     margin: 0 auto;
-    padding: 0;
   }
 `;
 
