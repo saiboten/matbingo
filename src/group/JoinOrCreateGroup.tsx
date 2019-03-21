@@ -81,7 +81,7 @@ export const JoinOrCreateGroup = () => {
   }, []);
 
   return (
-    <StyledWrapper>
+    <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Middagsgjeng</StyledHeaderH1>
       <p>
         Vil du gå sammen med andre om å bestemme middager? Opprett en gruppe,

@@ -31,7 +31,7 @@ export const Recipes = ({
   }, []);
 
   return (
-    <StyledWrapper>
+    <StyledWrapper backgroundColor="white">
       <StyledNotification text="Oppskrift slettet" active={feedbackActive} />
       <ListRecipesAndRedirect />
       <AddRecipe />

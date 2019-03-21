@@ -4,7 +4,7 @@ import { StyledWrapper } from "../components/StyledWrapper";
 
 export const CreateGroup = () => {
   return (
-    <StyledWrapper>
+    <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Opprett gruppe</StyledHeaderH1>
     </StyledWrapper>
   );

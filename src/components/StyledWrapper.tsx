@@ -1,15 +1,19 @@
 import styled from "styled-components";
 import { minBreakPoint } from "./Constants";
 
-export const StyledWrapper = styled.div`
+interface Props {
+  backgroundColor?: "white";
+}
+
+export const StyledWrapper = styled.div<Props>`
   max-width: 415px;
   margin: 20px auto;
-  border: 1px solid #bbbbbb;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${props => props.backgroundColor};
 
   @media screen and (max-width: ${minBreakPoint}px) {
     margin: 0 auto;
+    padding: 0;
   }
 `;
 

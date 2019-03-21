@@ -6,7 +6,7 @@ import { StyledWrapper } from "../components/StyledWrapper";
 
 export function Ingredients() {
   return (
-    <StyledWrapper>
+    <StyledWrapper backgroundColor="white">
       <AddIngredient />
       <ListIngredients />
     </StyledWrapper>

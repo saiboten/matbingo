@@ -6,6 +6,10 @@ import { IngredientsContext } from "../context/IngredientsContext";
 
 const StyledWrapper = styled.div`
   max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface Props {
@@ -13,9 +17,13 @@ interface Props {
 }
 
 const StyledUl = styled.ul`
-  text-align: left;
-  display: inline-block;
   margin-top: 10px;
+  max-width: 20rem;
+`;
+
+const StyledLi = styled.li`
+  display: inline-block;
+  margin-right: 1rem;
 `;
 
 const StyledEmpesizedP = styled.p`
@@ -53,7 +61,7 @@ export const RecipeDetails = ({
           <>
             <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
             {ingredientsStrings.map((i: any) => (
-              <li key={i.name}>{i.name}</li>
+              <StyledLi key={i.name}>{i.name}</StyledLi>
             ))}
           </>
         )}

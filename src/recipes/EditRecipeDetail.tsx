@@ -133,7 +133,7 @@ export const EditRecipeDetails = ({
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper backgroundColor="white">
       <StyledNotification text="Oppskrift lagret" active={showNotification} />
       <ListRecipesAndRedirect />
       <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>

@@ -4,7 +4,10 @@ import { startOfWeek, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
 import { StyledWideWrapper } from "../components/StyledWrapper";
-import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import {
+  StyledHeaderH1,
+  StyledAlternateHeaderH1
+} from "../components/StyledHeaderH1";
 import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 
@@ -16,7 +19,7 @@ const StyledDayList = styled.div`
 
 const StyledButtonGroup = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export const Week = () => {
@@ -30,8 +33,9 @@ export const Week = () => {
 
   return (
     <StyledWideWrapper>
-      <AddToTrello listOfDays={listOfDays} />
-      <StyledHeaderH1>Ukesmeny uke {getISOWeek(selectedDay)} </StyledHeaderH1>
+      <StyledAlternateHeaderH1>
+        Ukesmeny uke {getISOWeek(selectedDay)}{" "}
+      </StyledAlternateHeaderH1>
       <StyledButtonGroup>
         <StyledActionButtonWithMargins
           onClick={() => setSelectedDay(subWeeks(selectedDay, 1))}
@@ -49,6 +53,7 @@ export const Week = () => {
           <Day key={el} date={el} />
         ))}
       </StyledDayList>
+      <AddToTrello listOfDays={listOfDays} />
     </StyledWideWrapper>
   );
 };

@@ -13,6 +13,10 @@ export const StyledHeaderH1 = styled.h1`
   }
 `;
 
+export const StyledAlternateHeaderH1 = styled(StyledHeaderH1)`
+  color: #fff;
+`;
+
 export const StyledHeaderH2 = styled.h1`
   font-size: 18px;
   margin-top: 24px;
