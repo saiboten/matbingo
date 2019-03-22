@@ -17,8 +17,10 @@ interface Props {
 }
 
 const StyledUl = styled.ul`
+  display: flex;
+  justify-content: center;
   margin-top: 10px;
-  max-width: 25rem;
+  flex-wrap: wrap;
 `;
 
 const StyledLi = styled.li`
@@ -28,7 +30,7 @@ const StyledLi = styled.li`
 
 const StyledEmpesizedP = styled.p`
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-top: 1rem;
 `;
 
 export const RecipeDetails = ({
@@ -56,10 +58,10 @@ export const RecipeDetails = ({
           <p>{description}</p>
         </>
       )}
+      <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
       <StyledUl>
         {ingredientsStrings.length > 0 && (
           <>
-            <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
             {ingredientsStrings.map((i: any) => (
               <StyledLi key={i.name}>{i.name}</StyledLi>
             ))}
