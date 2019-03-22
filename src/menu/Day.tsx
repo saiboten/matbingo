@@ -27,7 +27,7 @@ const StyledDay = styled.div<StyledDayProps>`
   display: inline-block;
   padding: 20px 10px;
   padding-left: 2rem;
-  text-align: left;
+  text-align: center;
   margin: 5px;
   min-height: 100px;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
