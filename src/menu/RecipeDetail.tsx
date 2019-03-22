@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { RecipeType, Ingredient, Unit } from "../types";
-import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import { IngredientsContext } from "../context/IngredientsContext";
 
 const StyledWrapper = styled.div`
@@ -9,7 +9,7 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 interface Props {
@@ -49,7 +49,7 @@ export const RecipeDetails = ({
 
   return (
     <StyledWrapper>
-      <StyledHeaderH1>{name}</StyledHeaderH1>
+      <StyledHeaderH1NoMarginTop>{name}</StyledHeaderH1NoMarginTop>
       {description && (
         <>
           <StyledEmpesizedP>Beskrivelse</StyledEmpesizedP>

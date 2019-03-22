@@ -10,7 +10,7 @@ import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor, secondaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
-import { StyledHeaderH1 } from "../components/StyledHeaderH1";
+import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 
 interface Props {
   date: Date;
@@ -21,11 +21,13 @@ interface StyledDayProps {
 }
 
 const StyledDay = styled.div<StyledDayProps>`
+  position: relative;
   width: 48%;
   border: 1px solid black;
   display: inline-block;
   padding: 20px 10px;
-  text-align: center;
+  padding-left: 2rem;
+  text-align: left;
   margin: 5px;
   min-height: 100px;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
@@ -38,6 +40,12 @@ const StyledDay = styled.div<StyledDayProps>`
   @media screen and (max-width: 530px) {
     width: 100%;
   }
+`;
+
+const StyledDate = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 0;
 `;
 
 const initialState: RecipeType = {
@@ -105,7 +113,9 @@ export const Day = ({ date }: Props) => {
 
   return (
     <StyledDay active={isToday(date)}>
-      <p>{format(date, "dddd DD.MM.YYYY", { locale: nbLocale })}</p>
+      <StyledDate>
+        {format(date, "dddd DD.MM", { locale: nbLocale })}
+      </StyledDate>
       <StyledDayContent>
         {loading ? (
           <StyledLocalLoaderWithMarginTop />
@@ -113,7 +123,9 @@ export const Day = ({ date }: Props) => {
           <>
             {description !== "" && (
               <>
-                <StyledHeaderH1>{description}</StyledHeaderH1>
+                <StyledHeaderH1NoMarginTop>
+                  {description}
+                </StyledHeaderH1NoMarginTop>
                 <p>Ingen oppskrift denne dagen</p>
               </>
             )}

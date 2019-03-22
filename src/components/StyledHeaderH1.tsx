@@ -6,6 +6,7 @@ export const StyledHeaderH1 = styled.h1`
   margin-top: 24px;
   text-align: center;
   margin-bottom: 24px;
+  align-self: center;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     margin-top: 12px;
@@ -15,6 +16,10 @@ export const StyledHeaderH1 = styled.h1`
 
 export const StyledAlternateHeaderH1 = styled(StyledHeaderH1)`
   color: #fff;
+`;
+
+export const StyledHeaderH1NoMarginTop = styled(StyledHeaderH1)`
+  margin-top: 0 !important;
 `;
 
 export const StyledHeaderH2 = styled.h1`
