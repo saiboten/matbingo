@@ -45,7 +45,7 @@ const StyledDay = styled.div<StyledDayProps>`
 const StyledDate = styled.div`
   position: absolute;
   right: 8px;
-  top: 0;
+  top: 2px;
 `;
 
 const initialState: RecipeType = {
