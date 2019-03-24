@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  firebase,
-  googleAuthProvider,
-  facebookAuthProvider
-} from "../firebase/firebase";
+import { firebase, googleAuthProvider, facebookAuthProvider } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { ReactComponent as GoogleIcon } from "./google.svg";
@@ -71,7 +67,7 @@ const StyledActions = styled.div`
 
 export const Login = () => {
   return (
-    <StyledWrapper>
+    <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Innlogging</StyledHeaderH1>
       <StyledActions>
         <StyledSecondaryActionButtonWithMargins onClick={loginWithGoogle}>
