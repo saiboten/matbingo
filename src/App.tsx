@@ -4,11 +4,8 @@ import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
 import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
-import { EditRecipeDetails } from "./recipes/EditRecipeDetail";
-import {
-  IngredientsContext,
-  IngredientsContextState
-} from "./context/IngredientsContext";
+import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
+import { IngredientsContext, IngredientsContextState } from "./context/IngredientsContext";
 import { secondaryColor } from "./components/Constants";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
@@ -268,11 +265,7 @@ const AppRouter = () => {
     );
   }
 
-  if (
-    state.ingredientsLoading ||
-    state.recipesLoading ||
-    !state.userdataLoaded
-  ) {
+  if (state.ingredientsLoading || state.recipesLoading || !state.userdataLoaded) {
     return <StyledLoader />;
   }
 
@@ -287,16 +280,8 @@ const AppRouter = () => {
                 <main>
                   <Route path="/" exact component={Week} />
                   <Route path="/recipes" exact component={Recipes} />
-                  <Route
-                    path="/recipe-feedback/:feedback"
-                    exact
-                    component={Recipes}
-                  />
-                  <Route
-                    path="/recipes/:id"
-                    exact
-                    component={EditRecipeDetails}
-                  />
+                  <Route path="/recipe-feedback/:feedback" exact component={Recipes} />
+                  <Route path="/recipes/:id" exact component={EditRecipeDetails} />
                   <Route path="/ingredients/" component={Ingredients} />
                   <Route path="/login/" component={Login} />
                 </main>

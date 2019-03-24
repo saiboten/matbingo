@@ -71,9 +71,7 @@ export const Find = ({ date, back }: Props) => {
           <StyledBack />
         </StyledSecondaryActionButtonWithMargins>
         {confirm && (
-          <StyledActionButtonWithMargins
-            onClick={() => storeSelectedRecipe(date, recipe.id, userData.group)}
-          >
+          <StyledActionButtonWithMargins onClick={() => storeSelectedRecipe(date, recipe.id, userData.group)}>
             <StyledCheck />
           </StyledActionButtonWithMargins>
         )}
