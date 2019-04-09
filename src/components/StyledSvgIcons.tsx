@@ -13,6 +13,7 @@ import { ReactComponent as Back } from "./svg/back.svg";
 import { ReactComponent as Check } from "./svg/check.svg";
 import { ReactComponent as Rotate } from "./svg/rotate-ccw.svg";
 import { ReactComponent as DeleteIcon } from "./svg/trash-2.svg";
+import { ReactComponent as LogOutIcon } from "./svg/log-out.svg";
 
 export const StyledPlusCircle = styled(PlusCircle)`
   width: 24px;
@@ -71,4 +72,10 @@ export const StyledRotate = styled(Rotate)`
 export const StyledDeleteIcon = styled(DeleteIcon)`
   cursor: pointer;
   fill: ${props => (props.color ? props.color : primaryColor)};
+`;
+
+export const StyledLogOut = styled(LogOutIcon)`
+  width: 24px;
+  height: 24px;
+  fill: ${primaryColor};
 `;

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { StyledHamburger } from "./StyledHamburger";
-import { StyledSecondaryActionButton } from "./StyledActionButton";
+import { StyledSecondaryActionButtonWithMargins } from "./StyledActionButton";
 import styled from "styled-components";
 import { minBreakPoint, primaryColor } from "./Constants";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import { firebase } from "../firebase/firebase";
+import { StyledLogOut } from "./StyledSvgIcons";
 
 const StyledNav = styled(animated.nav)`
   display: none;
@@ -68,7 +69,7 @@ const StyledUl = styled(animated.ul)`
   justify-content: flex-end;
   padding: 5px 0;
   background-color: ${primaryColor};
-  align-items: left;
+  align-items: center;
   padding-left: 3rem;
   font-size: 20px;
   pointer-events: auto;
@@ -78,12 +79,12 @@ const StyledUl = styled(animated.ul)`
     justify-content: flex-start;
     width: 100%;
     height: 100%;
+    align-items: flex-start;
   }
 `;
 
 const StyledLeftItemLi = styled.li`
   margin-right: auto;
-  padding-top: 3rem;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     margin: 40px 0;
@@ -141,14 +142,14 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
             </StyledLink>
           </StyledLi>
           <StyledLi>
-            <StyledSecondaryActionButton
+            <StyledSecondaryActionButtonWithMargins
               onClick={() => {
                 setMenuActive(false);
                 LogOut(setLoggedIn);
               }}
             >
-              Logg ut
-            </StyledSecondaryActionButton>
+              <StyledLogOut />
+            </StyledSecondaryActionButtonWithMargins>
           </StyledLi>
         </StyledUl>
       </StyledTranslateResetDesktop>

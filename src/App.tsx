@@ -5,7 +5,10 @@ import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
 import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
-import { IngredientsContext, IngredientsContextState } from "./context/IngredientsContext";
+import {
+  IngredientsContext,
+  IngredientsContextState
+} from "./context/IngredientsContext";
 import { secondaryColor } from "./components/Constants";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
@@ -15,8 +18,7 @@ import { UserContext, UserContextState, User } from "./context/UserContext";
 import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
-import { JoinOrCreateGroup, JoinGroupRouter } from "./group/JoinOrCreateGroup";
-import { CreateGroup } from "./group/CreateGroup";
+import { JoinGroupRouter } from "./group/JoinOrCreateGroup";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -265,7 +267,11 @@ const AppRouter = () => {
     );
   }
 
-  if (state.ingredientsLoading || state.recipesLoading || !state.userdataLoaded) {
+  if (
+    state.ingredientsLoading ||
+    state.recipesLoading ||
+    !state.userdataLoaded
+  ) {
     return <StyledLoader />;
   }
 
@@ -280,8 +286,16 @@ const AppRouter = () => {
                 <main>
                   <Route path="/" exact component={Week} />
                   <Route path="/recipes" exact component={Recipes} />
-                  <Route path="/recipe-feedback/:feedback" exact component={Recipes} />
-                  <Route path="/recipes/:id" exact component={EditRecipeDetails} />
+                  <Route
+                    path="/recipe-feedback/:feedback"
+                    exact
+                    component={Recipes}
+                  />
+                  <Route
+                    path="/recipes/:id"
+                    exact
+                    component={EditRecipeDetails}
+                  />
                   <Route path="/ingredients/" component={Ingredients} />
                   <Route path="/login/" component={Login} />
                 </main>
