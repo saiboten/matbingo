@@ -11,6 +11,7 @@ import { primaryColor, secondaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
+import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
 
 interface Props {
   date: Date;
@@ -59,15 +60,41 @@ const initialState: RecipeType = {
   hasBeenSelected: false
 };
 
+interface DayData {
+  date: Date;
+  group: string;
+  recipe: string | undefined;
+  description: string | undefined;
+}
+
+const initialDayData: DayData = {
+  date: new Date(),
+  group: "",
+  recipe: undefined,
+  description: undefined
+};
+
 const StyledDayContent = styled.div``;
 
 const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
   margin-top: 42px;
 `;
 
+const DeleteDay = ({ date }: { date: Date }) => {
+  const deleteDay = () => {
+    console.log("Deleting day, ", date);
+  };
+
+  return (
+    <StyledActionButtonWithMargins onClick={deleteDay}>
+      Slett dag
+    </StyledActionButtonWithMargins>
+  );
+};
+
 export const Day = ({ date }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
-  const [description, setDescription]: [string, any] = useState("");
+  const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
 
   const recipeContext = useContext(RecipeContext);
@@ -75,7 +102,7 @@ export const Day = ({ date }: Props) => {
 
   useEffect(
     () => {
-      setDescription("");
+      setDayData(initialDayData);
       setRecipe(initialState);
       const db = firebase.firestore();
       const daysQuery = db
@@ -88,12 +115,11 @@ export const Day = ({ date }: Props) => {
         }
 
         daysMatchesDoc.forEach(daysMatch => {
-          const dayData = daysMatch.data();
+          const dayData: any = daysMatch.data();
           setLoading(false);
+          setDayData(dayData);
 
-          if (dayData.description) {
-            setDescription(dayData.description);
-          } else {
+          if (dayData.recipe) {
             const recipe = recipeContext.recipes.find(
               el => el.id === dayData.recipe
             );
@@ -121,16 +147,22 @@ export const Day = ({ date }: Props) => {
           <StyledLocalLoaderWithMarginTop />
         ) : (
           <>
-            {description !== "" && (
+            {dayData.description && (
               <>
+                <DeleteDay date={dayData.date} />
                 <StyledHeaderH1NoMarginTop>
-                  {description}
+                  {dayData.description}
                 </StyledHeaderH1NoMarginTop>
                 <p>Ingen oppskrift denne dagen</p>
               </>
             )}
-            {recipe.name !== "" && <RecipeDetails recipe={recipe} />}
-            {recipe.name === "" && description === "" && (
+            {recipe.name !== "" && (
+              <>
+                <DeleteDay date={dayData.date} />
+                <RecipeDetails recipe={recipe} />
+              </>
+            )}
+            {recipe.name === "" && dayData.description === "" && (
               <GenerateDay date={date} />
             )}
           </>
