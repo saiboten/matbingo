@@ -11,7 +11,7 @@ import { primaryColor, secondaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
-import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
+import { StyledActionButtonForText } from "../components/StyledActionButton";
 
 interface Props {
   date: Date;
@@ -106,9 +106,11 @@ const DeleteDay = ({
   };
 
   return (
-    <StyledActionButtonWithMargins onClick={deleteDay}>
-      {confirmed ? "Sikker?" : "Slett dag"}
-    </StyledActionButtonWithMargins>
+    <div style={{ textAlign: "right", marginTop: "10px" }}>
+      <StyledActionButtonForText onClick={deleteDay}>
+        {confirmed ? "Sikker?" : "Slett dag"}
+      </StyledActionButtonForText>
+    </div>
   );
 };
 
@@ -176,17 +178,17 @@ export const Day = ({ date }: Props) => {
           <>
             {dayData.description && (
               <>
-                <DeleteDay documentId={dayData.id} reset={reset} />
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
                 <p>Ingen oppskrift denne dagen</p>
+                <DeleteDay documentId={dayData.id} reset={reset} />
               </>
             )}
             {recipe.name !== "" && (
               <>
-                <DeleteDay documentId={dayData.id} reset={reset} />
                 <RecipeDetails recipe={recipe} />
+                <DeleteDay documentId={dayData.id} reset={reset} />
               </>
             )}
             {recipe.name === "" && !dayData.description && (
