@@ -61,6 +61,7 @@ const initialState: RecipeType = {
 };
 
 interface DayData {
+  id: string;
   date: Date;
   group: string;
   recipe: string | undefined;
@@ -68,6 +69,7 @@ interface DayData {
 }
 
 const initialDayData: DayData = {
+  id: "",
   date: new Date(),
   group: "",
   recipe: undefined,
@@ -80,14 +82,32 @@ const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
   margin-top: 42px;
 `;
 
-const DeleteDay = ({ date }: { date: Date }) => {
+const DeleteDay = ({
+  documentId,
+  reset
+}: {
+  documentId: string;
+  reset: () => void;
+}) => {
+  const [confirmed, setConfirmed] = useState(false);
+
   const deleteDay = () => {
-    console.log("Deleting day, ", date);
+    if (confirmed) {
+      const db = firebase.firestore();
+      db.collection("days")
+        .doc(documentId)
+        .delete()
+        .then(() => {
+          reset();
+        });
+    } else {
+      setConfirmed(true);
+    }
   };
 
   return (
     <StyledActionButtonWithMargins onClick={deleteDay}>
-      Slett dag
+      {confirmed ? "Sikker?" : "Slett dag"}
     </StyledActionButtonWithMargins>
   );
 };
@@ -100,10 +120,14 @@ export const Day = ({ date }: Props) => {
   const recipeContext = useContext(RecipeContext);
   const userdata = useContext(UserDataContext).userdata;
 
+  const reset = () => {
+    setDayData(initialDayData);
+    setRecipe(initialState);
+  };
+
   useEffect(
     () => {
-      setDayData(initialDayData);
-      setRecipe(initialState);
+      reset();
       const db = firebase.firestore();
       const daysQuery = db
         .collection("days")
@@ -117,7 +141,10 @@ export const Day = ({ date }: Props) => {
         daysMatchesDoc.forEach(daysMatch => {
           const dayData: any = daysMatch.data();
           setLoading(false);
-          setDayData(dayData);
+          setDayData({
+            id: daysMatch.id,
+            ...dayData
+          });
 
           if (dayData.recipe) {
             const recipe = recipeContext.recipes.find(
@@ -149,7 +176,7 @@ export const Day = ({ date }: Props) => {
           <>
             {dayData.description && (
               <>
-                <DeleteDay date={dayData.date} />
+                <DeleteDay documentId={dayData.id} reset={reset} />
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
@@ -158,11 +185,11 @@ export const Day = ({ date }: Props) => {
             )}
             {recipe.name !== "" && (
               <>
-                <DeleteDay date={dayData.date} />
+                <DeleteDay documentId={dayData.id} reset={reset} />
                 <RecipeDetails recipe={recipe} />
               </>
             )}
-            {recipe.name === "" && dayData.description === "" && (
+            {recipe.name === "" && !dayData.description && (
               <GenerateDay date={date} />
             )}
           </>
