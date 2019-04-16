@@ -23,6 +23,14 @@ export const StyledActionButtonForText = styled.button`
   border-radius: 5px;
 `;
 
+export const StyledSecondaryActionButtonForText = styled(
+  StyledActionButtonForText
+)`
+  color: ${primaryColor};
+  border: 1px solid ${primaryColor};
+  background-color: white;
+`;
+
 export const StyledSecondaryActionButton = styled.button`
   cursor: pointer;
   border: 1px solid ${primaryColor};

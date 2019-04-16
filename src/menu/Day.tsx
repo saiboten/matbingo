@@ -11,7 +11,10 @@ import { primaryColor, secondaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
-import { StyledActionButtonForText } from "../components/StyledActionButton";
+import {
+  StyledActionButtonForText,
+  StyledSecondaryActionButtonForText
+} from "../components/StyledActionButton";
 
 interface Props {
   date: Date;
@@ -89,10 +92,10 @@ const DeleteDay = ({
   documentId: string;
   reset: () => void;
 }) => {
-  const [confirmed, setConfirmed] = useState(false);
+  const [showConfirm, setConfirmed] = useState(false);
 
   const deleteDay = () => {
-    if (confirmed) {
+    if (showConfirm) {
       const db = firebase.firestore();
       db.collection("days")
         .doc(documentId)
@@ -107,8 +110,17 @@ const DeleteDay = ({
 
   return (
     <div style={{ textAlign: "right", marginTop: "10px" }}>
+      {showConfirm && (
+        <StyledSecondaryActionButtonForText
+          style={{ marginRight: "10px" }}
+          onClick={() => setConfirmed(false)}
+        >
+          Avbryt
+        </StyledSecondaryActionButtonForText>
+      )}
+
       <StyledActionButtonForText onClick={deleteDay}>
-        {confirmed ? "Sikker?" : "Slett dag"}
+        {showConfirm ? "Sikker?" : "Slett dag"}
       </StyledActionButtonForText>
     </div>
   );
