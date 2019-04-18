@@ -48,35 +48,45 @@ export const CreateGroup = () => {
             <StyledFieldSet>
               <StyledButton
                 type="button"
-                onClick={() => push("customers", undefined)}
+                onClick={() => push("participants", undefined)}
               >
-                Add Customer
+                Legg til deltaker
               </StyledButton>
             </StyledFieldSet>
-            <FieldArray name="customers">
+            <FieldArray name="participants">
               {({ fields }) =>
                 fields.map((name, index) => (
-                  <div key={name}>
-                    <StyledInputLabel>Deltager</StyledInputLabel>
+                  <div
+                    key={name}
+                    style={{
+                      border: "1px solid black",
+                      marginBottom: "1rem",
+                      paddingRight: "1rem"
+                    }}
+                  >
+                    <StyledFieldSet>
+                      <StyledInputLabel>Deltagernavn</StyledInputLabel>
+                      <Field name={`${name}.firstName`} component="input">
+                        {({ input }: { input: any }) => (
+                          <StyledInput placeholder="Navn" {...input} />
+                        )}
+                      </Field>
+                    </StyledFieldSet>
 
-                    <Field name={`${name}.firstName`} component="input">
-                      {({ input }: { input: any }) => (
-                        <StyledInput placeholder="Navn" {...input} />
-                      )}
-                    </Field>
-
-                    <StyledInputLabel>Epost</StyledInputLabel>
-                    <Field name={`${name}.email`} component="input">
-                      {({ input }: { input: any }) => (
-                        <StyledInput placeholder="Epost" {...input} />
-                      )}
-                    </Field>
-                    <span
-                      onClick={() => fields.remove(index)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      ❌
-                    </span>
+                    <StyledFieldSet>
+                      <StyledInputLabel>Epost</StyledInputLabel>
+                      <Field name={`${name}.email`} component="input">
+                        {({ input }: { input: any }) => (
+                          <StyledInput placeholder="Epost" {...input} />
+                        )}
+                      </Field>
+                      <span
+                        onClick={() => fields.remove(index)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        ❌
+                      </span>
+                    </StyledFieldSet>
                   </div>
                 ))
               }
