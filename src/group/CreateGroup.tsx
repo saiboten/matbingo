@@ -7,49 +7,13 @@ import { StyledInputLabel } from "../components/StyledInputLabel";
 import { StyledButton } from "../components/StyledButton";
 import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
+import arrayMutators from "final-form-arrays";
+import { FieldArray } from "react-final-form-arrays";
 
 interface Participant {
   name: string;
   email: string;
 }
-
-const AddGroupParticipants = () => {
-  const [participants, setParticipants]: [Participant[], any] = useState([]);
-
-  const tmp = participants.map(el => (
-    <li>
-      {el.name} - {el.email}
-    </li>
-  ));
-
-  const submit = (values: any) => {
-    setParticipants([...participants, { ...values }]);
-  };
-
-  return (
-    <div>
-      <Form
-        onSubmit={submit}
-        render={({ handleSubmit, pristine, invalid }) => (
-          <form onSubmit={handleSubmit}>
-            <Field name="name" component="input" type="text">
-              {({ input }: { input: any }) => (
-                <StyledInput placeholder="Navn" {...input} />
-              )}
-            </Field>
-            <Field name="email" component="input" type="text">
-              {({ input }: { input: any }) => (
-                <StyledInput placeholder="Epost" {...input} />
-              )}
-            </Field>
-            <input type="submit" value="OK" />
-          </form>
-        )}
-      />
-      {tmp}
-    </div>
-  );
-};
 
 export const CreateGroup = () => {
   const onSubmit = (values: any) => {
@@ -61,7 +25,17 @@ export const CreateGroup = () => {
       <StyledHeaderH1>Opprett gruppe</StyledHeaderH1>
       <Form
         onSubmit={onSubmit}
-        render={({ handleSubmit, pristine, invalid }) => (
+        mutators={{
+          ...arrayMutators
+        }}
+        render={({
+          handleSubmit,
+          form: {
+            mutators: { push, pop }
+          },
+          pristine,
+          invalid
+        }) => (
           <StyledForm onSubmit={handleSubmit}>
             <StyledFieldSet>
               <StyledInputLabel>Velg gruppenavn</StyledInputLabel>
@@ -71,7 +45,42 @@ export const CreateGroup = () => {
                 )}
               </Field>
             </StyledFieldSet>
-            <AddGroupParticipants />
+            <StyledFieldSet>
+              <StyledButton
+                type="button"
+                onClick={() => push("customers", undefined)}
+              >
+                Add Customer
+              </StyledButton>
+            </StyledFieldSet>
+            <FieldArray name="customers">
+              {({ fields }) =>
+                fields.map((name, index) => (
+                  <div key={name}>
+                    <StyledInputLabel>Deltager</StyledInputLabel>
+
+                    <Field name={`${name}.firstName`} component="input">
+                      {({ input }: { input: any }) => (
+                        <StyledInput placeholder="Navn" {...input} />
+                      )}
+                    </Field>
+
+                    <StyledInputLabel>Epost</StyledInputLabel>
+                    <Field name={`${name}.email`} component="input">
+                      {({ input }: { input: any }) => (
+                        <StyledInput placeholder="Epost" {...input} />
+                      )}
+                    </Field>
+                    <span
+                      onClick={() => fields.remove(index)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      ❌
+                    </span>
+                  </div>
+                ))
+              }
+            </FieldArray>
             <StyledButton type="submit" disabled={pristine || invalid}>
               Submit
             </StyledButton>
