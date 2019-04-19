@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Field } from "react-final-form";
 import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
 import { StyledWrapper } from "../components/StyledWrapper";
@@ -9,6 +9,8 @@ import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
+import { firebase } from "../firebase/firebase";
+import { UserContext } from "../context/UserContext";
 
 interface Participant {
   name: string;
@@ -21,18 +23,41 @@ interface GroupInfo {
 }
 
 const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
+  const user = useContext(UserContext).user;
+
+  const createGroup = () => {
+    const db = firebase.firestore();
+    // Create group
+    const doc = db
+      .collection("groups")
+      .add({
+        invites: groupInfo.participants.map(el => el.email),
+        members: [user.uid],
+        owner: user.uid,
+        name: groupInfo.groupName
+      })
+      .then(docRef => {
+        // Update user with group
+        db.collection("userdata")
+          .doc(user.uid)
+          .set({
+            group: docRef.id
+          });
+      });
+  };
+
   return (
     <StyledWrapper backgroundColor="white">
       <h1>Gruppe: {groupInfo.groupName}</h1>
 
       <div>Alle deltagere vil få en epost med info</div>
 
-      {groupInfo.participants.map(participant => (
-        <li>
+      {groupInfo.participants.map((participant, index) => (
+        <li key={index}>
           {participant.name} - {participant.email}
         </li>
       ))}
-      <StyledButton>Opprett gruppe</StyledButton>
+      <StyledButton onClick={createGroup}>Opprett gruppe</StyledButton>
     </StyledWrapper>
   );
 };
