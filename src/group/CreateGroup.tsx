@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Form, Field } from "react-final-form";
+import { Redirect } from "react-router";
 import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledInput } from "../components/StyledInput";
@@ -24,6 +25,7 @@ interface GroupInfo {
 
 const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
   const user = useContext(UserContext).user;
+  const [groupCreated, setGroupCreated] = useState(false);
 
   const createGroup = () => {
     const db = firebase.firestore();
@@ -43,8 +45,13 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
           .set({
             group: docRef.id
           });
+        setGroupCreated(true);
       });
   };
+
+  if (groupCreated) {
+    return <Redirect to="/" push />;
+  }
 
   return (
     <StyledWrapper backgroundColor="white">
