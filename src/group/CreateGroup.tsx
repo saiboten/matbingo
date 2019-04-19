@@ -15,10 +15,39 @@ interface Participant {
   email: string;
 }
 
+interface GroupInfo {
+  participants: Participant[];
+  groupName: string;
+}
+
+const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
+  return (
+    <StyledWrapper backgroundColor="white">
+      <h1>Gruppe: {groupInfo.groupName}</h1>
+
+      <div>Alle deltagere vil få en epost med info</div>
+
+      {groupInfo.participants.map(participant => (
+        <li>
+          {participant.name} - {participant.email}
+        </li>
+      ))}
+      <StyledButton>Opprett gruppe</StyledButton>
+    </StyledWrapper>
+  );
+};
+
 export const CreateGroup = () => {
+  const [groupInfo, setGroupInfo] = useState(null);
+
   const onSubmit = (values: any) => {
     console.log(values);
+    setGroupInfo(values);
   };
+
+  if (groupInfo) {
+    return <ConfirmGroupInfo groupInfo={groupInfo} />;
+  }
 
   return (
     <StyledWrapper backgroundColor="white">
@@ -66,7 +95,7 @@ export const CreateGroup = () => {
                   >
                     <StyledFieldSet>
                       <StyledInputLabel>Deltagernavn</StyledInputLabel>
-                      <Field name={`${name}.firstName`} component="input">
+                      <Field name={`${name}.name`} component="input">
                         {({ input }: { input: any }) => (
                           <StyledInput placeholder="Navn" {...input} />
                         )}
@@ -92,7 +121,7 @@ export const CreateGroup = () => {
               }
             </FieldArray>
             <StyledButton type="submit" disabled={pristine || invalid}>
-              Submit
+              Gå videre
             </StyledButton>
           </StyledForm>
         )}
