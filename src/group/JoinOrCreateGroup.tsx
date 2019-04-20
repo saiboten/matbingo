@@ -89,15 +89,21 @@ export const JoinOrCreateGroup = () => {
       </p>
       <StyledLink to="/create-group">Opprett gruppe</StyledLink>
       <ul>
-        <StyledHeaderH2>Grupper du er invitert til</StyledHeaderH2>
-        {groups.map(el => (
-          <StyledLi key={el.owner}>
-            <span>Gruppenavn: {el.name}</span>
-            <StyledActionButtonForText onClick={() => acceptInvite(el.id)}>
-              Aksepter
-            </StyledActionButtonForText>
-          </StyledLi>
-        ))}
+        {groups.length > 0 ? (
+          <>
+            <StyledHeaderH2>Grupper du er invitert til</StyledHeaderH2>
+            {groups.map(el => (
+              <StyledLi key={el.owner}>
+                <span>Gruppenavn: {el.name}</span>
+                <StyledActionButtonForText onClick={() => acceptInvite(el.id)}>
+                  Aksepter
+                </StyledActionButtonForText>
+              </StyledLi>
+            ))}
+          </>
+        ) : (
+          <StyledHeaderH2>Du er ikke invitert til noen grupper</StyledHeaderH2>
+        )}
       </ul>
     </StyledWrapper>
   );

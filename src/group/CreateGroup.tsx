@@ -12,6 +12,7 @@ import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
+import { StyledList, StyledListItem } from "../components/StyledList";
 
 interface Participant {
   name: string;
@@ -55,16 +56,23 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
 
   return (
     <StyledWrapper backgroundColor="white">
-      <h1>Gruppe: {groupInfo.groupName}</h1>
+      <StyledHeaderH1>{groupInfo.groupName}</StyledHeaderH1>
 
-      <div>Alle deltagere vil få en epost med info</div>
+      <div style={{ marginBottom: "1rem" }}>
+        Alle deltagere vil få en epost med info
+      </div>
 
-      {groupInfo.participants.map((participant, index) => (
-        <li key={index}>
-          {participant.name} - {participant.email}
-        </li>
-      ))}
-      <StyledButton onClick={createGroup}>Opprett gruppe</StyledButton>
+      <StyledHeaderH2 style={{ textAlign: "left" }}>Deltakere</StyledHeaderH2>
+      <StyledList style={{ marginBottom: "2rem" }}>
+        {groupInfo.participants.map((participant, index) => (
+          <StyledListItem key={index}>
+            {participant.name} - {participant.email}
+          </StyledListItem>
+        ))}
+      </StyledList>
+      <StyledButton onClick={createGroup} style={{ textAlign: "right" }}>
+        Opprett gruppe
+      </StyledButton>
     </StyledWrapper>
   );
 };
@@ -111,7 +119,7 @@ export const CreateGroup = () => {
                 type="button"
                 onClick={() => push("participants", undefined)}
               >
-                Legg til deltaker
+                Legg til en deltaker til
               </StyledButton>
             </StyledFieldSet>
             <FieldArray name="participants">

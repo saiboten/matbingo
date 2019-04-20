@@ -19,6 +19,7 @@ import { Nav } from "./components/Nav";
 import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
 import { JoinGroupRouter } from "./group/JoinOrCreateGroup";
+import { Settings } from "./settings/Settings";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -298,6 +299,7 @@ const AppRouter = () => {
                   />
                   <Route path="/ingredients/" component={Ingredients} />
                   <Route path="/login/" component={Login} />
+                  <Route path="/settings/" component={Settings} />
                 </main>
               </GroupDataContext.Provider>
             </UserDataContext.Provider>

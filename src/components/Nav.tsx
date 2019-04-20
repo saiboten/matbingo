@@ -151,6 +151,11 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
               <StyledLogOut />
             </StyledSecondaryActionButtonWithMargins>
           </StyledLi>
+          <StyledLi>
+            <StyledLink onClick={() => setMenuActive(false)} to="/settings">
+              Innstillinger
+            </StyledLink>
+          </StyledLi>
         </StyledUl>
       </StyledTranslateResetDesktop>
       <StyledNav style={props} onClick={() => setMenuActive(false)} />
