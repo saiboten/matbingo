@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Day } from "./Day";
-import { startOfWeek, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
+import { startOfDay, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
 import { StyledWideWrapper } from "../components/StyledWrapper";
@@ -22,9 +22,32 @@ const StyledButtonGroup = styled.div`
   justify-content: center;
 `;
 
+const WeekSelector = ({
+  selectedDay,
+  setSelectedDay
+}: {
+  selectedDay: Date;
+  setSelectedDay: (date: Date) => void;
+}) => {
+  return (
+    <StyledButtonGroup>
+      <StyledActionButtonWithMargins
+        onClick={() => setSelectedDay(subWeeks(selectedDay, 1))}
+      >
+        <StyledPrevious />
+      </StyledActionButtonWithMargins>
+      <StyledActionButtonWithMargins
+        onClick={() => setSelectedDay(addWeeks(selectedDay, 1))}
+      >
+        <StyledNext />
+      </StyledActionButtonWithMargins>
+    </StyledButtonGroup>
+  );
+};
+
 export const Week = () => {
-  const [selectedDay, setSelectedDay] = useState(
-    startOfWeek(new Date(), { weekStartsOn: 1 })
+  const [selectedDay, setSelectedDay]: [Date, any] = useState(
+    startOfDay(new Date())
   );
 
   const listOfDays = new Array(7)
@@ -34,25 +57,15 @@ export const Week = () => {
   return (
     <StyledWideWrapper>
       <StyledAlternateHeaderH1>
-        Ukesmeny uke {getISOWeek(selectedDay)}{" "}
+        Ukesmeny uke {getISOWeek(selectedDay)}
       </StyledAlternateHeaderH1>
-      <StyledButtonGroup>
-        <StyledActionButtonWithMargins
-          onClick={() => setSelectedDay(subWeeks(selectedDay, 1))}
-        >
-          <StyledPrevious />
-        </StyledActionButtonWithMargins>
-        <StyledActionButtonWithMargins
-          onClick={() => setSelectedDay(addWeeks(selectedDay, 1))}
-        >
-          <StyledNext />
-        </StyledActionButtonWithMargins>
-      </StyledButtonGroup>
+      <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       <StyledDayList>
         {listOfDays.map((el: any) => (
           <Day key={el} date={el} />
         ))}
       </StyledDayList>
+      <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       <AddToTrello listOfDays={listOfDays} />
     </StyledWideWrapper>
   );
