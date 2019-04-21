@@ -263,6 +263,7 @@ const AppRouter = () => {
   if (state.userdataLoaded && !userdata.group) {
     return (
       <UserContext.Provider value={userContextValue}>
+        <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
         <JoinGroupRouter />
       </UserContext.Provider>
     );
