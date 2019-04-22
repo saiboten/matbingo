@@ -94,7 +94,9 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
 
     Promise.all(promiseList).then(data => {
       const res = data.reduce((init: any, next: any) => {
-        init.push(next.docs[0].data());
+        if (next.docs[0] && next.docs[0].exists) {
+          init.push(next.docs[0].data());
+        }
         return init;
       }, []);
       const recipeIds = res
