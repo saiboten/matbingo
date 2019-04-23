@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyledHamburger } from "./StyledHamburger";
 import { StyledSecondaryActionButtonWithMargins } from "./StyledActionButton";
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import { firebase } from "../firebase/firebase";
 import { StyledLogOut } from "./StyledSvgIcons";
+import { UserDataContext } from "../context/UserDataContext";
 
 const StyledNav = styled(animated.nav)`
   display: none;
@@ -109,6 +110,9 @@ const LogOut = (setLoggedIn: () => void) => {
 export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
   const [menuActive, setMenuActive] = useState(false);
 
+  const userdata = useContext(UserDataContext).userdata;
+  const hasSelectedGroup = userdata.group != "";
+
   const props = useSpring({
     transform: `translateX(${menuActive ? `0vh` : `-100vw`})`
   });
@@ -126,21 +130,20 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
               Food-Eureka!
             </StyledLink>
           </StyledLeftItemLi>
-          <StyledLi>
-            <StyledLink onClick={() => setMenuActive(false)} to="/recipes">
-              Oppskrifter
-            </StyledLink>
-          </StyledLi>
-          {/* <StyledLi>
-            <StyledLink onClick={() => setMenuActive(false)} to="/ingredients/">
-              Ingredienser
-            </StyledLink>
-          </StyledLi> */}
-          <StyledLi>
-            <StyledLink onClick={() => setMenuActive(false)} to="/">
-              Ukesmeny
-            </StyledLink>
-          </StyledLi>
+          {hasSelectedGroup && (
+            <>
+              <StyledLi>
+                <StyledLink onClick={() => setMenuActive(false)} to="/recipes">
+                  Oppskrifter
+                </StyledLink>
+              </StyledLi>
+              <StyledLi>
+                <StyledLink onClick={() => setMenuActive(false)} to="/">
+                  Ukesmeny
+                </StyledLink>
+              </StyledLi>
+            </>
+          )}
           <StyledLi>
             <StyledSecondaryActionButtonWithMargins
               onClick={() => {
@@ -151,11 +154,13 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
               <StyledLogOut />
             </StyledSecondaryActionButtonWithMargins>
           </StyledLi>
-          <StyledLi>
-            <StyledLink onClick={() => setMenuActive(false)} to="/settings">
-              Innstillinger
-            </StyledLink>
-          </StyledLi>
+          {hasSelectedGroup && (
+            <StyledLi>
+              <StyledLink onClick={() => setMenuActive(false)} to="/settings">
+                Innstillinger
+              </StyledLink>
+            </StyledLi>
+          )}
         </StyledUl>
       </StyledTranslateResetDesktop>
       <StyledNav style={props} onClick={() => setMenuActive(false)} />
