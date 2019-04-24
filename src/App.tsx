@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
@@ -20,6 +20,7 @@ import { UserData, UserDataContext } from "./context/UserDataContext";
 import { GroupData, GroupDataContext } from "./context/GroupDataContext";
 import { JoinGroupRouter } from "./group/JoinOrCreateGroup";
 import { Settings } from "./settings/Settings";
+import { Providers } from "./Providers";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -61,7 +62,9 @@ const App = () => {
     <Router>
       <>
         <GlobalStyle />
-        <AppRouter />
+        <Providers>
+          <AppRouter />
+        </Providers>
       </>
     </Router>
   );
@@ -123,54 +126,11 @@ function reducer(state: State, action: any) {
 const AppRouter = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [user, setUser]: [User, any] = useState({
-    displayName: "",
-    email: "",
-    uid: ""
-  });
-
-  const [groupData, setGroupdata]: [GroupData, any] = useState({
-    id: "",
-    trelloApiKey: "",
-    trelloApiToken: "",
-    trelloList: "",
-    owner: "",
-    name: "",
-    invites: [],
-    members: []
-  });
-
-  const [userdata, setUserdata]: [UserData, any] = useState({
-    group: ""
-  });
-
-  const [recipes, setRecipes] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
-
-  const userContextValue: UserContextState = {
-    user,
-    setUser
-  };
-
-  const userDataContextValue: UserDataContext = {
-    userdata,
-    setUserdata
-  };
-
-  const recipesContextValue: RecipeContextState = {
-    recipes,
-    setRecipes
-  };
-
-  const ingredientsContextValue: IngredientsContextState = {
-    ingredients,
-    setIngredients
-  };
-
-  const groupDataContextValue: GroupDataContext = {
-    groupData,
-    setGroupdata
-  };
+  const { setUser } = useContext(UserContext);
+  const { userdata, setUserdata } = useContext(UserDataContext);
+  const { setRecipes } = useContext(RecipeContext);
+  const { setIngredients } = useContext(IngredientsContext);
+  const { setGroupdata } = useContext(GroupDataContext);
 
   useEffect(
     () => {
@@ -200,7 +160,7 @@ const AppRouter = () => {
                   .where("group", "==", userdata.group)
                   .onSnapshot(querySnapshot => {
                     dispatch({ type: "recipesLoaded" });
-                    recipesContextValue.setRecipes(
+                    setRecipes(
                       querySnapshot.docs.map((doc: any) => ({
                         id: doc.id,
                         ...doc.data()
@@ -214,7 +174,7 @@ const AppRouter = () => {
                 .where("group", "==", userdata.group)
                 .onSnapshot(querySnapshot => {
                   dispatch({ type: "ingredientsLoaded" });
-                  ingredientsContextValue.setIngredients(
+                  setIngredients(
                     querySnapshot.docs.map((doc: any) => ({
                       id: doc.id,
                       ...doc.data()
@@ -229,7 +189,7 @@ const AppRouter = () => {
                   .onSnapshot(querySnapshot => {
                     const groupData: any = querySnapshot.data();
 
-                    groupDataContextValue.setGroupdata({
+                    setGroupdata({
                       id: querySnapshot.id,
                       ...groupData
                     });
@@ -262,10 +222,10 @@ const AppRouter = () => {
 
   if (state.userdataLoaded && !userdata.group) {
     return (
-      <UserContext.Provider value={userContextValue}>
+      <>
         <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
         <JoinGroupRouter />
-      </UserContext.Provider>
+      </>
     );
   }
 
@@ -279,34 +239,16 @@ const AppRouter = () => {
 
   return (
     <div>
-      <RecipeContext.Provider value={recipesContextValue}>
-        <IngredientsContext.Provider value={ingredientsContextValue}>
-          <UserContext.Provider value={userContextValue}>
-            <UserDataContext.Provider value={userDataContextValue}>
-              <GroupDataContext.Provider value={groupDataContextValue}>
-                <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
-                <main>
-                  <Route path="/" exact component={Week} />
-                  <Route path="/recipes" exact component={Recipes} />
-                  <Route
-                    path="/recipe-feedback/:feedback"
-                    exact
-                    component={Recipes}
-                  />
-                  <Route
-                    path="/recipes/:id"
-                    exact
-                    component={EditRecipeDetails}
-                  />
-                  <Route path="/ingredients/" component={Ingredients} />
-                  <Route path="/login/" component={Login} />
-                  <Route path="/settings/" component={Settings} />
-                </main>
-              </GroupDataContext.Provider>
-            </UserDataContext.Provider>
-          </UserContext.Provider>
-        </IngredientsContext.Provider>
-      </RecipeContext.Provider>
+      <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
+      <main>
+        <Route path="/" exact component={Week} />
+        <Route path="/recipes" exact component={Recipes} />
+        <Route path="/recipe-feedback/:feedback" exact component={Recipes} />
+        <Route path="/recipes/:id" exact component={EditRecipeDetails} />
+        <Route path="/ingredients/" component={Ingredients} />
+        <Route path="/login/" component={Login} />
+        <Route path="/settings/" component={Settings} />
+      </main>
     </div>
   );
 };
