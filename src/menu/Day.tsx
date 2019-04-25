@@ -178,12 +178,15 @@ export const Day = ({ date }: Props) => {
     [date]
   );
 
+  const today = isToday(date);
+
   return (
-    <StyledDay active={isToday(date)}>
+    <StyledDay active={today}>
       <StyledDate>
         {format(date, "dddd DD.MM", { locale: nbLocale })}
       </StyledDate>
       <StyledDayContent>
+        {today && <div>I dag skal vi kose oss med: </div>}
         {loading ? (
           <StyledLocalLoaderWithMarginTop />
         ) : (

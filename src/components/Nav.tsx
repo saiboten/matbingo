@@ -94,20 +94,7 @@ const StyledLeftItemLi = styled.li`
   }
 `;
 
-const LogOut = (setLoggedIn: () => void) => {
-  firebase
-    .auth()
-    .signOut()
-    .then(function() {
-      // Sign-out successful.
-    })
-    .catch(function(error) {
-      // An error happened.
-    });
-  setLoggedIn();
-};
-
-export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
+export const Nav = () => {
   const [menuActive, setMenuActive] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
@@ -144,16 +131,6 @@ export const Nav = ({ setLoggedIn }: { setLoggedIn: () => void }) => {
               </StyledLi>
             </>
           )}
-          <StyledLi>
-            <StyledSecondaryActionButtonWithMargins
-              onClick={() => {
-                setMenuActive(false);
-                LogOut(setLoggedIn);
-              }}
-            >
-              <StyledLogOut />
-            </StyledSecondaryActionButtonWithMargins>
-          </StyledLi>
           {hasSelectedGroup && (
             <StyledLi>
               <StyledLink onClick={() => setMenuActive(false)} to="/settings">

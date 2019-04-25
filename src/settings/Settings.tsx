@@ -1,10 +1,28 @@
 import React, { useContext, useState } from "react";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { StyledActionButtonForText } from "../components/StyledActionButton";
+import {
+  StyledActionButtonForText,
+  StyledSecondaryActionButtonWithMargins
+} from "../components/StyledActionButton";
 import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
 import { Redirect } from "react-router";
+import { StyledLogOut } from "../components/StyledSvgIcons";
+
+const LogOut = (setLeave: any) => {
+  firebase
+    .auth()
+    .signOut()
+    .then(function() {
+      // Sign-out successful.
+    })
+    .catch(function(error) {
+      // An error happened.
+    });
+
+  setLeave();
+};
 
 export const Settings = () => {
   const user = useContext(UserContext).user;
@@ -26,6 +44,13 @@ export const Settings = () => {
   return (
     <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Innstillinger</StyledHeaderH1>
+      <StyledSecondaryActionButtonWithMargins
+        onClick={() => {
+          LogOut(setLeave);
+        }}
+      >
+        <StyledLogOut />
+      </StyledSecondaryActionButtonWithMargins>
       <StyledActionButtonForText onClick={leaveGroup}>
         Forlat gruppe
       </StyledActionButtonForText>

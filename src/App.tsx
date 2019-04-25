@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, { useEffect, useReducer, useContext } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
-import { RecipeContext, RecipeContextState } from "./context/RecipeContext";
+import { RecipeContext } from "./context/RecipeContext";
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
 import {
   IngredientsContext,
@@ -14,10 +14,10 @@ import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
 import { StyledLoader } from "./components/StyledLoader";
 import { Login } from "./login/Login";
-import { UserContext, UserContextState, User } from "./context/UserContext";
+import { UserContext } from "./context/UserContext";
 import { Nav } from "./components/Nav";
-import { UserData, UserDataContext } from "./context/UserDataContext";
-import { GroupData, GroupDataContext } from "./context/GroupDataContext";
+import { UserDataContext } from "./context/UserDataContext";
+import { GroupDataContext } from "./context/GroupDataContext";
 import { JoinGroupRouter } from "./group/JoinOrCreateGroup";
 import { Settings } from "./settings/Settings";
 import { Providers } from "./Providers";
@@ -223,7 +223,7 @@ const AppRouter = () => {
   if (state.userdataLoaded && !userdata.group) {
     return (
       <>
-        <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
+        <Nav />
         <JoinGroupRouter />
       </>
     );
@@ -239,7 +239,7 @@ const AppRouter = () => {
 
   return (
     <div>
-      <Nav setLoggedIn={() => dispatch({ type: "userLoggedOut" })} />
+      <Nav />
       <main>
         <Route path="/" exact component={Week} />
         <Route path="/recipes" exact component={Recipes} />
