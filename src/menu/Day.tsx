@@ -186,13 +186,13 @@ export const Day = ({ date }: Props) => {
         {format(date, "dddd DD.MM", { locale: nbLocale })}
       </StyledDate>
       <StyledDayContent>
-        {today && <div>I dag skal vi kose oss med: </div>}
         {loading ? (
           <StyledLocalLoaderWithMarginTop />
         ) : (
           <>
             {dayData.description && (
               <>
+                {today && <div>I dag skal vi kose oss med: </div>}
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
@@ -202,6 +202,7 @@ export const Day = ({ date }: Props) => {
             )}
             {recipe.name !== "" && (
               <>
+                {today && <div>I dag skal vi kose oss med: </div>}
                 <RecipeDetails recipe={recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </>

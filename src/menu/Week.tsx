@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { Day } from "./Day";
 import { startOfDay, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
 import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
-import { StyledWideWrapper } from "../components/StyledWrapper";
+import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
 import {
   StyledHeaderH1,
   StyledAlternateHeaderH1
 } from "../components/StyledHeaderH1";
 import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
+import { RecipeContext } from "../context/RecipeContext";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -21,6 +23,18 @@ const StyledButtonGroup = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+const NoRecipes = () => {
+  return (
+    <StyledWrapper backgroundColor="white">
+      <StyledHeaderH1>Du har ingen oppskrifter</StyledHeaderH1>
+      <p>
+        Før du kan lage ukesoppsett må du opprette noen oppskrifter, det kan du
+        gjøre <Link to="/recipes">her</Link>!
+      </p>
+    </StyledWrapper>
+  );
+};
 
 const WeekSelector = ({
   selectedDay,
@@ -46,6 +60,12 @@ const WeekSelector = ({
 };
 
 export const Week = () => {
+  const { recipes } = useContext(RecipeContext);
+
+  if (recipes.length == 0) {
+    return <NoRecipes />;
+  }
+
   const [selectedDay, setSelectedDay]: [Date, any] = useState(
     startOfDay(new Date())
   );

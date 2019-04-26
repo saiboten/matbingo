@@ -9,6 +9,13 @@ import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
 import { Redirect } from "react-router";
 import { StyledLogOut } from "../components/StyledSvgIcons";
+import styled from "styled-components";
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
 
 const LogOut = (setLeave: any) => {
   firebase
@@ -21,7 +28,7 @@ const LogOut = (setLeave: any) => {
       // An error happened.
     });
 
-  setLeave();
+  setLeave(true);
 };
 
 export const Settings = () => {
@@ -44,16 +51,28 @@ export const Settings = () => {
   return (
     <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Innstillinger</StyledHeaderH1>
-      <StyledSecondaryActionButtonWithMargins
-        onClick={() => {
-          LogOut(setLeave);
-        }}
-      >
-        <StyledLogOut />
-      </StyledSecondaryActionButtonWithMargins>
-      <StyledActionButtonForText onClick={leaveGroup}>
-        Forlat gruppe
-      </StyledActionButtonForText>
+      <StyledButtonContainer>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <span>Logg ut</span>
+          <StyledSecondaryActionButtonWithMargins
+            onClick={() => {
+              LogOut(setLeave);
+            }}
+          >
+            <StyledLogOut />
+          </StyledSecondaryActionButtonWithMargins>{" "}
+        </div>
+
+        <StyledActionButtonForText onClick={leaveGroup}>
+          Forlat gruppe
+        </StyledActionButtonForText>
+      </StyledButtonContainer>
     </StyledWrapper>
   );
 };
