@@ -30,7 +30,7 @@ const NoRecipes = () => {
       <StyledHeaderH1>Du har ingen oppskrifter</StyledHeaderH1>
       <p>
         Før du kan lage ukesoppsett må du opprette noen oppskrifter, det kan du
-        gjøre <Link to="/recipes">her</Link>!
+        gjøre <Link to="/add-recipe">her</Link>!
       </p>
     </StyledWrapper>
   );

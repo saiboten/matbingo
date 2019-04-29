@@ -19,6 +19,7 @@ import { Redirect } from "react-router";
 import { UserDataContext } from "../context/UserDataContext";
 import { withTheme } from "styled-components";
 import { primaryColor } from "../components/Constants";
+import { StyledWrapper } from "../components/StyledWrapper";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -105,147 +106,149 @@ export function AddRecipe() {
   }
 
   return (
-    <Form
-      onSubmit={(values, form) =>
-        onSubmit(values, form, setDetailsId, userData.group)
-      }
-      validate={validate}
-      render={({ handleSubmit, submitting, pristine }) => (
-        <React.Fragment>
-          <StyledHeaderH1>Legg til oppskrift</StyledHeaderH1>
-          <StyledForm
-            onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) =>
-              handleSubmit(event)
-            }
-          >
-            <StyledFieldSet>
-              <Field name="name" component="input" type="text">
-                {({ input, meta }: { input: any; meta: any }) => (
-                  <>
-                    <StyledInputLabel>Oppskrift</StyledInputLabel>
+    <StyledWrapper backgroundColor="white">
+      <Form
+        onSubmit={(values, form) =>
+          onSubmit(values, form, setDetailsId, userData.group)
+        }
+        validate={validate}
+        render={({ handleSubmit, submitting, pristine }) => (
+          <React.Fragment>
+            <StyledHeaderH1>Legg til oppskrift</StyledHeaderH1>
+            <StyledForm
+              onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) =>
+                handleSubmit(event)
+              }
+            >
+              <StyledFieldSet>
+                <Field name="name" component="input" type="text">
+                  {({ input, meta }: { input: any; meta: any }) => (
+                    <>
+                      <StyledInputLabel>Oppskrift</StyledInputLabel>
 
-                    <StyledInputWrapper>
-                      {meta.error && meta.touched && (
-                        <StyledError>{meta.error}</StyledError>
-                      )}
-                      <StyledInput
-                        autoComplete="off"
-                        placeholder="Navn på oppskrift"
-                        {...input}
-                      />
-                    </StyledInputWrapper>
-                  </>
+                      <StyledInputWrapper>
+                        {meta.error && meta.touched && (
+                          <StyledError>{meta.error}</StyledError>
+                        )}
+                        <StyledInput
+                          autoComplete="off"
+                          placeholder="Navn på oppskrift"
+                          {...input}
+                        />
+                      </StyledInputWrapper>
+                    </>
+                  )}
+                </Field>
+              </StyledFieldSet>
+              <StyledFieldSet>
+                <Field name="description" component="input" type="text">
+                  {({ input, meta }: { input: any; meta: any }) => (
+                    <>
+                      <StyledInputLabel>Beskrivelse</StyledInputLabel>
+                      <StyledInputWrapper>
+                        {meta.error && meta.touched && (
+                          <StyledError>{meta.error}</StyledError>
+                        )}
+                        <StyledTextArea
+                          autoComplete="off"
+                          placeholder="Beskrivelse"
+                          {...input}
+                        />
+                      </StyledInputWrapper>
+                    </>
+                  )}
+                </Field>
+              </StyledFieldSet>
+              <label>Legg til ingredienser</label>
+              <IngredientsContext.Consumer>
+                {({ ingredients }) => (
+                  <SelectWrapper>
+                    <Field
+                      name="ingredients"
+                      component={ReactSelectAdapter}
+                      isMulti
+                      options={ingredients.map(el => ({
+                        label: el.name,
+                        value: el.id
+                      }))}
+                    />
+                  </SelectWrapper>
                 )}
-              </Field>
-            </StyledFieldSet>
-            <StyledFieldSet>
-              <Field name="description" component="input" type="text">
-                {({ input, meta }: { input: any; meta: any }) => (
-                  <>
-                    <StyledInputLabel>Beskrivelse</StyledInputLabel>
-                    <StyledInputWrapper>
-                      {meta.error && meta.touched && (
-                        <StyledError>{meta.error}</StyledError>
-                      )}
-                      <StyledTextArea
-                        autoComplete="off"
-                        placeholder="Beskrivelse"
-                        {...input}
-                      />
-                    </StyledInputWrapper>
-                  </>
-                )}
-              </Field>
-            </StyledFieldSet>
-            <label>Legg til ingredienser</label>
-            <IngredientsContext.Consumer>
-              {({ ingredients }) => (
-                <SelectWrapper>
+              </IngredientsContext.Consumer>
+              <label>Frekvens</label>
+              <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
+              <div>
+                <StyledInputLabel>
                   <Field
-                    name="ingredients"
-                    component={ReactSelectAdapter}
-                    isMulti
-                    options={ingredients.map(el => ({
-                      label: el.name,
-                      value: el.id
-                    }))}
-                  />
-                </SelectWrapper>
-              )}
-            </IngredientsContext.Consumer>
-            <label>Frekvens</label>
-            <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
-            <div>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="monday"
-                />{" "}
-                Mandag
-              </StyledInputLabel>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="tuesday"
-                />{" "}
-                Tirsdag
-              </StyledInputLabel>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="wednesday"
-                />{" "}
-                Onsdag
-              </StyledInputLabel>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="thursday"
-                />{" "}
-                Torsdag
-              </StyledInputLabel>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="friday"
-                />{" "}
-                Fredag
-              </StyledInputLabel>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="saturday"
-                />{" "}
-                Lørdag
-              </StyledInputLabel>
-              <StyledInputLabel>
-                <Field
-                  name="weekdays"
-                  component="input"
-                  type="checkbox"
-                  value="sunday"
-                />{" "}
-                Søndag
-              </StyledInputLabel>
-            </div>
-            <StyledButton type="submit" disabled={pristine || submitting}>
-              Legg til
-            </StyledButton>
-          </StyledForm>
-        </React.Fragment>
-      )}
-    />
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="monday"
+                  />{" "}
+                  Mandag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="tuesday"
+                  />{" "}
+                  Tirsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="wednesday"
+                  />{" "}
+                  Onsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="thursday"
+                  />{" "}
+                  Torsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="friday"
+                  />{" "}
+                  Fredag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="saturday"
+                  />{" "}
+                  Lørdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="sunday"
+                  />{" "}
+                  Søndag
+                </StyledInputLabel>
+              </div>
+              <StyledButton type="submit" disabled={pristine || submitting}>
+                Legg til
+              </StyledButton>
+            </StyledForm>
+          </React.Fragment>
+        )}
+      />
+    </StyledWrapper>
   );
 }
