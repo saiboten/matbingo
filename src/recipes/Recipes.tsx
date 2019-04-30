@@ -17,7 +17,6 @@ interface Props extends RouteComponentProps<MatchParams> {}
 
 export const RecipesContent = ({ feedback }: { feedback: string }) => {
   const [feedbackActive, setFeedbackActive] = useState(false);
-  const [showFindRecipe, setShowFindRecipe] = useState(false);
 
   useEffect(() => {
     if (feedback) {
@@ -34,13 +33,7 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
     <>
       <StyledNotification text="Oppskrift slettet" active={feedbackActive} />
       <StyledHeaderH1>Oppskrifter</StyledHeaderH1>
-      {showFindRecipe ? (
-        <ListRecipesAndRedirect />
-      ) : (
-        <StyledButtonWithMargins onClick={() => setShowFindRecipe(true)}>
-          Finn oppskrift
-        </StyledButtonWithMargins>
-      )}
+      <StyledListItemLink to="/find-recipes">Finn oppskrift</StyledListItemLink>
       <StyledListItemLink to="/add-recipe">
         Legg til oppskrift
       </StyledListItemLink>

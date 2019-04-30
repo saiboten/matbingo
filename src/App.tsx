@@ -22,6 +22,7 @@ import { JoinGroupRouter } from "./group/JoinOrCreateGroup";
 import { Settings } from "./settings/Settings";
 import { Providers } from "./Providers";
 import { AddRecipe } from "./recipes/AddRecipe";
+import { ListRecipesAndRedirect } from "./recipes/ListRecipesAndRedirect";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -244,7 +245,7 @@ const AppRouter = () => {
       <main>
         <Route path="/" exact component={Week} />
         <Route path="/recipes" exact component={Recipes} />
-        <Route path="/find-recipes" exact component={Recipes} />
+        <Route path="/find-recipes" exact component={ListRecipesAndRedirect} />
         <Route path="/add-recipe" exact component={AddRecipe} />
         <Route path="/recipe-feedback/:feedback" exact component={Recipes} />
         <Route path="/recipes/:id" exact component={EditRecipeDetails} />
