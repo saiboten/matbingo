@@ -12,6 +12,7 @@ import {
 import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
+import { StyledLink } from "../components/StyledLink";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -29,8 +30,11 @@ const NoRecipes = () => {
     <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Du har ingen oppskrifter</StyledHeaderH1>
       <p>
-        Før du kan lage ukesoppsett må du opprette noen oppskrifter, det kan du
-        gjøre <Link to="/add-recipe">her</Link>!
+        Før du kan lage ukesoppsett må du opprette noen oppskrifter,{" "}
+        <StyledLink style={{ padding: "0", margin: "0" }} to="/add-recipe">
+          det kan du gjøre her
+        </StyledLink>
+        !
       </p>
     </StyledWrapper>
   );

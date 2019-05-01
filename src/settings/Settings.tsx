@@ -11,10 +11,12 @@ import { Redirect } from "react-router";
 import { StyledLogOut } from "../components/StyledSvgIcons";
 import styled from "styled-components";
 
-const StyledButtonContainer = styled.div`
+const SpaceBetween = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 30rem;
+  margin: 0 auto;
 `;
 
 const LogOut = (setLeave: any) => {
@@ -51,28 +53,22 @@ export const Settings = () => {
   return (
     <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Innstillinger</StyledHeaderH1>
-      <StyledButtonContainer>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
+      <SpaceBetween>
+        <span>Logg ut</span>
+        <StyledSecondaryActionButtonWithMargins
+          onClick={() => {
+            LogOut(setLeave);
           }}
         >
-          <span>Logg ut</span>
-          <StyledSecondaryActionButtonWithMargins
-            onClick={() => {
-              LogOut(setLeave);
-            }}
-          >
-            <StyledLogOut />
-          </StyledSecondaryActionButtonWithMargins>{" "}
-        </div>
-
-        <StyledActionButtonForText onClick={leaveGroup}>
-          Forlat gruppe
-        </StyledActionButtonForText>
-      </StyledButtonContainer>
+          <StyledLogOut />
+        </StyledSecondaryActionButtonWithMargins>{" "}
+      </SpaceBetween>
+      <SpaceBetween>
+        <span>Forlat gruppe</span>
+        <StyledSecondaryActionButtonWithMargins onClick={leaveGroup}>
+          <StyledLogOut />
+        </StyledSecondaryActionButtonWithMargins>
+      </SpaceBetween>
     </StyledWrapper>
   );
 };

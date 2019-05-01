@@ -6,22 +6,9 @@ import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
 import { GroupData } from "../context/GroupDataContext";
 import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
-import { StyledButtonWithMargins } from "../components/StyledButton";
-import { Link, Route } from "react-router-dom";
-import { primaryColor } from "../components/Constants";
+import { Route } from "react-router-dom";
 import { CreateGroup } from "./CreateGroup";
-
-const StyledLink = styled(Link)`
-  &:visited,
-  &:link {
-    color: black;
-    text-decoration: none;
-  }
-  padding: 1rem;
-  margin: 1rem;
-  border-bottom: 1px solid ${primaryColor};
-  display: inline-block;
-`;
+import { StyledLink } from "../components/StyledLink";
 
 const StyledLi = styled.li`
   display: flex;
