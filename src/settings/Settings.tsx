@@ -3,12 +3,13 @@ import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import {
   StyledActionButtonForText,
-  StyledSecondaryActionButtonWithMargins
+  StyledSecondaryActionButtonWithMargins,
+  StyledSecondaryActionButtonForText
 } from "../components/StyledActionButton";
 import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
 import { Redirect } from "react-router";
-import { StyledLogOut } from "../components/StyledSvgIcons";
+import { StyledLogOut, StyledDeleteIcon } from "../components/StyledSvgIcons";
 import styled from "styled-components";
 
 const SpaceBetween = styled.div`
@@ -36,6 +37,11 @@ const LogOut = (setLeave: any) => {
 export const Settings = () => {
   const user = useContext(UserContext).user;
   const [leave, setLeave] = useState(false);
+  const [leaveGroupConfirm, setLeaveGroupConfirm] = useState(false);
+
+  const handleLeaveGroupButtonClick = () => {
+    setLeaveGroupConfirm(true);
+  };
 
   const leaveGroup = () => {
     const db = firebase
@@ -44,6 +50,10 @@ export const Settings = () => {
       .doc(user.uid)
       .delete();
     setLeave(true);
+  };
+
+  const cancelLeaveGroup = () => {
+    setLeaveGroupConfirm(false);
   };
 
   if (leave) {
@@ -65,10 +75,36 @@ export const Settings = () => {
       </SpaceBetween>
       <SpaceBetween>
         <span>Forlat gruppe</span>
-        <StyledSecondaryActionButtonWithMargins onClick={leaveGroup}>
-          <StyledLogOut />
+        <StyledSecondaryActionButtonWithMargins
+          onClick={handleLeaveGroupButtonClick}
+        >
+          <StyledDeleteIcon />
         </StyledSecondaryActionButtonWithMargins>
       </SpaceBetween>
+
+      {leaveGroupConfirm && (
+        <p>
+          Er du sikker på at du vil forlate gruppen? Du kan alltids bli med i
+          gruppen igjen på et senere tidspunkt, så det er ingen krise.
+          <div
+            style={{
+              display: "flex",
+              marginTop: "1rem",
+              justifyContent: "space-around"
+            }}
+          >
+            <StyledActionButtonForText
+              onClick={leaveGroup}
+              style={{ marginRight: "1rem" }}
+            >
+              Ja, forlat gruppe
+            </StyledActionButtonForText>
+            <StyledSecondaryActionButtonForText onClick={cancelLeaveGroup}>
+              Nei, bli i gruppen
+            </StyledSecondaryActionButtonForText>
+          </div>
+        </p>
+      )}
     </StyledWrapper>
   );
 };
