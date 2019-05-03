@@ -64,11 +64,12 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
 
       <StyledHeaderH2 style={{ textAlign: "left" }}>Deltakere</StyledHeaderH2>
       <StyledList style={{ marginBottom: "2rem" }}>
-        {groupInfo.participants.map((participant, index) => (
-          <StyledListItem key={index}>
-            {participant.name} - {participant.email}
-          </StyledListItem>
-        ))}
+        {groupInfo.participants &&
+          groupInfo.participants.map((participant, index) => (
+            <StyledListItem key={index}>
+              {participant.name} - {participant.email}
+            </StyledListItem>
+          ))}
       </StyledList>
       <StyledButton onClick={createGroup} style={{ textAlign: "right" }}>
         Opprett gruppe
