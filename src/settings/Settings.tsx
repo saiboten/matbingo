@@ -11,6 +11,7 @@ import { UserContext } from "../context/UserContext";
 import { Redirect } from "react-router";
 import { StyledLogOut, StyledDeleteIcon } from "../components/StyledSvgIcons";
 import styled from "styled-components";
+import { GroupDataContext } from "../context/GroupDataContext";
 
 const SpaceBetween = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const LogOut = (setLeave: any) => {
 
 export const Settings = () => {
   const user = useContext(UserContext).user;
+  const { groupData } = useContext(GroupDataContext);
   const [leave, setLeave] = useState(false);
   const [leaveGroupConfirm, setLeaveGroupConfirm] = useState(false);
 
@@ -81,6 +83,14 @@ export const Settings = () => {
           <StyledDeleteIcon />
         </StyledSecondaryActionButtonWithMargins>
       </SpaceBetween>
+      {groupData.owner === user.uid && (
+        <SpaceBetween>
+          <span>Administrer gruppe</span>
+          <StyledSecondaryActionButtonWithMargins>
+            <StyledDeleteIcon />
+          </StyledSecondaryActionButtonWithMargins>
+        </SpaceBetween>
+      )}
 
       {leaveGroupConfirm && (
         <p>
