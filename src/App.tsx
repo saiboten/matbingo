@@ -23,6 +23,7 @@ import { Settings } from "./settings/Settings";
 import { Providers } from "./Providers";
 import { AddRecipe } from "./recipes/AddRecipe";
 import { ListRecipesAndRedirect } from "./recipes/ListRecipesAndRedirect";
+import { AdminGroup } from "./settings/AdminGroup";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -244,6 +245,7 @@ const AppRouter = () => {
       <Nav />
       <main>
         <Route path="/" exact component={Week} />
+        <Route path="/admin" exact component={AdminGroup} />
         <Route path="/recipes" exact component={Recipes} />
         <Route path="/find-recipes" exact component={ListRecipesAndRedirect} />
         <Route path="/add-recipe" exact component={AddRecipe} />

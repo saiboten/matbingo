@@ -14,6 +14,13 @@ import { ReactComponent as Check } from "./svg/check.svg";
 import { ReactComponent as Rotate } from "./svg/rotate-ccw.svg";
 import { ReactComponent as DeleteIcon } from "./svg/trash-2.svg";
 import { ReactComponent as LogOutIcon } from "./svg/log-out.svg";
+import { ReactComponent as SettingsIcon } from "./svg/settings.svg";
+
+export const StyledSettingsIcon = styled(SettingsIcon)`
+  width: 24px;
+  height: 24px;
+  fill: ${props => (props.color ? props.color : primaryColor)};
+`;
 
 export const StyledPlusCircle = styled(PlusCircle)`
   width: 24px;

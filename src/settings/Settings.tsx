@@ -9,7 +9,11 @@ import {
 import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
 import { Redirect } from "react-router";
-import { StyledLogOut, StyledDeleteIcon } from "../components/StyledSvgIcons";
+import {
+  StyledLogOut,
+  StyledDeleteIcon,
+  StyledSettingsIcon
+} from "../components/StyledSvgIcons";
 import styled from "styled-components";
 import { GroupDataContext } from "../context/GroupDataContext";
 
@@ -40,6 +44,7 @@ export const Settings = () => {
   const { groupData } = useContext(GroupDataContext);
   const [leave, setLeave] = useState(false);
   const [leaveGroupConfirm, setLeaveGroupConfirm] = useState(false);
+  const [gotoAdmin, setGotoAdmin] = useState(false);
 
   const handleLeaveGroupButtonClick = () => {
     setLeaveGroupConfirm(true);
@@ -60,6 +65,10 @@ export const Settings = () => {
 
   if (leave) {
     return <Redirect to="/" push />;
+  }
+
+  if (gotoAdmin) {
+    return <Redirect to="/admin" push />;
   }
 
   return (
@@ -86,8 +95,10 @@ export const Settings = () => {
       {groupData.owner === user.uid && (
         <SpaceBetween>
           <span>Administrer gruppe</span>
-          <StyledSecondaryActionButtonWithMargins>
-            <StyledDeleteIcon />
+          <StyledSecondaryActionButtonWithMargins
+            onClick={() => setGotoAdmin(true)}
+          >
+            <StyledSettingsIcon />
           </StyledSecondaryActionButtonWithMargins>
         </SpaceBetween>
       )}
