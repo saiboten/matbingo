@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { RecipeType, RecipeWithRatingType } from "../../types";
+import { RecipeType, RecipeWithRatingType, ScoreDetails } from "../../types";
 import { RecipeDetails } from "../RecipeDetail";
 import {
   StyledActionButtonWithMargins,
@@ -85,7 +85,7 @@ const findRecipe = (date: Date, userData: UserData) => {
               ? bestRecipe
               : testRecipe
         );
-        resolve(bestRecipe);
+        resolve({ bestRecipe, logThis });
       });
   });
 };
@@ -103,12 +103,18 @@ const initialState: RecipeType = {
 
 export const Random = ({ date, back }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
+  const [scoreDetails, setScoreDetails]: [any[], any] = useState([]);
 
   const userdata = useContext(UserDataContext).userdata;
 
   useEffect(() => {
-    findRecipe(date, userdata).then(recipe => setRecipe(recipe));
+    findRecipe(date, userdata).then((data: any) => {
+      setRecipe(data.bestRecipe);
+      setScoreDetails(data.logThis);
+    });
   }, []);
+
+  console.log(scoreDetails);
 
   return (
     <>
@@ -125,13 +131,35 @@ export const Random = ({ date, back }: Props) => {
         </StyledActionButtonWithMargins>
         <StyledActionButtonWithMargins
           onClick={() =>
-            findRecipe(date, userdata).then(recipe => setRecipe(recipe))
+            findRecipe(date, userdata).then(({ bestRecipe, logThis }: any) => {
+              setRecipe(bestRecipe);
+              setScoreDetails(logThis);
+            })
           }
         >
           <StyledRotate />
         </StyledActionButtonWithMargins>
       </StyledButtonContainer>
       <RecipeDetails recipe={recipe} />
+      {scoreDetails.length > 0 &&
+        scoreDetails.map(
+          (
+            {
+              name,
+              totalScore,
+              dateScore,
+              frequencyScore,
+              neverEatenScore,
+              randomScore
+            },
+            index
+          ) => (
+            <li style={{ marginBottom: "1rem", textAlign: "left" }} key={index}>
+              {name}. Tot: {totalScore}. Date: {dateScore}. Freq:{" "}
+              {frequencyScore}. Never: {neverEatenScore}. Random: {randomScore}
+            </li>
+          )
+        )}
     </>
   );
 };
