@@ -101,6 +101,8 @@ const initialState: RecipeType = {
   hasBeenSelected: false
 };
 
+const StyledTd = styled.td``;
+
 export const Random = ({ date, back }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [scoreDetails, setScoreDetails]: [any[], any] = useState([]);
@@ -141,25 +143,42 @@ export const Random = ({ date, back }: Props) => {
         </StyledActionButtonWithMargins>
       </StyledButtonContainer>
       <RecipeDetails recipe={recipe} />
-      {scoreDetails.length > 0 &&
-        scoreDetails.map(
-          (
-            {
-              name,
-              totalScore,
-              dateScore,
-              frequencyScore,
-              neverEatenScore,
-              randomScore
-            },
-            index
-          ) => (
-            <li style={{ marginBottom: "1rem", textAlign: "left" }} key={index}>
-              {name}. Tot: {totalScore}. Date: {dateScore}. Freq:{" "}
-              {frequencyScore}. Never: {neverEatenScore}. Random: {randomScore}
-            </li>
-          )
-        )}
+      <table>
+        <tr>
+          <th style={{ width: "130px", overflow: "hidden" }}>Navn</th>
+          <th>Tot</th>
+          <th>Dato</th>
+          <th>Frek</th>
+          <th>Never</th>
+          <th>Rand</th>
+        </tr>
+        {scoreDetails.length > 0 &&
+          scoreDetails.map(
+            (
+              {
+                name,
+                totalScore,
+                dateScore,
+                frequencyScore,
+                neverEatenScore,
+                randomScore
+              },
+              index
+            ) => (
+              <tr
+                style={{ marginBottom: "1rem", textAlign: "left" }}
+                key={index}
+              >
+                <StyledTd>{name}</StyledTd>
+                <StyledTd>{totalScore}</StyledTd>
+                <StyledTd>{dateScore}</StyledTd>
+                <StyledTd>{frequencyScore}</StyledTd>
+                <StyledTd>{neverEatenScore}</StyledTd>
+                <StyledTd>{randomScore}</StyledTd>
+              </tr>
+            )
+          )}
+      </table>
     </>
   );
 };
