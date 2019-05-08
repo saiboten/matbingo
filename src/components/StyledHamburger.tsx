@@ -41,8 +41,8 @@ export const StyledLines = styled.div<Props>`
 
 export const StyledWrapper = styled.div`
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 5px;
+  right: 5px;
   background-color: white;
   cursor: pointer;
   border: 1px solid black;
