@@ -40,7 +40,7 @@ const addFrequencyScore = (timeSinceEnjoyedScore: number, frequency: number) =>
   frequency * timeSinceEnjoyedScore;
 
 const addNeverEatenScore = (hasBeenEaten: boolean | undefined) =>
-  hasBeenEaten ? 0 : 1000;
+  hasBeenEaten ? 0 : 10;
 
 export const calculate = (
   date: Date,
