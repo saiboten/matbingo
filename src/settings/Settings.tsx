@@ -84,14 +84,16 @@ export const Settings = () => {
           <StyledLogOut />
         </StyledSecondaryActionButtonWithMargins>{" "}
       </SpaceBetween>
-      <SpaceBetween>
-        <span>Forlat gruppe</span>
-        <StyledSecondaryActionButtonWithMargins
-          onClick={handleLeaveGroupButtonClick}
-        >
-          <StyledDeleteIcon />
-        </StyledSecondaryActionButtonWithMargins>
-      </SpaceBetween>
+      {groupData.id !== "" && (
+        <SpaceBetween>
+          <span>Forlat gruppe</span>
+          <StyledSecondaryActionButtonWithMargins
+            onClick={handleLeaveGroupButtonClick}
+          >
+            <StyledDeleteIcon />
+          </StyledSecondaryActionButtonWithMargins>
+        </SpaceBetween>
+      )}
       {groupData.owner === user.uid && (
         <SpaceBetween>
           <span>Administrer gruppe</span>

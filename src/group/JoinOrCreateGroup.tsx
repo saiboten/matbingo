@@ -9,6 +9,7 @@ import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
 import { Route } from "react-router-dom";
 import { CreateGroup } from "./CreateGroup";
 import { StyledLink } from "../components/StyledLink";
+import { Settings } from "../settings/Settings";
 
 const StyledLi = styled.li`
   display: flex;
@@ -21,6 +22,7 @@ export const JoinGroupRouter = () => {
   return (
     <>
       <Route path="/" exact component={JoinOrCreateGroup} />
+      <Route path="/settings" component={Settings} />
       <Route path="/create-group/" component={CreateGroup} />
     </>
   );
