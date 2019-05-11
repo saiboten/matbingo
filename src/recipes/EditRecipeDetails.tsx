@@ -33,13 +33,22 @@ interface Params {
 
 interface Props extends RouteComponentProps<Params> {}
 
-const onSubmit = (documentId: string, values: any, form: any, group: string) => {
+const onSubmit = (
+  documentId: string,
+  values: any,
+  form: any,
+  group: string
+) => {
   const db = firebase.firestore();
   values.ingredients = values.ingredients ? values.ingredients : [];
 
-  const createThese = values.ingredients.filter((el: any) => el.__isNew__).map((el: any) => el.label);
+  const createThese = values.ingredients
+    .filter((el: any) => el.__isNew__)
+    .map((el: any) => el.label);
 
-  values.ingredients = values.ingredients.filter((el: any) => typeof el.__isNew__ === "undefined");
+  values.ingredients = values.ingredients.filter(
+    (el: any) => typeof el.__isNew__ === "undefined"
+  );
 
   const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
     db.collection("ingredients").add({
@@ -56,7 +65,9 @@ const onSubmit = (documentId: string, values: any, form: any, group: string) => 
       .update({
         ...values,
         rating: parseInt(values.rating, 10),
-        ingredients: values.ingredients.map((el: Option) => el.value).concat(newIds)
+        ingredients: values.ingredients
+          .map((el: Option) => el.value)
+          .concat(newIds)
       });
   });
 };
@@ -104,7 +115,9 @@ export const EditRecipeDetails = ({
     return <StyledLoader />;
   }
 
-  const recipeDetails: RecipeType = recipes.recipes.find(recipe => recipe.id === id) || {
+  const recipeDetails: RecipeType = recipes.recipes.find(
+    recipe => recipe.id === id
+  ) || {
     name: "",
     description: "",
     id: "",
@@ -129,7 +142,9 @@ export const EditRecipeDetails = ({
         initialValues={{
           ...recipeDetails,
           ingredients: recipeDetails.ingredients.map((el: string) => {
-            const found = ingredients.ingredients.find((option: Ingredient) => option.id === el) || {
+            const found = ingredients.ingredients.find(
+              (option: Ingredient) => option.id === el
+            ) || {
               name: "",
               id: ""
             };
@@ -165,8 +180,14 @@ export const EditRecipeDetails = ({
                       <StyledInputLabel>Oppskrift</StyledInputLabel>
 
                       <StyledInputWrapper>
-                        {meta.error && meta.touched && <StyledError>{meta.error}</StyledError>}
-                        <StyledInput autoComplete="off" placeholder="Navn på oppskrift" {...input} />
+                        {meta.error && meta.touched && (
+                          <StyledError>{meta.error}</StyledError>
+                        )}
+                        <StyledInput
+                          autoComplete="off"
+                          placeholder="Navn på oppskrift"
+                          {...input}
+                        />
                       </StyledInputWrapper>
                     </>
                   )}
@@ -178,8 +199,14 @@ export const EditRecipeDetails = ({
                     <>
                       <StyledInputLabel>Beskrivelse</StyledInputLabel>
                       <StyledInputWrapper>
-                        {meta.error && meta.touched && <StyledError>{meta.error}</StyledError>}
-                        <StyledTextArea autoComplete="off" placeholder="Beskrivelse" {...input} />
+                        {meta.error && meta.touched && (
+                          <StyledError>{meta.error}</StyledError>
+                        )}
+                        <StyledTextArea
+                          autoComplete="off"
+                          placeholder="Beskrivelse"
+                          {...input}
+                        />
                       </StyledInputWrapper>
                     </>
                   )}
@@ -205,34 +232,115 @@ export const EditRecipeDetails = ({
               </IngredientsContext.Consumer>
 
               <div>
-                <div>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="monday" /> Mandag
-                  </StyledInputLabel>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="tuesday" /> Tirsdag
-                  </StyledInputLabel>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="wednesday" /> Onsdag
-                  </StyledInputLabel>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="thursday" /> Torsdag
-                  </StyledInputLabel>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="friday" /> Fredag
-                  </StyledInputLabel>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="saturday" /> Lørdag
-                  </StyledInputLabel>
-                  <StyledInputLabel>
-                    <Field name="weekdays" component="input" type="checkbox" value="sunday" /> Søndag
-                  </StyledInputLabel>
-                </div>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="monday"
+                  />{" "}
+                  Mandag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="tuesday"
+                  />{" "}
+                  Tirsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="wednesday"
+                  />{" "}
+                  Onsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="thursday"
+                  />{" "}
+                  Torsdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="friday"
+                  />{" "}
+                  Fredag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="saturday"
+                  />{" "}
+                  Lørdag
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="weekdays"
+                    component="input"
+                    type="checkbox"
+                    value="sunday"
+                  />{" "}
+                  Søndag
+                </StyledInputLabel>
+              </div>
+              <div>
+                <label style={{ display: "block" }}>Type rett</label>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="meat"
+                  />{" "}
+                  Kjøtt
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="fish"
+                  />{" "}
+                  Fisk
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="vegetarian"
+                  />{" "}
+                  Vegetar
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="other"
+                  />{" "}
+                  Annet
+                </StyledInputLabel>
               </div>
 
               <StyledButton type="submit">Oppdater</StyledButton>
             </StyledForm>
-            <StyledActionButton onClick={() => deleteItem(recipeDetails.id, setNextPage)}>
+            <StyledActionButton
+              onClick={() => deleteItem(recipeDetails.id, setNextPage)}
+            >
               <StyledDeleteIcon color="white" />
             </StyledActionButton>
           </React.Fragment>

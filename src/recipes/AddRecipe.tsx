@@ -242,6 +242,45 @@ export function AddRecipe() {
                   Søndag
                 </StyledInputLabel>
               </div>
+              <div>
+                <label style={{ display: "block" }}>Type rett</label>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="meat"
+                  />{" "}
+                  Kjøtt
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="fish"
+                  />{" "}
+                  Fisk
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="vegetarian"
+                  />{" "}
+                  Vegetar
+                </StyledInputLabel>
+                <StyledInputLabel>
+                  <Field
+                    name="recipetype"
+                    component="input"
+                    type="checkbox"
+                    value="other"
+                  />{" "}
+                  Annet
+                </StyledInputLabel>
+              </div>
               <StyledButton type="submit" disabled={pristine || submitting}>
                 Legg til
               </StyledButton>
