@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { Day } from "./Day";
 import { startOfDay, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
-import { StyledActionButtonWithMargins } from "../components/StyledActionButton";
+import {
+  StyledActionButtonWithMargins,
+  StyledActionButtonForText
+} from "../components/StyledActionButton";
 import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
 import {
   StyledHeaderH1,
@@ -74,6 +77,11 @@ export const Week = () => {
     startOfDay(new Date())
   );
 
+  const [addToTrelloDays, setAddToTrelloDays]: [Date[], any] = useState([]);
+  const [addToTrelloActive, setAddToTrelloActive]: [boolean, any] = useState(
+    false
+  );
+
   const listOfDays = new Array(7)
     .fill("")
     .map((el: any, index: number) => addDays(selectedDay, index));
@@ -86,11 +94,24 @@ export const Week = () => {
       <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       <StyledDayList>
         {listOfDays.map((el: any) => (
-          <Day key={el} date={el} />
+          <Day
+            key={el}
+            date={el}
+            addToTrelloActive={addToTrelloActive}
+            addToShoppingCart={date => {
+              setAddToTrelloDays([date, ...addToTrelloDays]);
+            }}
+          />
         ))}
       </StyledDayList>
       <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-      <AddToTrello listOfDays={listOfDays} />
+      {addToTrelloActive ? (
+        <AddToTrello listOfDays={addToTrelloDays} />
+      ) : (
+        <StyledActionButtonForText onClick={() => setAddToTrelloActive(true)}>
+          Lag handleliste
+        </StyledActionButtonForText>
+      )}
     </StyledWideWrapper>
   );
 };

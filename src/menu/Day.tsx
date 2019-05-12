@@ -18,6 +18,8 @@ import {
 
 interface Props {
   date: Date;
+  addToTrelloActive: boolean;
+  addToShoppingCart: (date: Date) => void;
 }
 
 interface StyledDayProps {
@@ -126,7 +128,7 @@ const DeleteDay = ({
   );
 };
 
-export const Day = ({ date }: Props) => {
+export const Day = ({ date, addToTrelloActive, addToShoppingCart }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
@@ -204,6 +206,13 @@ export const Day = ({ date }: Props) => {
               <>
                 {today && <div>I dag skal vi kose oss med: </div>}
                 <RecipeDetails recipe={recipe} />
+                {addToTrelloActive && (
+                  <StyledActionButtonForText
+                    onClick={() => addToShoppingCart(date)}
+                  >
+                    Legg til
+                  </StyledActionButtonForText>
+                )}
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </>
             )}

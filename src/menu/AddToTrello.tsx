@@ -128,13 +128,17 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
     return <div />;
   }
 
+  if (listOfDays.length == 0) {
+    return <div>Du må velge noen dager å generere for</div>;
+  }
+
   if (done) {
-    return <div>Handleliste generert</div>;
+    return <div style={{ backgroundColor: "white" }}>Handleliste generert</div>;
   }
 
   return (
     <StyledButton onClick={() => addWeekToTrello(listOfDays)}>
-      Generer handleliste
+      OK, lag den da.
     </StyledButton>
   );
 };
