@@ -137,8 +137,11 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   }
 
   return (
-    <StyledButton onClick={() => addWeekToTrello(listOfDays)}>
-      OK, lag den da.
-    </StyledButton>
+    <div>
+      <div>Antall dager valg: {listOfDays.length}</div>
+      <StyledButton onClick={() => addWeekToTrello(listOfDays)}>
+        OK, lag den da.
+      </StyledButton>
+    </div>
   );
 };

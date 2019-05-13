@@ -16,6 +16,7 @@ import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
+import { array } from "prop-types";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -98,8 +99,13 @@ export const Week = () => {
             key={el}
             date={el}
             addToTrelloActive={addToTrelloActive}
-            addToShoppingCart={date => {
-              setAddToTrelloDays([date, ...addToTrelloDays]);
+            isShoppingCartActive={dateExists(addToTrelloDays, el)}
+            toggleShoppingCart={date => {
+              if (dateExists(addToTrelloDays, date)) {
+                setAddToTrelloDays(deleteDate(addToTrelloDays, date));
+              } else {
+                setAddToTrelloDays([date, ...addToTrelloDays]);
+              }
             }}
           />
         ))}
@@ -115,3 +121,13 @@ export const Week = () => {
     </StyledWideWrapper>
   );
 };
+
+function deleteDate(addToTrelloDays: Date[], date: Date): any {
+  return addToTrelloDays.filter(el => el.toString() !== date.toString());
+}
+
+function dateExists(addToTrelloDays: Date[], date: Date) {
+  return (
+    addToTrelloDays.filter(el => el.toString() == date.toString()).length > 0
+  );
+}

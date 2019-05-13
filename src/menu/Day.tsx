@@ -13,17 +13,21 @@ import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import {
   StyledActionButtonForText,
-  StyledSecondaryActionButtonForText
+  StyledSecondaryActionButtonForText,
+  StyledActionButtonWithMargins
 } from "../components/StyledActionButton";
+import { StyledCheck } from "../components/StyledSvgIcons";
 
 interface Props {
   date: Date;
   addToTrelloActive: boolean;
-  addToShoppingCart: (date: Date) => void;
+  toggleShoppingCart: (date: Date) => void;
+  isShoppingCartActive: boolean;
 }
 
 interface StyledDayProps {
   active: boolean;
+  selected: boolean;
 }
 
 const StyledDay = styled.div<StyledDayProps>`
@@ -37,7 +41,6 @@ const StyledDay = styled.div<StyledDayProps>`
   margin: 5px;
   min-height: 100px;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
-  background-color: #fff;
   color: #000;
 
   border: ${props =>
@@ -46,6 +49,8 @@ const StyledDay = styled.div<StyledDayProps>`
   @media screen and (max-width: 530px) {
     width: 100%;
   }
+
+  background-color: ${props => (props.selected ? "red" : "#fff")};
 `;
 
 const StyledDate = styled.div`
@@ -128,7 +133,12 @@ const DeleteDay = ({
   );
 };
 
-export const Day = ({ date, addToTrelloActive, addToShoppingCart }: Props) => {
+export const Day = ({
+  date,
+  addToTrelloActive,
+  toggleShoppingCart,
+  isShoppingCartActive
+}: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
@@ -183,7 +193,7 @@ export const Day = ({ date, addToTrelloActive, addToShoppingCart }: Props) => {
   const today = isToday(date);
 
   return (
-    <StyledDay active={today}>
+    <StyledDay active={today} selected={isShoppingCartActive}>
       <StyledDate>
         {format(date, "dddd DD.MM", { locale: nbLocale })}
       </StyledDate>
@@ -203,18 +213,15 @@ export const Day = ({ date, addToTrelloActive, addToShoppingCart }: Props) => {
               </>
             )}
             {recipe.name !== "" && (
-              <>
+              <div
+                onClick={() =>
+                  addToTrelloActive ? toggleShoppingCart(date) : null
+                }
+              >
                 {today && <div>I dag skal vi kose oss med: </div>}
                 <RecipeDetails recipe={recipe} />
-                {addToTrelloActive && (
-                  <StyledActionButtonForText
-                    onClick={() => addToShoppingCart(date)}
-                  >
-                    Legg til
-                  </StyledActionButtonForText>
-                )}
                 <DeleteDay documentId={dayData.id} reset={reset} />
-              </>
+              </div>
             )}
             {recipe.name === "" && !dayData.description && (
               <GenerateDay date={date} />
