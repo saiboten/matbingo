@@ -50,7 +50,7 @@ const StyledDay = styled.div<StyledDayProps>`
     width: 100%;
   }
 
-  background-color: ${props => (props.selected ? "red" : "#fff")};
+  background-color: ${props => (props.selected ? `${primaryColor}` : "#fff")};
 `;
 
 const StyledDate = styled.div`

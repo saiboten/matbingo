@@ -64,7 +64,7 @@ const findRecipe = (date: Date, userData: UserData) => {
         const recipesWithRating = recipes.map(
           (recipe: RecipeWithRatingType) => ({
             ...recipe,
-            score: calculate(date, recipe, 50)
+            score: calculate(date, recipe, 20)
           })
         );
         const logThis = recipesWithRating.map(({ name, score }: any) => ({

@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import styled from "styled-components";
 import { StyledActionButton } from "../components/StyledActionButton";
 import { UserDataContext } from "../context/UserDataContext";
 import { RecipeContext } from "../context/RecipeContext";
@@ -15,6 +16,12 @@ interface CreateCardResponse {
 interface CreateChecklistResponse {
   id: string;
 }
+
+const Wrapper = styled.div`
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+`;
 
 export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   const [loading, setLoading]: [boolean, any] = useState(false);
@@ -129,19 +136,25 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
   }
 
   if (listOfDays.length == 0) {
-    return <div>Du må velge noen dager å generere for</div>;
+    return <Wrapper>Du må velge noen dager å generere for</Wrapper>;
   }
 
   if (done) {
-    return <div style={{ backgroundColor: "white" }}>Handleliste generert</div>;
+    return <Wrapper>Handleliste generert</Wrapper>;
   }
 
   return (
-    <div>
-      <div>Antall dager valg: {listOfDays.length}</div>
+    <Wrapper
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
+      }}
+    >
+      <div>Antall dager valgt: {listOfDays.length}</div>
       <StyledButton onClick={() => addWeekToTrello(listOfDays)}>
-        OK, lag den da.
+        Generer handleliste
       </StyledButton>
-    </div>
+    </Wrapper>
   );
 };
