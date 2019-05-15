@@ -110,6 +110,7 @@ export const EditRecipeDetails = ({
 
   const [nextPage, setNextPage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   if (ingredients.ingredients.length == 0) {
     return <StyledLoader />;
@@ -339,7 +340,15 @@ export const EditRecipeDetails = ({
               <StyledButton type="submit">Oppdater</StyledButton>
             </StyledForm>
             <StyledActionButton
-              onClick={() => deleteItem(recipeDetails.id, setNextPage)}
+              style={{
+                transition: "all .3s",
+                transform: `scale(${confirmDelete ? 1.4 : 1})`
+              }}
+              onClick={() =>
+                confirmDelete
+                  ? deleteItem(recipeDetails.id, setNextPage)
+                  : setConfirmDelete(true)
+              }
             >
               <StyledDeleteIcon color="white" />
             </StyledActionButton>
