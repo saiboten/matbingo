@@ -74,6 +74,10 @@ export const Settings = () => {
   return (
     <StyledWrapper backgroundColor="white">
       <StyledHeaderH1>Innstillinger</StyledHeaderH1>
+      <div style={{ marginBottom: "1rem" }}>
+        Du er medlem av gruppen{" "}
+        <span style={{ fontWeight: "bold" }}>{groupData.name}</span>
+      </div>
       <SpaceBetween>
         <span>Logg ut</span>
         <StyledSecondaryActionButtonWithMargins
