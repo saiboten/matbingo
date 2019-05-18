@@ -17,6 +17,7 @@ import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
 import { array } from "prop-types";
+import { Filter } from "./Filter";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -83,6 +84,8 @@ export const Week = () => {
     false
   );
 
+  const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
+
   const listOfDays = new Array(7)
     .fill("")
     .map((el: any, index: number) => addDays(selectedDay, index));
@@ -92,12 +95,17 @@ export const Week = () => {
       <StyledAlternateHeaderH1>
         Ukesmeny uke {getISOWeek(selectedDay)}
       </StyledAlternateHeaderH1>
+      <Filter
+        activeFilters={activeFilters}
+        setActiveFilters={setActiveFilters}
+      />
       <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       <StyledDayList>
         {listOfDays.map((el: any) => (
           <Day
             key={el}
             date={el}
+            activeFilters={activeFilters}
             addToTrelloActive={addToTrelloActive}
             isShoppingCartActive={dateExists(addToTrelloDays, el)}
             toggleShoppingCart={date => {

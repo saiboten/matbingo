@@ -9,6 +9,7 @@ import {
   StyledWrite,
   StyledDice
 } from "../components/StyledSvgIcons";
+import { Filter } from "./Filter";
 
 const StyledButtons = styled.div`
   margin-top: 2rem;
@@ -62,13 +63,21 @@ const SelectAction = ({
   </StyledButtons>
 );
 
-export const GenerateDay = ({ date }: { date: Date }) => {
+export const GenerateDay = ({
+  date,
+  activeFilters
+}: {
+  date: Date;
+  activeFilters: Filter[];
+}) => {
   const [action, setAction]: [string, any] = useState("");
 
   const resetAction = () => setAction("");
 
   if (action === "random") {
-    return <Random back={resetAction} date={date} />;
+    return (
+      <Random back={resetAction} date={date} activeFilters={activeFilters} />
+    );
   } else if (action === "find") {
     return <Find date={date} back={resetAction} />;
   } else if (action === "manual") {

@@ -17,12 +17,14 @@ import {
   StyledActionButtonWithMargins
 } from "../components/StyledActionButton";
 import { StyledCheck } from "../components/StyledSvgIcons";
+import { Filter } from "./Filter";
 
 interface Props {
   date: Date;
   addToTrelloActive: boolean;
   toggleShoppingCart: (date: Date) => void;
   isShoppingCartActive: boolean;
+  activeFilters: Filter[];
 }
 
 interface StyledDayProps {
@@ -67,7 +69,8 @@ const initialState: RecipeType = {
   weekdays: [],
   lastTimeSelected: new Date(),
   rating: 1,
-  hasBeenSelected: false
+  hasBeenSelected: false,
+  recipetype: undefined
 };
 
 interface DayData {
@@ -137,7 +140,8 @@ export const Day = ({
   date,
   addToTrelloActive,
   toggleShoppingCart,
-  isShoppingCartActive
+  isShoppingCartActive,
+  activeFilters
 }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
@@ -224,7 +228,7 @@ export const Day = ({
               </div>
             )}
             {recipe.name === "" && !dayData.description && (
-              <GenerateDay date={date} />
+              <GenerateDay date={date} activeFilters={activeFilters} />
             )}
           </>
         )}

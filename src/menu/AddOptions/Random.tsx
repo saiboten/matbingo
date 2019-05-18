@@ -14,10 +14,12 @@ import {
   StyledRotate
 } from "../../components/StyledSvgIcons";
 import { UserDataContext, UserData } from "../../context/UserDataContext";
+import { Filter } from "../Filter";
 
 interface Props {
   date: Date;
   back: () => void;
+  activeFilters: Filter[];
 }
 
 const storeSelectedRecipe = (date: Date, recipeId: string, group: string) => {
@@ -47,19 +49,35 @@ const StyledButtonContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const findRecipe = (date: Date, userData: UserData) => {
+const findRecipe = (
+  date: Date,
+  userData: UserData,
+  activeFilters: Filter[]
+) => {
   return new Promise(resolve => {
+    const filterFunctions = activeFilters.map(filter => filter.filter);
+
     firebase
       .firestore()
       .collection("recipes")
       .where("group", "==", userData.group)
       .get()
       .then(snapshot => {
-        const recipes = snapshot.docs.map((doc: any) => ({
+        const unfilteredRecipes = snapshot.docs.map((doc: any) => ({
           id: doc.id,
           ...doc.data(),
           lastTimeSelected: doc.data().lastTimeSelected.toDate()
         }));
+
+        // todo apply all filter functions
+        var recipes = filterFunctions.reduce(
+          (recipes, filter) => {
+            var filtered = filter(recipes);
+            console.log(filtered);
+            return filtered;
+          },
+          [...unfilteredRecipes]
+        );
 
         const recipesWithRating = recipes.map(
           (recipe: RecipeWithRatingType) => ({
@@ -98,19 +116,20 @@ const initialState: RecipeType = {
   weekdays: [],
   lastTimeSelected: new Date(),
   rating: 1,
-  hasBeenSelected: false
+  hasBeenSelected: false,
+  recipetype: []
 };
 
 const StyledTd = styled.td``;
 
-export const Random = ({ date, back }: Props) => {
+export const Random = ({ date, back, activeFilters }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [scoreDetails, setScoreDetails]: [any[], any] = useState([]);
 
   const userdata = useContext(UserDataContext).userdata;
 
   useEffect(() => {
-    findRecipe(date, userdata).then((data: any) => {
+    findRecipe(date, userdata, activeFilters).then((data: any) => {
       setRecipe(data.bestRecipe);
       setScoreDetails(data.logThis);
     });
@@ -133,10 +152,12 @@ export const Random = ({ date, back }: Props) => {
         </StyledActionButtonWithMargins>
         <StyledActionButtonWithMargins
           onClick={() =>
-            findRecipe(date, userdata).then(({ bestRecipe, logThis }: any) => {
-              setRecipe(bestRecipe);
-              setScoreDetails(logThis);
-            })
+            findRecipe(date, userdata, activeFilters).then(
+              ({ bestRecipe, logThis }: any) => {
+                setRecipe(bestRecipe);
+                setScoreDetails(logThis);
+              }
+            )
           }
         >
           <StyledRotate />
