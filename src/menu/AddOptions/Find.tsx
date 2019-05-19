@@ -45,7 +45,8 @@ const initialState: RecipeType = {
   weekdays: [],
   lastTimeSelected: new Date(),
   rating: 1,
-  hasBeenSelected: false
+  hasBeenSelected: false,
+  recipetype: []
 };
 
 const StyledActionBox = styled.div`
@@ -71,7 +72,9 @@ export const Find = ({ date, back }: Props) => {
           <StyledBack />
         </StyledSecondaryActionButtonWithMargins>
         {confirm && (
-          <StyledActionButtonWithMargins onClick={() => storeSelectedRecipe(date, recipe.id, userData.group)}>
+          <StyledActionButtonWithMargins
+            onClick={() => storeSelectedRecipe(date, recipe.id, userData.group)}
+          >
             <StyledCheck />
           </StyledActionButtonWithMargins>
         )}

@@ -126,7 +126,8 @@ export const EditRecipeDetails = ({
     weekdays: [],
     lastTimeSelected: new Date(),
     rating: 1,
-    hasBeenSelected: false
+    hasBeenSelected: false,
+    recipetype: []
   };
 
   if (nextPage !== "") {

@@ -70,7 +70,7 @@ const initialState: RecipeType = {
   lastTimeSelected: new Date(),
   rating: 1,
   hasBeenSelected: false,
-  recipetype: undefined
+  recipetype: []
 };
 
 interface DayData {
