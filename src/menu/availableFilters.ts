@@ -17,10 +17,5 @@ export const availableFilters = () => [
       inputList.filter(
         el => el.recipetype && el.recipetype.includes("vegetarian")
       )
-  },
-  {
-    name: "Annet",
-    filter: (inputList: RecipeType[]) =>
-      inputList.filter(el => el.recipetype && el.recipetype.includes("other"))
   }
 ];
