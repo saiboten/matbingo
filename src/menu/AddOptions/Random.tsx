@@ -94,16 +94,20 @@ const findRecipe = (
           logThis.sort((el1, el2) => el2.totalScore - el1.totalScore)
         );
 
-        const bestRecipe = recipesWithRating.reduce(
-          (
-            bestRecipe: RecipeWithRatingType,
-            testRecipe: RecipeWithRatingType
-          ) =>
-            bestRecipe.score.totalScore > testRecipe.score.totalScore
-              ? bestRecipe
-              : testRecipe
-        );
-        resolve({ bestRecipe, logThis });
+        if (recipesWithRating.length === 0) {
+          resolve({ bestRecipe: undefined, logThis });
+        } else {
+          const bestRecipe = recipesWithRating.reduce(
+            (
+              bestRecipe: RecipeWithRatingType,
+              testRecipe: RecipeWithRatingType
+            ) =>
+              bestRecipe.score.totalScore > testRecipe.score.totalScore
+                ? bestRecipe
+                : testRecipe
+          );
+          resolve({ bestRecipe, logThis });
+        }
       });
   });
 };
@@ -163,7 +167,12 @@ export const Random = ({ date, back, activeFilters }: Props) => {
           <StyledRotate />
         </StyledActionButtonWithMargins>
       </StyledButtonContainer>
-      <RecipeDetails recipe={recipe} />
+      {recipe ? (
+        <RecipeDetails recipe={recipe} />
+      ) : (
+        <div>Fant ingen oppskrifter med valgte filtre</div>
+      )}
+
       <table>
         <tr>
           <th style={{ width: "130px", overflow: "hidden" }}>Navn</th>
