@@ -27,11 +27,21 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
 
   return (
     <div style={{ backgroundColor: "white", padding: "1rem" }}>
-      {availableFilters().map((el: any) => (
+      {availableFilters().map((el: Filter) => (
         <StyledInputLabel key={el.name}>
           <input
             type="checkbox"
-            onChange={() => setActiveFilters([el, ...activeFilters])}
+            onChange={() =>
+              activeFilters.some(
+                (activeFilter: Filter) => el.name === activeFilter.name
+              )
+                ? setActiveFilters(
+                    activeFilters.filter(
+                      (activeFilter: Filter) => el.name !== activeFilter.name
+                    )
+                  )
+                : setActiveFilters([el, ...activeFilters])
+            }
           />
           {el.name}
         </StyledInputLabel>

@@ -86,6 +86,8 @@ export const Week = () => {
 
   const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
 
+  activeFilters.map(el => console.log(el.name));
+
   const listOfDays = new Array(7)
     .fill("")
     .map((el: any, index: number) => addDays(selectedDay, index));
