@@ -119,7 +119,15 @@ const DeleteDay = ({
   };
 
   return (
-    <div style={{ textAlign: "right", marginTop: "10px" }}>
+    <div
+      style={{
+        position: "absolute",
+        right: "0",
+        bottom: "0",
+        marginRight: "5px",
+        marginBottom: "5px"
+      }}
+    >
       {showConfirm && (
         <StyledSecondaryActionButtonForText
           style={{ marginRight: "10px" }}
