@@ -26,7 +26,15 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
   }
 
   return (
-    <div style={{ backgroundColor: "white", padding: "1rem" }}>
+    <div
+      style={{
+        display: "flex",
+        backgroundColor: "white",
+        padding: "1rem",
+        justifyContent: "flex-start",
+        flexWrap: "wrap"
+      }}
+    >
       {availableFilters().map((el: Filter) => (
         <StyledInputLabel key={el.name}>
           <input
@@ -47,7 +55,7 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
         </StyledInputLabel>
       ))}
       <StyledActionButtonForText
-        style={{ float: "right" }}
+        style={{ marginLeft: "auto" }}
         onClick={() => setOpen(false)}
       >
         Lukk filtrering
