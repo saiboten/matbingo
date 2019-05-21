@@ -3,7 +3,8 @@ import { RecipeType, RecipeWithRatingType, ScoreDetails } from "../../types";
 import { RecipeDetails } from "../RecipeDetail";
 import {
   StyledActionButtonWithMargins,
-  StyledSecondaryActionButtonWithMargins
+  StyledSecondaryActionButtonWithMargins,
+  StyledActionButtonForText
 } from "../../components/StyledActionButton";
 import { firebase } from "../../firebase/firebase";
 import styled from "styled-components";
@@ -129,6 +130,7 @@ const StyledTd = styled.td``;
 export const Random = ({ date, back, activeFilters }: Props) => {
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [scoreDetails, setScoreDetails]: [any[], any] = useState([]);
+  const [showDetails, setShowDetails]: [boolean, any] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
 
@@ -175,42 +177,59 @@ export const Random = ({ date, back, activeFilters }: Props) => {
         <div>Fant ingen oppskrifter med valgte filtre</div>
       )}
 
-      <table>
-        <tr>
-          <th style={{ width: "130px", overflow: "hidden" }}>Navn</th>
-          <th>Tot</th>
-          <th>Dato</th>
-          <th>Frek</th>
-          <th>Never</th>
-          <th>Rand</th>
-        </tr>
-        {scoreDetails.length > 0 &&
-          scoreDetails.map(
-            (
-              {
-                name,
-                totalScore,
-                dateScore,
-                frequencyScore,
-                neverEatenScore,
-                randomScore
-              },
-              index
-            ) => (
-              <tr
-                style={{ marginBottom: "1rem", textAlign: "left" }}
-                key={index}
-              >
-                <StyledTd>{name}</StyledTd>
-                <StyledTd>{totalScore}</StyledTd>
-                <StyledTd>{dateScore}</StyledTd>
-                <StyledTd>{frequencyScore}</StyledTd>
-                <StyledTd>{neverEatenScore}</StyledTd>
-                <StyledTd>{randomScore}</StyledTd>
-              </tr>
-            )
-          )}
-      </table>
+      {showDetails ? (
+        <>
+          <StyledActionButtonForText
+            style={{ marginBottom: "1rem", marginTop: "1rem" }}
+            onClick={() => setShowDetails(false)}
+          >
+            Skjul score-detaljer
+          </StyledActionButtonForText>
+          <table>
+            <tr>
+              <th style={{ width: "130px", overflow: "hidden" }}>Navn</th>
+              <th>Tot</th>
+              <th>Dato</th>
+              <th>Frek</th>
+              <th>Never</th>
+              <th>Rand</th>
+            </tr>
+            {scoreDetails.length > 0 &&
+              scoreDetails.map(
+                (
+                  {
+                    name,
+                    totalScore,
+                    dateScore,
+                    frequencyScore,
+                    neverEatenScore,
+                    randomScore
+                  },
+                  index
+                ) => (
+                  <tr
+                    style={{ marginBottom: "1rem", textAlign: "left" }}
+                    key={index}
+                  >
+                    <StyledTd>{name}</StyledTd>
+                    <StyledTd>{totalScore}</StyledTd>
+                    <StyledTd>{dateScore}</StyledTd>
+                    <StyledTd>{frequencyScore}</StyledTd>
+                    <StyledTd>{neverEatenScore}</StyledTd>
+                    <StyledTd>{randomScore}</StyledTd>
+                  </tr>
+                )
+              )}
+          </table>
+        </>
+      ) : (
+        <StyledActionButtonForText
+          style={{ marginTop: "1rem" }}
+          onClick={() => setShowDetails(true)}
+        >
+          Se score-detaljer
+        </StyledActionButtonForText>
+      )}
     </>
   );
 };
