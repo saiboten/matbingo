@@ -147,13 +147,15 @@ export const Random = ({ date, back, activeFilters }: Props) => {
         <StyledSecondaryActionButtonWithMargins onClick={back}>
           <StyledBack />
         </StyledSecondaryActionButtonWithMargins>
-        <StyledActionButtonWithMargins
-          onClick={() => {
-            storeSelectedRecipe(date, recipe.id, userdata.group);
-          }}
-        >
-          <StyledCheck />
-        </StyledActionButtonWithMargins>
+        {recipe && (
+          <StyledActionButtonWithMargins
+            onClick={() => {
+              storeSelectedRecipe(date, recipe.id, userdata.group);
+            }}
+          >
+            <StyledCheck />
+          </StyledActionButtonWithMargins>
+        )}
         <StyledActionButtonWithMargins
           onClick={() =>
             findRecipe(date, userdata, activeFilters).then(
