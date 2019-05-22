@@ -39,6 +39,7 @@ const StyledDay = styled.div<StyledDayProps>`
   display: inline-block;
   padding: 20px 10px;
   padding-left: 2rem;
+  padding-bottom: 4.5rem;
   text-align: left;
   margin: 5px;
   min-height: 100px;
