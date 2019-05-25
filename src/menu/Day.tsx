@@ -90,7 +90,9 @@ const initialDayData: DayData = {
   description: undefined
 };
 
-const StyledDayContent = styled.div``;
+const StyledDayContent = styled.div`
+  text-align: center;
+`;
 
 const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
   margin-top: 42px;
