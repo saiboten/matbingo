@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { availableFilters } from "./availableFilters";
 import { StyledActionButtonForText } from "../components/StyledActionButton";
 import { RecipeType } from "../types";
 import { StyledInputLabel } from "../components/StyledInputLabel";
+import Select from "react-select";
+import { IngredientsContext } from "../context/IngredientsContext";
 
 interface Props {
   activeFilters: any;
@@ -16,6 +18,13 @@ export interface Filter {
 
 export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
   const [open, setOpen] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState(undefined);
+
+  const { ingredients } = useContext(IngredientsContext);
+
+  const handleChange = (selectedOption: any) => {
+    console.log(`Option selected:`, selectedOption);
+  };
 
   if (!open) {
     return (
@@ -35,6 +44,16 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
         flexWrap: "wrap"
       }}
     >
+      <Select
+        value={selectedIngredient}
+        onChange={handleChange}
+        isMulti
+        options={ingredients.map(({ name, id }) => ({
+          label: name,
+          value: id
+        }))}
+      />
+
       {availableFilters().map((el: Filter) => (
         <StyledInputLabel key={el.name}>
           <input
