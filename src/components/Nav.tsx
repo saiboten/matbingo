@@ -120,13 +120,13 @@ export const Nav = () => {
           {hasSelectedGroup && (
             <>
               <StyledLi>
-                <StyledLink onClick={() => setMenuActive(false)} to="/recipes">
-                  Oppskrifter
+                <StyledLink onClick={() => setMenuActive(false)} to="/">
+                  Ukesmeny
                 </StyledLink>
               </StyledLi>
               <StyledLi>
-                <StyledLink onClick={() => setMenuActive(false)} to="/">
-                  Ukesmeny
+                <StyledLink onClick={() => setMenuActive(false)} to="/recipes">
+                  Oppskrifter
                 </StyledLink>
               </StyledLi>
             </>
