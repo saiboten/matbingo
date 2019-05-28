@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
 import { GroupDataContext } from "../context/GroupDataContext";
@@ -10,21 +10,37 @@ import { StyledInputWrapper } from "../components/StyledInputWrapper";
 import { StyledError } from "../components/StyledError";
 import { StyledInput } from "../components/StyledInput";
 import { StyledButton } from "../components/StyledButton";
+import { StyledNotification } from "../components/StyledNotification";
+import { firebase } from "../firebase/firebase";
 
 export const AdminGroup = () => {
   const { groupData } = useContext(GroupDataContext);
+  const [showNotification, setShowNotification]: [boolean, any] = useState(
+    false
+  );
 
   const onSubmit = (values: any) => {
-    console.log(values);
+    if (values.groupName !== groupData.name) {
+      const db = firebase.firestore();
+      const groupDocRef = db.collection("groups").doc(groupData.id);
+      groupDocRef.update({
+        name: values.groupName
+      });
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
   };
 
   return (
     <StyledWrapper backgroundColor="white">
+      <StyledNotification text="Lagret" active={showNotification} />
       <StyledHeaderH1>Administrer gruppe</StyledHeaderH1>
       <StyledHeaderH2>Endre navn</StyledHeaderH2>
       <Form
         initialValues={{
-          groupName: "test"
+          groupName: groupData.name
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, pristine, invalid }) => (
@@ -49,7 +65,7 @@ export const AdminGroup = () => {
                 )}
               </Field>
             </StyledFieldSet>
-            <StyledButton type="submit">Endre</StyledButton>
+            <StyledButton type="submit">Lagre</StyledButton>
           </form>
         )}
       />
