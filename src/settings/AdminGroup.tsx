@@ -12,6 +12,8 @@ import { StyledInput } from "../components/StyledInput";
 import { StyledButton } from "../components/StyledButton";
 import { StyledNotification } from "../components/StyledNotification";
 import { firebase } from "../firebase/firebase";
+import { FieldArray } from "react-final-form-arrays";
+import arrayMutators from "final-form-arrays";
 
 export const AdminGroup = () => {
   const { groupData } = useContext(GroupDataContext);
@@ -20,12 +22,17 @@ export const AdminGroup = () => {
   );
 
   const onSubmit = (values: any) => {
+    console.log(values);
+    let isChanged = false;
     if (values.groupName !== groupData.name) {
+      isChanged = true;
       const db = firebase.firestore();
       const groupDocRef = db.collection("groups").doc(groupData.id);
       groupDocRef.update({
         name: values.groupName
       });
+    }
+    if (isChanged) {
       setShowNotification(true);
       setTimeout(() => {
         setShowNotification(false);
@@ -40,10 +47,21 @@ export const AdminGroup = () => {
       <StyledHeaderH2>Endre navn</StyledHeaderH2>
       <Form
         initialValues={{
-          groupName: groupData.name
+          groupName: groupData.name,
+          participants: groupData.invites
         }}
         onSubmit={onSubmit}
-        render={({ handleSubmit, pristine, invalid }) => (
+        mutators={{
+          ...arrayMutators
+        }}
+        render={({
+          handleSubmit,
+          pristine,
+          invalid,
+          form: {
+            mutators: { push, pop }
+          }
+        }) => (
           <form onSubmit={handleSubmit}>
             <StyledFieldSet>
               <Field name="groupName" component="input" type="text">
@@ -65,6 +83,43 @@ export const AdminGroup = () => {
                 )}
               </Field>
             </StyledFieldSet>
+            <StyledFieldSet>
+              <StyledButton
+                type="button"
+                onClick={() => push("participants", undefined)}
+              >
+                Legg til en epost til
+              </StyledButton>
+            </StyledFieldSet>
+            <FieldArray name="participants">
+              {({ fields }) =>
+                fields.map((name, index) => (
+                  <div
+                    key={name}
+                    style={{
+                      border: "1px solid black",
+                      marginBottom: "1rem",
+                      paddingRight: "1rem"
+                    }}
+                  >
+                    <StyledFieldSet>
+                      <StyledInputLabel>Epost</StyledInputLabel>
+                      <Field name={`${name}`} component="input">
+                        {({ input }: { input: any }) => (
+                          <StyledInput placeholder="Epost" {...input} />
+                        )}
+                      </Field>
+                      <span
+                        onClick={() => fields.remove(index)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        ❌
+                      </span>
+                    </StyledFieldSet>
+                  </div>
+                ))
+              }
+            </FieldArray>
             <StyledButton type="submit">Lagre</StyledButton>
           </form>
         )}
