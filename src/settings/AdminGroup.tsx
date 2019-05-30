@@ -22,22 +22,22 @@ export const AdminGroup = () => {
   );
 
   const onSubmit = (values: any) => {
-    console.log(values);
-    let isChanged = false;
+    const db = firebase.firestore();
+    const groupDocRef = db.collection("groups").doc(groupData.id);
     if (values.groupName !== groupData.name) {
-      isChanged = true;
-      const db = firebase.firestore();
-      const groupDocRef = db.collection("groups").doc(groupData.id);
       groupDocRef.update({
         name: values.groupName
       });
     }
-    if (isChanged) {
-      setShowNotification(true);
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 2000);
-    }
+
+    groupDocRef.update({
+      invites: values.participants
+    });
+
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
   };
 
   return (
