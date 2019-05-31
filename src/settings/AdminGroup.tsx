@@ -46,6 +46,12 @@ export const AdminGroup = () => {
       <StyledHeaderH1>Administrer gruppe</StyledHeaderH1>
       <StyledHeaderH2>Endre navn</StyledHeaderH2>
       <Form
+        validate={data => {
+          console.log(data);
+          return {
+            invites: "required"
+          };
+        }}
         initialValues={{
           groupName: groupData.name,
           participants: groupData.invites
