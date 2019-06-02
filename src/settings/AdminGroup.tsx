@@ -52,6 +52,14 @@ export const AdminGroup = () => {
             errorObj.groupName = "Du må oppgi et navn";
           }
 
+          errorObj.participants = [];
+
+          data.participants.forEach((participant: any, index: number) => {
+            if (!participant) {
+              errorObj.participants[index] = "Epost er påkrevd";
+            }
+          });
+
           return errorObj;
         }}
         initialValues={{
@@ -113,8 +121,13 @@ export const AdminGroup = () => {
                     <StyledFieldSet>
                       <StyledInputLabel>Epost</StyledInputLabel>
                       <Field name={`${name}`} component="input">
-                        {({ input }: { input: any }) => (
-                          <StyledInput placeholder="Epost" {...input} />
+                        {({ input, meta }: { input: any; meta: any }) => (
+                          <>
+                            {meta.error && meta.touched && (
+                              <StyledError>{meta.error}</StyledError>
+                            )}
+                            <StyledInput placeholder="Epost" {...input} />
+                          </>
                         )}
                       </Field>
                       <span
@@ -128,7 +141,9 @@ export const AdminGroup = () => {
                 ))
               }
             </FieldArray>
-            <StyledButton type="submit">Lagre</StyledButton>
+            <StyledButton type="submit" disabled={pristine || invalid}>
+              Lagre
+            </StyledButton>
           </form>
         )}
       />
