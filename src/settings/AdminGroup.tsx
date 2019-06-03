@@ -100,6 +100,7 @@ export const AdminGroup = () => {
               </Field>
             </StyledFieldSet>
             <StyledFieldSet>
+              <StyledInputLabel>Medlemmer</StyledInputLabel>
               <StyledButton
                 type="button"
                 onClick={() => push("participants", undefined)}

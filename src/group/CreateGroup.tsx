@@ -34,7 +34,9 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
     const doc = db
       .collection("groups")
       .add({
-        invites: groupInfo.participants.map(el => el.email),
+        invites: groupInfo
+          ? groupInfo.participants.map(el => el.email)
+          : undefined,
         members: [user.uid],
         owner: user.uid,
         name: groupInfo.groupName
