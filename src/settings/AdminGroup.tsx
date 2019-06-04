@@ -15,6 +15,11 @@ import { firebase } from "../firebase/firebase";
 import { FieldArray } from "react-final-form-arrays";
 import arrayMutators from "final-form-arrays";
 
+function validateEmail(email: string) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
 export const AdminGroup = () => {
   const { groupData } = useContext(GroupDataContext);
   const [showNotification, setShowNotification]: [boolean, any] = useState(
@@ -57,6 +62,8 @@ export const AdminGroup = () => {
           data.participants.forEach((participant: any, index: number) => {
             if (!participant) {
               errorObj.participants[index] = "Epost er påkrevd";
+            } else if (!validateEmail(participant)) {
+              errorObj.participants[index] = "Eposten har et ugyldig format";
             }
           });
 
