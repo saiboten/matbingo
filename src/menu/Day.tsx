@@ -219,11 +219,10 @@ export const Day = ({
           <>
             {dayData.description && (
               <>
-                {today && <div>I dag skal vi kose oss med: </div>}
+                {today && <div>Hva skjer i dag?: </div>}
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
-                <p>Ingen oppskrift denne dagen</p>
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </>
             )}
@@ -233,7 +232,7 @@ export const Day = ({
                   addToTrelloActive ? toggleShoppingCart(date) : null
                 }
               >
-                {today && <div>I dag skal vi kose oss med: </div>}
+                {today && <div>Dagens meny: </div>}
                 <RecipeDetails recipe={recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </div>
