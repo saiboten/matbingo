@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { firebase, googleAuthProvider, facebookAuthProvider } from "../firebase/firebase";
+import {
+  firebase,
+  googleAuthProvider,
+  facebookAuthProvider
+} from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { ReactComponent as GoogleIcon } from "./google.svg";
 import { ReactComponent as FacebookIcon } from "./facebook.svg";
 import { StyledSecondaryActionButtonWithMargins } from "../components/StyledActionButton";
-import { primaryColor } from "../components/Constants";
 
 const StyledFacebookIcon = styled(FacebookIcon)`
   fill: #4267b2;

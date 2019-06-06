@@ -2,7 +2,6 @@ import React from "react";
 import Select from "react-select";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { RecipeContext } from "../context/RecipeContext";
-import { primaryColor } from "../components/Constants";
 
 interface Option {
   label: string;

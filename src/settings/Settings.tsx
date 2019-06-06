@@ -51,7 +51,7 @@ export const Settings = () => {
   };
 
   const leaveGroup = () => {
-    const db = firebase
+    firebase
       .firestore()
       .collection("userdata")
       .doc(user.uid)

@@ -135,7 +135,7 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
     return <div />;
   }
 
-  if (listOfDays.length == 0) {
+  if (listOfDays.length === 0) {
     return <Wrapper>Du må velge noen dager å generere for</Wrapper>;
   }
 

@@ -71,10 +71,6 @@ const WeekSelector = ({
 export const Week = () => {
   const { recipes } = useContext(RecipeContext);
 
-  if (recipes.length == 0) {
-    return <NoRecipes />;
-  }
-
   const [selectedDay, setSelectedDay]: [Date, any] = useState(
     startOfDay(new Date())
   );
@@ -86,7 +82,9 @@ export const Week = () => {
 
   const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
 
-  activeFilters.map(el => console.log(el.name));
+  if (recipes.length == 0) {
+    return <NoRecipes />;
+  }
 
   const listOfDays = new Array(7)
     .fill("")

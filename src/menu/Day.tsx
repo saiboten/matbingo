@@ -2,21 +2,19 @@ import React, { useEffect, useState, useContext } from "react";
 import { format, isToday } from "date-fns";
 import styled from "styled-components";
 import { firebase } from "../firebase/firebase";
-import { RecipeType, Ingredient } from "../types";
+import { RecipeType } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
-import { primaryColor, secondaryColor } from "../components/Constants";
+import { primaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import {
   StyledActionButtonForText,
-  StyledSecondaryActionButtonForText,
-  StyledActionButtonWithMargins
+  StyledSecondaryActionButtonForText
 } from "../components/StyledActionButton";
-import { StyledCheck } from "../components/StyledSvgIcons";
 import { Filter } from "./Filter";
 
 interface Props {
@@ -202,7 +200,7 @@ export const Day = ({
         unsub();
       };
     },
-    [date]
+    [date, recipeContext.recipes, userdata.group]
   );
 
   const today = isToday(date);
