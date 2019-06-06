@@ -35,10 +35,18 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
       <StyledNotification text="Oppskrift slettet" active={feedbackActive} />
       <StyledHeaderH1>Oppskrifter</StyledHeaderH1>
 
-      {recipes.length > 0 && (
-        <StyledLink to="/find-recipes">Finn oppskrift</StyledLink>
-      )}
-      <StyledLink to="/add-recipe">Legg til oppskrift</StyledLink>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap"
+        }}
+      >
+        {recipes.length > 0 && (
+          <StyledLink to="/find-recipes">Finn oppskrift</StyledLink>
+        )}
+        <StyledLink to="/add-recipe">Legg til oppskrift</StyledLink>
+      </div>
     </>
   );
 };
