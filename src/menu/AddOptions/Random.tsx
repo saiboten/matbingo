@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { RecipeType, RecipeWithRatingType, ScoreDetails } from "../../types";
+import { RecipeType, RecipeWithRatingType } from "../../types";
 import { RecipeDetails } from "../RecipeDetail";
 import {
   StyledActionButtonWithMargins,
@@ -139,7 +139,7 @@ export const Random = ({ date, back, activeFilters }: Props) => {
       setRecipe(data.bestRecipe);
       setScoreDetails(data.logThis);
     });
-  }, []);
+  }, [activeFilters, date, userdata]);
 
   console.log(scoreDetails);
 

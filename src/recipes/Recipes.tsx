@@ -3,9 +3,7 @@ import { StyledWrapper } from "../components/StyledWrapper";
 import { RouteComponentProps } from "react-router";
 import { StyledNotification } from "../components/StyledNotification";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { StyledListItemLink } from "../components/StyledList";
 import { RecipeContext } from "../context/RecipeContext";
-import { Link } from "react-router-dom";
 import { StyledLink } from "../components/StyledLink";
 
 interface MatchParams {
@@ -28,7 +26,7 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
         setFeedbackActive(false);
       }, 2000);
     }
-  }, []);
+  }, [feedback]);
 
   return (
     <>

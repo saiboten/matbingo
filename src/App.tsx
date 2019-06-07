@@ -5,10 +5,7 @@ import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
 import { RecipeContext } from "./context/RecipeContext";
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
-import {
-  IngredientsContext,
-  IngredientsContextState
-} from "./context/IngredientsContext";
+import { IngredientsContext } from "./context/IngredientsContext";
 import { secondaryColor } from "./components/Constants";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
@@ -212,7 +209,7 @@ const AppRouter = () => {
         unsubIngredients();
       };
     },
-    [userdata.group]
+    [setGroupdata, setIngredients, setRecipes, setUser, setUserdata, userdata.group]
   );
 
   if (!state.loggedInStateClarified) {

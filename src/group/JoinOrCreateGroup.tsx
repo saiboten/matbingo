@@ -53,21 +53,24 @@ export const JoinOrCreateGroup = () => {
       });
   };
 
-  useEffect(() => {
-    const db = firebase.firestore();
+  useEffect(
+    () => {
+      const db = firebase.firestore();
 
-    db.collection("groups")
-      .where("invites", "array-contains", user.email)
-      .get()
-      .then(snapshot => {
-        setGroups(
-          snapshot.docs.map(el => ({
-            ...el.data(),
-            id: el.id
-          }))
-        );
-      });
-  }, []);
+      db.collection("groups")
+        .where("invites", "array-contains", user.email)
+        .get()
+        .then(snapshot => {
+          setGroups(
+            snapshot.docs.map(el => ({
+              ...el.data(),
+              id: el.id
+            }))
+          );
+        });
+    },
+    [user.email]
+  );
 
   return (
     <StyledWrapper backgroundColor="white">

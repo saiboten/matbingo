@@ -13,6 +13,7 @@ import { FieldArray } from "react-final-form-arrays";
 import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
 import { StyledList, StyledListItem } from "../components/StyledList";
+import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 
 interface Participant {
   name: string;
@@ -31,8 +32,7 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
   const createGroup = () => {
     const db = firebase.firestore();
     // Create group
-    const doc = db
-      .collection("groups")
+    db.collection("groups")
       .add({
         invites: groupInfo
           ? groupInfo.participants.map(el => el.email)
@@ -156,7 +156,7 @@ export const CreateGroup = () => {
                         onClick={() => fields.remove(index)}
                         style={{ cursor: "pointer" }}
                       >
-                        ❌
+                        <StyledDeleteIcon />
                       </span>
                     </StyledFieldSet>
                   </div>

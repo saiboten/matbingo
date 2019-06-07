@@ -17,8 +17,6 @@ import { createRatings } from "../components/StyledRatings";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { Redirect } from "react-router";
 import { UserDataContext } from "../context/UserDataContext";
-import { withTheme } from "styled-components";
-import { primaryColor } from "../components/Constants";
 import { StyledWrapper } from "../components/StyledWrapper";
 
 interface RecipeErrors {

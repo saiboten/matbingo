@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { Day } from "./Day";
 import { startOfDay, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
@@ -16,7 +15,6 @@ import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
-import { array } from "prop-types";
 import { Filter } from "./Filter";
 
 const StyledDayList = styled.div`
@@ -82,7 +80,7 @@ export const Week = () => {
 
   const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
 
-  if (recipes.length == 0) {
+  if (recipes.length === 0) {
     return <NoRecipes />;
   }
 
@@ -136,6 +134,6 @@ function deleteDate(addToTrelloDays: Date[], date: Date): any {
 
 function dateExists(addToTrelloDays: Date[], date: Date) {
   return (
-    addToTrelloDays.filter(el => el.toString() == date.toString()).length > 0
+    addToTrelloDays.filter(el => el.toString() === date.toString()).length > 0
   );
 }

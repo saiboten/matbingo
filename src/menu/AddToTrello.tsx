@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
-import { StyledActionButton } from "../components/StyledActionButton";
 import { UserDataContext } from "../context/UserDataContext";
 import { RecipeContext } from "../context/RecipeContext";
 import { IngredientsContext } from "../context/IngredientsContext";

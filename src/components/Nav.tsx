@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
 import { StyledHamburger } from "./StyledHamburger";
-import { StyledSecondaryActionButtonWithMargins } from "./StyledActionButton";
 import styled from "styled-components";
 import { minBreakPoint, primaryColor } from "./Constants";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
-import { firebase } from "../firebase/firebase";
-import { StyledLogOut } from "./StyledSvgIcons";
 import { UserDataContext } from "../context/UserDataContext";
 
 const StyledNav = styled(animated.nav)`
@@ -98,7 +95,7 @@ export const Nav = () => {
   const [menuActive, setMenuActive] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
-  const hasSelectedGroup = userdata.group != "";
+  const hasSelectedGroup = userdata.group !== "";
 
   const props = useSpring({
     transform: `translateX(${menuActive ? `0vh` : `-100vw`})`

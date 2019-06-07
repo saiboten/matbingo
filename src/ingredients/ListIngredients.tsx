@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import { firebase } from "../firebase/firebase";
 import { StyledListItem } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";

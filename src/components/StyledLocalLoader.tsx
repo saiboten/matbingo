@@ -1,4 +1,3 @@
-import * as React from "react";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Spinner } from "./svg/Loading.svg";
 import { primaryColor } from "./Constants";

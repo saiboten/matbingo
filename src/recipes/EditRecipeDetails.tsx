@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import CreatableSelect from "react-select/lib/Creatable";
 import { RecipeContext } from "../context/RecipeContext";
 import { RouteComponentProps, Redirect } from "react-router";
@@ -112,7 +112,7 @@ export const EditRecipeDetails = ({
   const [showNotification, setShowNotification] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  if (ingredients.ingredients.length == 0) {
+  if (ingredients.ingredients.length === 0) {
     return <StyledLoader />;
   }
 

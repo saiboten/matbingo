@@ -13,8 +13,10 @@ import { StyledNotification } from "../components/StyledNotification";
 import { firebase } from "../firebase/firebase";
 import { FieldArray } from "react-final-form-arrays";
 import arrayMutators from "final-form-arrays";
+import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 
 function validateEmail(email: string) {
+  // eslint-disable-next-line
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
@@ -139,9 +141,12 @@ export const AdminGroup = () => {
                       </Field>
                       <span
                         onClick={() => fields.remove(index)}
-                        style={{ cursor: "pointer" }}
+                        style={{
+                          cursor: "pointer",
+                          marginTop: "5px"
+                        }}
                       >
-                        ❌
+                        <StyledDeleteIcon />
                       </span>
                     </StyledFieldSet>
                   </div>
