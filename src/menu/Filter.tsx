@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { availableFilters } from "./availableFilters";
 import { StyledActionButtonForText } from "../components/StyledActionButton";
-import { RecipeType } from "../types";
+import { RecipeType, Ingredient } from "../types";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import Select from "react-select";
 import { IngredientsContext } from "../context/IngredientsContext";
@@ -16,14 +16,28 @@ export interface Filter {
   filter: (list: RecipeType[]) => RecipeType[];
 }
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
   const [open, setOpen] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState(undefined);
 
   const { ingredients } = useContext(IngredientsContext);
 
-  const handleChange = (selectedOption: any) => {
-    console.log(`Option selected:`, selectedOption);
+  const handleChange = (selectedOptions: any) => {
+    console.log(`Option selected:`, selectedOptions);
+    var newFilters = selectedOptions.map((selectedOption: Option) => ({
+      name: selectedOption.value,
+      filter: (list: RecipeType[]) =>
+        list.filter(recipe => recipe.ingredients.includes(selectedOption.value))
+    }));
+
+    console.log(newFilters);
+
+    setActiveFilters([...newFilters, ...activeFilters]);
   };
 
   if (!open) {
