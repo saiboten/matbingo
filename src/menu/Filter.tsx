@@ -11,9 +11,12 @@ interface Props {
   setActiveFilters: any;
 }
 
+type FilterType = "recipeType" | "ingredient";
+
 export interface Filter {
   name: string;
   filter: (list: RecipeType[]) => RecipeType[];
+  testy: FilterType;
 }
 
 interface Option {
@@ -31,13 +34,19 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
     console.log(`Option selected:`, selectedOptions);
     var newFilters = selectedOptions.map((selectedOption: Option) => ({
       name: selectedOption.value,
+      testy: "ingredient",
       filter: (list: RecipeType[]) =>
         list.filter(recipe => recipe.ingredients.includes(selectedOption.value))
     }));
 
-    console.log(newFilters);
+    const bla = [
+      ...newFilters,
+      ...activeFilters.filter((el: Filter) => el.testy !== "ingredient")
+    ];
 
-    setActiveFilters([...newFilters, ...activeFilters]);
+    console.log(bla);
+
+    setActiveFilters(bla);
   };
 
   if (!open) {
@@ -68,7 +77,7 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
         }))}
       />
 
-      {availableFilters().map((el: Filter) => (
+      {availableFilters().map((el: any) => (
         <StyledInputLabel key={el.name}>
           <input
             type="checkbox"
