@@ -5,6 +5,7 @@ import { RecipeType, Ingredient } from "../types";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import Select from "react-select";
 import { IngredientsContext } from "../context/IngredientsContext";
+import { StyledHeaderH2 } from "../components/StyledHeaderH1";
 
 interface Props {
   activeFilters: any;
@@ -59,49 +60,56 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        backgroundColor: "white",
-        padding: "1rem",
-        justifyContent: "flex-start",
-        flexWrap: "wrap"
-      }}
+      style={{ padding: "2rem", backgroundColor: "#fff", borderRadius: "5px" }}
     >
-      <Select
-        value={selectedIngredient}
-        onChange={handleChange}
-        isMulti
-        options={ingredients.map(({ name, id }) => ({
-          label: name,
-          value: id
-        }))}
-      />
-
-      {availableFilters().map((el: any) => (
-        <StyledInputLabel key={el.name}>
-          <input
-            type="checkbox"
-            onChange={() =>
-              activeFilters.some(
-                (activeFilter: Filter) => el.name === activeFilter.name
-              )
-                ? setActiveFilters(
-                    activeFilters.filter(
-                      (activeFilter: Filter) => el.name !== activeFilter.name
-                    )
-                  )
-                : setActiveFilters([el, ...activeFilters])
-            }
-          />
-          {el.name}
-        </StyledInputLabel>
-      ))}
-      <StyledActionButtonForText
-        style={{ marginLeft: "auto" }}
-        onClick={() => setOpen(false)}
+      <div style={{ marginBottom: "1rem" }}>
+        <p style={{ marginBottom: "1rem" }}>Ingredienser</p>
+        <Select
+          placeholder="Velg ingredienser"
+          value={selectedIngredient}
+          onChange={handleChange}
+          isMulti
+          options={ingredients.map(({ name, id }) => ({
+            label: name,
+            value: id
+          }))}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          backgroundColor: "white",
+          padding: "1rem",
+          justifyContent: "flex-start",
+          flexWrap: "wrap"
+        }}
       >
-        Lukk filtrering
-      </StyledActionButtonForText>
+        {availableFilters().map((el: any) => (
+          <StyledInputLabel key={el.name}>
+            <input
+              type="checkbox"
+              onChange={() =>
+                activeFilters.some(
+                  (activeFilter: Filter) => el.name === activeFilter.name
+                )
+                  ? setActiveFilters(
+                      activeFilters.filter(
+                        (activeFilter: Filter) => el.name !== activeFilter.name
+                      )
+                    )
+                  : setActiveFilters([el, ...activeFilters])
+              }
+            />
+            {el.name}
+          </StyledInputLabel>
+        ))}
+        <StyledActionButtonForText
+          style={{ marginLeft: "auto" }}
+          onClick={() => setOpen(false)}
+        >
+          Lukk filtrering
+        </StyledActionButtonForText>
+      </div>
     </div>
   );
 };
