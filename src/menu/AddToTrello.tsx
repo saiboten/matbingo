@@ -22,7 +22,13 @@ const Wrapper = styled.div`
   border-radius: 5px;
 `;
 
-export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
+export const AddToTrello = ({
+  listOfDays,
+  doneCallback
+}: {
+  listOfDays: Date[];
+  doneCallback: () => void;
+}) => {
   const [loading, setLoading]: [boolean, any] = useState(false);
   const [done, setDone]: [boolean, any] = useState(false);
 
@@ -52,6 +58,7 @@ export const AddToTrello = ({ listOfDays }: { listOfDays: Date[] }) => {
     }
     setLoading(false);
     setDone(true);
+    doneCallback();
   };
 
   const addChecklist = (ingredients: string[], id: string) => {

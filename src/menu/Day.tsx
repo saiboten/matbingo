@@ -206,7 +206,10 @@ export const Day = ({
   const today = isToday(date);
 
   return (
-    <StyledDay active={today} selected={isShoppingCartActive}>
+    <StyledDay
+      active={today}
+      selected={isShoppingCartActive && addToTrelloActive}
+    >
       <StyledDate>
         {format(date, "dddd DD.MM", { locale: nbLocale })}
       </StyledDate>

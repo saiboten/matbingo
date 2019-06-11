@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { availableFilters } from "./availableFilters";
 import { StyledActionButtonForText } from "../components/StyledActionButton";
-import { RecipeType, Ingredient } from "../types";
+import { RecipeType } from "../types";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import Select from "react-select";
 import { IngredientsContext } from "../context/IngredientsContext";
-import { StyledHeaderH2 } from "../components/StyledHeaderH1";
 
 interface Props {
   activeFilters: any;
@@ -27,7 +26,6 @@ interface Option {
 
 export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
   const [open, setOpen] = useState(false);
-  const [selectedIngredient, setSelectedIngredient] = useState(undefined);
 
   const { ingredients } = useContext(IngredientsContext);
 
@@ -66,7 +64,6 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
         <p style={{ marginBottom: "1rem" }}>Ingredienser</p>
         <Select
           placeholder="Velg ingredienser"
-          value={selectedIngredient}
           onChange={handleChange}
           isMulti
           options={ingredients.map(({ name, id }) => ({

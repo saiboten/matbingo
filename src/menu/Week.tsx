@@ -118,7 +118,13 @@ export const Week = () => {
       </StyledDayList>
       <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       {addToTrelloActive ? (
-        <AddToTrello listOfDays={addToTrelloDays} />
+        <AddToTrello
+          listOfDays={addToTrelloDays}
+          doneCallback={() => {
+            setAddToTrelloActive(false);
+            setAddToTrelloDays([]);
+          }}
+        />
       ) : (
         <StyledActionButtonForText onClick={() => setAddToTrelloActive(true)}>
           Lag handleliste
