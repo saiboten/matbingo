@@ -16,6 +16,7 @@ import {
   StyledSecondaryActionButtonForText
 } from "../components/StyledActionButton";
 import { Filter } from "./Filter";
+import { StyledLink } from "../components/StyledLink";
 
 interface Props {
   date: Date;
@@ -145,6 +146,19 @@ const DeleteDay = ({
   );
 };
 
+const RecipeLink = ({ recipeId }: { recipeId: string | undefined }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: "0",
+      bottom: "-5px",
+      marginRight: "5px"
+    }}
+  >
+    <StyledLink to={`/recipes/${recipeId}`}>Gå til oppskrift</StyledLink>
+  </div>
+);
+
 export const Day = ({
   date,
   addToTrelloActive,
@@ -224,6 +238,7 @@ export const Day = ({
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
+                <RecipeLink recipeId={dayData.recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </>
             )}
@@ -235,6 +250,7 @@ export const Day = ({
               >
                 {today && <div>Dagens meny: </div>}
                 <RecipeDetails recipe={recipe} />
+                <RecipeLink recipeId={dayData.recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </div>
             )}
