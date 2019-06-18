@@ -238,7 +238,6 @@ export const Day = ({
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
-                <RecipeLink recipeId={dayData.recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </>
             )}
