@@ -70,13 +70,8 @@ const findRecipe = (
           lastTimeSelected: doc.data().lastTimeSelected.toDate()
         }));
 
-        // todo apply all filter functions
         var recipes = filterFunctions.reduce(
-          (recipes, filter) => {
-            var filtered = filter(recipes);
-            console.log(filtered);
-            return filtered;
-          },
+          (recipes, filter) => filter(recipes),
           [...unfilteredRecipes]
         );
 
@@ -86,29 +81,16 @@ const findRecipe = (
             score: calculate(date, recipe, 20)
           })
         );
-        const logThis = recipesWithRating.map(({ name, score }: any) => ({
-          ...score,
-          name
-        }));
 
-        console.log(
-          logThis.sort((el1, el2) => el2.totalScore - el1.totalScore)
+        const sortedRecipes = recipesWithRating.map(
+          ({ score, ...rest }: any) => ({
+            ...score,
+            ...rest
+          })
         );
 
-        if (recipesWithRating.length === 0) {
-          resolve({ bestRecipe: undefined, logThis });
-        } else {
-          const bestRecipe = recipesWithRating.reduce(
-            (
-              bestRecipe: RecipeWithRatingType,
-              testRecipe: RecipeWithRatingType
-            ) =>
-              bestRecipe.score.totalScore > testRecipe.score.totalScore
-                ? bestRecipe
-                : testRecipe
-          );
-          resolve({ bestRecipe, logThis });
-        }
+        sortedRecipes.sort((el1, el2) => el2.totalScore - el1.totalScore);
+        resolve({ sortedRecipes });
       });
   });
 };
@@ -128,20 +110,30 @@ const initialState: RecipeType = {
 const StyledTd = styled.td``;
 
 export const Random = ({ date, back, activeFilters }: Props) => {
-  const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
-  const [scoreDetails, setScoreDetails]: [any[], any] = useState([]);
+  const [recipe, setRecipe]: [
+    RecipeType,
+    ((data: RecipeType) => void)
+  ] = useState(initialState);
+
+  const [recipes, setRecipes]: [any[], any] = useState([]);
   const [showDetails, setShowDetails]: [boolean, any] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
 
-  useEffect(() => {
-    findRecipe(date, userdata, activeFilters).then((data: any) => {
-      setRecipe(data.bestRecipe);
-      setScoreDetails(data.logThis);
-    });
-  }, [activeFilters, date, userdata]);
-
-  console.log(scoreDetails);
+  useEffect(
+    () => {
+      findRecipe(date, userdata, activeFilters).then(
+        ({ sortedRecipes }: any) => {
+          if (sortedRecipes.length > 0) {
+            const [first, ...rest] = sortedRecipes;
+            setRecipe(first);
+            setRecipes(rest);
+          }
+        }
+      );
+    },
+    [activeFilters, date, userdata]
+  );
 
   return (
     <>
@@ -159,14 +151,11 @@ export const Random = ({ date, back, activeFilters }: Props) => {
           </StyledActionButtonWithMargins>
         )}
         <StyledActionButtonWithMargins
-          onClick={() =>
-            findRecipe(date, userdata, activeFilters).then(
-              ({ bestRecipe, logThis }: any) => {
-                setRecipe(bestRecipe);
-                setScoreDetails(logThis);
-              }
-            )
-          }
+          onClick={() => {
+            const [first, ...rest] = recipes;
+            setRecipes(rest);
+            setRecipe(first);
+          }}
         >
           <StyledRotate />
         </StyledActionButtonWithMargins>
@@ -194,8 +183,8 @@ export const Random = ({ date, back, activeFilters }: Props) => {
               <th>Never</th>
               <th>Rand</th>
             </tr>
-            {scoreDetails.length > 0 &&
-              scoreDetails.map(
+            {recipes.length > 0 &&
+              recipes.map(
                 (
                   {
                     name,
