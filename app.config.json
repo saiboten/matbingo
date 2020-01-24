@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "Food Eureka",
+      "name": "Matbingo",
       "script": "npx",
       "interpreter": "none",
       "args": "serve -p 3010 build/"
