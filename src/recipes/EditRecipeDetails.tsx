@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import CreatableSelect from "react-select/lib/Creatable";
+import Creatable from "react-select/creatable";
 import { RecipeContext } from "../context/RecipeContext";
 import { RouteComponentProps, Redirect } from "react-router";
 import { RecipeType, Ingredient } from "../types";
@@ -17,7 +17,7 @@ import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledButton } from "../components/StyledButton";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
-import { Option } from "react-select/lib/filters";
+import { ValueType } from "react-select";
 import { StyledLoader } from "../components/StyledLoader";
 import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { createRatings } from "../components/StyledRatings";
@@ -66,7 +66,7 @@ const onSubmit = (
         ...values,
         rating: parseInt(values.rating, 10),
         ingredients: values.ingredients
-          .map((el: Option) => el.value)
+          .map((el: ValueType<any>) => el.value)
           .concat(newIds)
       });
   });
@@ -96,7 +96,7 @@ function deleteItem(id: string, setNextPage: (nextPage: string) => void) {
 }
 
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
-  return <CreatableSelect {...input} {...rest} />;
+  return <Creatable {...input} {...rest} />;
 };
 
 export const EditRecipeDetails = ({
@@ -165,13 +165,13 @@ export const EditRecipeDetails = ({
           onSubmit(recipeDetails.id, values, form, userdata.group);
         }}
         validate={validate}
-        render={({ handleSubmit, submitting, pristine, reset }) => (
+        render={({ handleSubmit, submitting, pristine }) => (
           <React.Fragment>
             <StyledForm
               onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) => {
                 const promise = handleSubmit(event);
                 if (promise) {
-                  promise.then(reset);
+                  // promise.then(reset); // reset
                 }
               }}
             >

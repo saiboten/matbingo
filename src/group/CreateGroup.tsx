@@ -81,7 +81,7 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
 };
 
 export const CreateGroup = () => {
-  const [groupInfo, setGroupInfo] = useState(null);
+  const [groupInfo, setGroupInfo] = useState<GroupInfo | null>(null);
 
   const onSubmit = (values: any) => {
     console.log(values);

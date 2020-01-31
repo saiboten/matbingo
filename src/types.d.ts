@@ -42,3 +42,8 @@ export interface RecipeType {
   hasBeenSelected: boolean;
   recipetype: CourseType[];
 }
+
+export interface WunderlistList {
+  id: number;
+  title: string;
+}

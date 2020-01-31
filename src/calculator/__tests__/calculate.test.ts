@@ -9,7 +9,9 @@ test("Scoring one recipe against a date", () => {
     lastTimeSelected: new Date("2019-02-01T12:00:00"),
     name: "Something",
     weekdays: ["monday"],
-    rating: 5
+    rating: 5,
+    hasBeenSelected: false,
+    recipetype: ["fish"]
   };
 
   // random 0

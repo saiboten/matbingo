@@ -111,13 +111,13 @@ export const AddToTrello = ({
           init.push(next.docs[0].data());
         }
         return init;
-      }, []);
+      }, []) as RecipeType[];
       const recipeIds = res
-        .filter((el: any) => el.recipe)
-        .map((el: any) => el.recipe);
+        .filter(({ recipe }: any ) => recipe)
+        .map((el : any) => el.recipe) as string[];
       const recipesThisWeek: RecipeType[] = recipeIds.map((recipeId: string) =>
         recipes.find(el => el.id === recipeId)
-      );
+      ) as RecipeType[];
 
       const ingredientsThisWeek = recipesThisWeek
         .reduce((init: any, recipe: RecipeType) => {
