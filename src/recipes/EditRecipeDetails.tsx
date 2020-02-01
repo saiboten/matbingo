@@ -338,7 +338,7 @@ export const EditRecipeDetails = ({
                 </StyledInputLabel>
               </div>
 
-              <StyledButton type="submit">Oppdater</StyledButton>
+              <StyledButton type="submit">Lagre</StyledButton>
             </StyledForm>
             <StyledActionButton
               style={{
