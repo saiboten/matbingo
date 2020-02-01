@@ -16,6 +16,8 @@ import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
 import { Filter } from "./Filter";
+import { WunderlistExportButton } from "./WunderlistExport/WunderlistExportButton";
+import { WunderlistListSelector } from "./WunderlistExport/WunderlistListSelector";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -80,6 +82,16 @@ export const Week = () => {
 
   const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
 
+  const [showWunderlistListSelector, setShowWunderlistListSelector] = useState(false);
+  const [wunderlistAccessToken] = useState('INSERT_YOUR_ACCESS_TOKEN_HERE'); // TODO: Implement OAuth flow and store accessToken in userdata ?
+  const handleWunderlistExportClick = () => {
+    if (wunderlistAccessToken && !showWunderlistListSelector) {
+      setShowWunderlistListSelector(true);
+    } else {
+      // Redirect to wunderlist auth dialog
+    }
+  };
+
   if (recipes.length === 0) {
     return <NoRecipes />;
   }
@@ -130,6 +142,16 @@ export const Week = () => {
           Lag handleliste
         </StyledActionButtonForText>
       )}
+      <WunderlistExportButton
+        accessToken={wunderlistAccessToken}
+        onClick={handleWunderlistExportClick}
+      />
+      { showWunderlistListSelector && (
+        <WunderlistListSelector
+          onDismiss={() => setShowWunderlistListSelector(false)}
+          accessToken={wunderlistAccessToken}
+          selectedDays={listOfDays}
+        />)}
     </StyledWideWrapper>
   );
 };

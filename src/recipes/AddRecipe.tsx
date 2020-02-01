@@ -8,7 +8,7 @@ import { StyledInput } from "../components/StyledInput";
 import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
-import CreatableSelect from "react-select/lib/Creatable";
+import Creatable from "react-select/creatable";
 import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
@@ -92,7 +92,7 @@ interface Option {
 }
 
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
-  return <CreatableSelect {...input} {...rest} />;
+  return <Creatable {...input} {...rest} />;
 };
 
 export function AddRecipe() {
