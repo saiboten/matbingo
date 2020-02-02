@@ -18,6 +18,7 @@ import { StyledLink } from "../components/StyledLink";
 import { Filter } from "./Filter";
 import { WunderlistExportButton } from "./WunderlistExport/WunderlistExportButton";
 import { WunderlistListSelector } from "./WunderlistExport/WunderlistListSelector";
+import { UserDataContext } from "../context/UserDataContext";
 
 const StyledDayList = styled.div`
   display: flex;
@@ -70,6 +71,8 @@ const WeekSelector = ({
 
 export const Week = () => {
   const { recipes } = useContext(RecipeContext);
+  const userdata = useContext(UserDataContext).userdata;
+  const wunderlistAccessToken = userdata.wunderlistAccessToken;
 
   const [selectedDay, setSelectedDay]: [Date, any] = useState(
     startOfDay(new Date())
@@ -82,11 +85,10 @@ export const Week = () => {
 
   const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
 
-  const [showWunderlistListSelector, setShowWunderlistListSelector] = useState(false);
-  const [wunderlistAccessToken] = useState('INSERT_YOUR_ACCESS_TOKEN_HERE'); // TODO: Implement OAuth flow and store accessToken in userdata ?
+  const [showWunderlistExportDialog, setShowWunderlistExportDialog] = useState(false);
   const handleWunderlistExportClick = () => {
-    if (wunderlistAccessToken && !showWunderlistListSelector) {
-      setShowWunderlistListSelector(true);
+    if (wunderlistAccessToken && !showWunderlistExportDialog) {
+      setShowWunderlistExportDialog(true);
     } else {
       // Redirect to wunderlist auth dialog
     }
@@ -143,15 +145,17 @@ export const Week = () => {
         </StyledActionButtonForText>
       )}
       <WunderlistExportButton
-        accessToken={wunderlistAccessToken}
         onClick={handleWunderlistExportClick}
       />
-      { showWunderlistListSelector && (
+      { wunderlistAccessToken && showWunderlistExportDialog && (
         <WunderlistListSelector
-          onDismiss={() => setShowWunderlistListSelector(false)}
+          onDismiss={() => setShowWunderlistExportDialog(false)}
           accessToken={wunderlistAccessToken}
           selectedDays={listOfDays}
         />)}
+        { !wunderlistAccessToken && showWunderlistExportDialog && (
+          <div>Show wunderlist auth dialog here. Maybe a redirect to wunderlist?</div>
+        )}
     </StyledWideWrapper>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 
 export interface UserData {
   group: string;
+  wunderlistAccessToken?: string;
 }
 
 export interface UserDataContext {
@@ -11,7 +12,8 @@ export interface UserDataContext {
 
 const initialState: UserDataContext = {
   userdata: {
-    group: ""
+    group: "",
+    wunderlistAccessToken: undefined
   },
   setUserdata: () => {}
 };

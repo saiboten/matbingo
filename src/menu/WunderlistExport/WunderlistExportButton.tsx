@@ -5,7 +5,6 @@ import {
 } from "../../components/StyledActionButton";
 
 interface Props {
-  accessToken: string,
   onClick: () => void
 }
 
