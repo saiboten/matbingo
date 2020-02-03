@@ -35,7 +35,7 @@ function makeId(length: number) {
 
 function redirectToExternalAuthDialog() {
   const wunderlistClientId = "03d2eac308bd127169f5";
-  const redirectUrl = "https://localhost:3000/wunderlist-callback";
+  const redirectUrl = "https://matbingo.no/wunderlist-callback";
 
   const randomString = makeId(30);
   localStorage.setItem('wunderlistAuthState', randomString);
