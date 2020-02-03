@@ -7,7 +7,7 @@ interface Props {
 
 export const StyledWrapper = styled.div<Props>`
   max-width: 415px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 15px;
   background-color: ${props => props.backgroundColor};
 
@@ -16,6 +16,6 @@ export const StyledWrapper = styled.div<Props>`
   }
 `;
 
-export const StyledWideWrapper = styled(StyledWrapper)`
+export const StyledWideWrapper = styled<any>(StyledWrapper)`
   max-width: 815px;
 `;

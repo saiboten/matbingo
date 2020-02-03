@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Spinner } from "./svg/Loading.svg";
-import { primaryColor } from "./Constants";
+import { primaryColor, secondaryColor } from "./Constants";
 
 const rotate = keyframes`
 	0% {
@@ -31,7 +31,7 @@ const StyledSpinner = styled(Spinner)`
   animation: ${rotate} 1s infinite linear;
   height: 96px;
   width: 96px;
-  fill: white;
+  fill: ${secondaryColor};
 `;
 
 export const StyledLoader = () => (

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { primaryColor, minBreakPoint } from "./Constants";
+import { minBreakPoint, secondaryColor } from "./Constants";
 
 interface Props {
   active: boolean;
@@ -8,7 +8,7 @@ interface Props {
 
 export const StyledLines = styled.div<Props>`
   width: 20px;
-  background-color: ${primaryColor};
+  background-color: ${secondaryColor};
   position: absolute;
   top: 10px;
   border-radius: 2px;
@@ -21,7 +21,7 @@ export const StyledLines = styled.div<Props>`
     height: 3px;
     position: absolute;
     top: 8px;
-    background-color: ${primaryColor};
+    background-color: ${secondaryColor};
     border-radius: 2px;
     transform: rotate(${props => (props.active ? "45" : "0")}deg);
   }
@@ -33,7 +33,7 @@ export const StyledLines = styled.div<Props>`
     height: 3px;
     position: absolute;
     top: ${props => (props.active ? "8px" : "16px")};
-    background-color: ${primaryColor};
+    background-color: ${secondaryColor};
     border-radius: 2px;
     transform: rotate(${props => (props.active ? "-45" : "0")}deg);
   }

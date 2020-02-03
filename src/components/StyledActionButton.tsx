@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { primaryColor } from "./Constants";
+import { primaryColor, secondaryColor } from "./Constants";
 
 export const StyledActionButton = styled.button`
   cursor: pointer;
   border: none;
   padding: 10px;
-  background-color: ${primaryColor};
+  background-color: ${secondaryColor};
   color: #fff;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
   padding: 5px;
   padding-bottom: 2px;
   border-radius: 5px;
@@ -16,9 +15,8 @@ export const StyledActionButton = styled.button`
 export const StyledActionButtonForText = styled.button`
   cursor: pointer;
   border: none;
-  background-color: ${primaryColor};
+  background-color: ${secondaryColor};
   color: #fff;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
   padding: 10px;
   border-radius: 5px;
 `;
@@ -37,8 +35,7 @@ export const StyledSecondaryActionButton = styled.button`
   border-radius: 5px;
   padding: 10px;
   background-color: white;
-  color: ${primaryColor};
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+  color: ${secondaryColor};
 `;
 
 export const StyledActionButtonWithMargins = styled(StyledActionButton)`

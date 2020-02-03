@@ -10,8 +10,7 @@ import {
 } from "../components/StyledActionButton";
 import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
 import {
-  StyledHeaderH1,
-  StyledAlternateHeaderH1
+  StyledHeaderH1
 } from "../components/StyledHeaderH1";
 import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
@@ -187,10 +186,10 @@ export const Week = () => {
     .map((el: any, index: number) => addDays(selectedDay, index));
 
   return (
-    <StyledWideWrapper>
-      <StyledAlternateHeaderH1>
+    <StyledWideWrapper backgroundColor="white">
+      <StyledHeaderH1>
         Ukesmeny uke {getISOWeek(selectedDay)}
-      </StyledAlternateHeaderH1>
+      </StyledHeaderH1>
       <Filter
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}

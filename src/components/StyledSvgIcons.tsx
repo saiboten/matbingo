@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primaryColor } from "./Constants";
+import { secondaryColor } from "./Constants";
 
 import { ReactComponent as PlusCircle } from "./svg/plus-circle.svg";
 import { ReactComponent as Dice } from "./svg/dice.svg";
@@ -18,7 +18,7 @@ import { ReactComponent as SettingsIcon } from "./svg/settings.svg";
 export const StyledSettingsIcon = styled(SettingsIcon)`
   width: 24px;
   height: 24px;
-  fill: ${props => (props.color ? props.color : primaryColor)};
+  fill: ${props => (props.color ? props.color : secondaryColor)};
 `;
 
 export const StyledPlusCircle = styled(PlusCircle)`
@@ -60,7 +60,7 @@ export const StyledPrevious = styled(Previous)`
 export const StyledBack = styled(Back)`
   width: 24px;
   height: 24px;
-  fill: ${primaryColor};
+  fill: ${secondaryColor};
 `;
 
 export const StyledCheck = styled(Check)`
@@ -77,11 +77,11 @@ export const StyledRotate = styled(Rotate)`
 
 export const StyledDeleteIcon = styled(DeleteIcon)`
   cursor: pointer;
-  fill: ${props => (props.color ? props.color : primaryColor)};
+  fill: ${props => (props.color ? props.color : secondaryColor)};
 `;
 
 export const StyledLogOut = styled(LogOutIcon)`
   width: 24px;
   height: 24px;
-  fill: ${primaryColor};
+  fill: ${secondaryColor};
 `;

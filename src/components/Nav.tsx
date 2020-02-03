@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StyledHamburger } from "./StyledHamburger";
 import styled from "styled-components";
-import { minBreakPoint, primaryColor } from "./Constants";
+import { minBreakPoint, secondaryColor } from "./Constants";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import { UserDataContext } from "../context/UserDataContext";
@@ -66,7 +66,7 @@ const StyledUl = styled(animated.ul)`
   display: flex;
   justify-content: flex-end;
   padding: 5px 0;
-  background-color: ${primaryColor};
+  background-color: ${secondaryColor};
   align-items: center;
   padding-left: 3rem;
   font-size: 20px;
