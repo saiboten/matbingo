@@ -89,7 +89,6 @@ interface UploadIngredientsRequest {
   userGroup: string;
 }
 async function submitIngredients({ accessToken, listId, selectedDays, ingredients, recipes, userGroup } : UploadIngredientsRequest) {
-  console.log('submitting...');
   const ingredientsToUpload = await getIngredientsForWeek(selectedDays, userGroup, ingredients, recipes);
   for(let i = 0; i < ingredientsToUpload.length;i++) {
     const ingredient = ingredientsToUpload[i];
@@ -98,8 +97,6 @@ async function submitIngredients({ accessToken, listId, selectedDays, ingredient
       throw new Error(`Failed to submit new wunderlist task for ingredient '${ingredient}' to list ${listId}`);
     }
   }
-  console.log('submitted!')
-
 }
 
 const DimmedBackground = styled.div`

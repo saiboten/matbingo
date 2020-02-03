@@ -242,6 +242,7 @@ const AppRouter = () => {
       <Nav />
       <main>
         <Route path="/" exact component={Week} />
+        <Route path="/wunderlist-callback" component={Week} />
         <Route path="/admin" exact component={AdminGroup} />
         <Route path="/recipes" exact component={Recipes} />
         <Route path="/find-recipes" exact component={ListRecipesAndRedirect} />
