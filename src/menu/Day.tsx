@@ -7,7 +7,7 @@ import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
-import { primaryColor } from "../components/Constants";
+import { primaryColor, secondaryColor } from "../components/Constants";
 import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
@@ -34,7 +34,6 @@ interface StyledDayProps {
 const StyledDay = styled.div<StyledDayProps>`
   position: relative;
   width: 48%;
-  border: 1px solid black;
   display: inline-block;
   padding: 20px 10px;
   padding-left: 2rem;
@@ -42,16 +41,14 @@ const StyledDay = styled.div<StyledDayProps>`
   text-align: left;
   margin: 5px;
   min-height: 100px;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
   color: #000;
 
   border: ${props =>
-    props.active ? `3px solid ${primaryColor}` : "1px solid black"};
+    props.active ? `2px solid ${secondaryColor}` : `1px solid ${primaryColor}`};
 
   @media screen and (max-width: 530px) {
     width: 100%;
   }
-
   background-color: ${props => (props.selected ? `${primaryColor}` : "#fff")};
 `;
 

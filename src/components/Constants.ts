@@ -1,3 +1,4 @@
-export const primaryColor = "#1859ea";
-export const secondaryColor = "#1f1f2d";
+export const primaryColor = "#e2eaf1";
+export const secondaryColor = "#3e5367";
+export const tertiaryColor = "#e2eaf1";
 export const minBreakPoint = 415;

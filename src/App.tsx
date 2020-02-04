@@ -6,7 +6,6 @@ import { Recipes } from "./recipes/Recipes";
 import { RecipeContext } from "./context/RecipeContext";
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
 import { IngredientsContext } from "./context/IngredientsContext";
-import { secondaryColor } from "./components/Constants";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
 import { StyledLoader } from "./components/StyledLoader";
@@ -34,7 +33,6 @@ const GlobalStyle = createGlobalStyle`
 html {
     // This defines what 1 rem is
     font-size: 62.5%; // 1 rem == 10px
-    background-color: ${secondaryColor};
     font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif;
 }
 

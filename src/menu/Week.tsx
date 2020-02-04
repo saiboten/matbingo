@@ -10,8 +10,7 @@ import {
 } from "../components/StyledActionButton";
 import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
 import {
-  StyledHeaderH1,
-  StyledAlternateHeaderH1
+  StyledHeaderH1
 } from "../components/StyledHeaderH1";
 import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
@@ -84,13 +83,13 @@ function handleWunderlistAuthCallback(userUid: string, setShowWunderlistExportDi
     });
 }
 
-function resetAccessTokenValue(userUid: string) {
-  const db = firebase.firestore();
+// function resetAccessTokenValue(userUid: string) {
+//   const db = firebase.firestore();
 
-  db.collection("userdata")
-    .doc(userUid)
-    .set({ wunderlistAccessToken: null },{ merge: true });
-}
+//   db.collection("userdata")
+//     .doc(userUid)
+//     .set({ wunderlistAccessToken: null },{ merge: true });
+// }
 
 const StyledDayList = styled.div`
   display: flex;
@@ -187,10 +186,10 @@ export const Week = () => {
     .map((el: any, index: number) => addDays(selectedDay, index));
 
   return (
-    <StyledWideWrapper>
-      <StyledAlternateHeaderH1>
+    <StyledWideWrapper backgroundColor="white">
+      <StyledHeaderH1>
         Ukesmeny uke {getISOWeek(selectedDay)}
-      </StyledAlternateHeaderH1>
+      </StyledHeaderH1>
       <Filter
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
