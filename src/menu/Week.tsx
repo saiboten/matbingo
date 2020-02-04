@@ -83,13 +83,13 @@ function handleWunderlistAuthCallback(userUid: string, setShowWunderlistExportDi
     });
 }
 
-function resetAccessTokenValue(userUid: string) {
-  const db = firebase.firestore();
+// function resetAccessTokenValue(userUid: string) {
+//   const db = firebase.firestore();
 
-  db.collection("userdata")
-    .doc(userUid)
-    .set({ wunderlistAccessToken: null },{ merge: true });
-}
+//   db.collection("userdata")
+//     .doc(userUid)
+//     .set({ wunderlistAccessToken: null },{ merge: true });
+// }
 
 const StyledDayList = styled.div`
   display: flex;
