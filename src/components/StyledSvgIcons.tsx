@@ -36,7 +36,7 @@ export const BackgroundChef = styled(ChefSvg)`
   position: absolute;
   top: 0;
   right: -4rem;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateY(-30%);
   z-index: -1;
 
   @media screen and (max-width: ${minBreakPoint}px) {

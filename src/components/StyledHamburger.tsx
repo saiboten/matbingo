@@ -41,6 +41,7 @@ export const StyledLines = styled.div<Props>`
 
 export const StyledWrapper = styled.div`
   position: absolute;
+  z-index: 1;
   top: 5px;
   right: 5px;
   background-color: white;

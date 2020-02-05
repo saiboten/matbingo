@@ -30,8 +30,6 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
   const { ingredients } = useContext(IngredientsContext);
 
   const handleChange = (selectedOptions: any) => {
-    console.log(`Option selected:`, selectedOptions);
-
     var newFilters = selectedOptions?.map((selectedOption: Option) => ({
       name: selectedOption.value,
       testy: "ingredient",
@@ -43,8 +41,6 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
       ...newFilters,
       ...activeFilters.filter((el: Filter) => el.testy !== "ingredient")
     ];
-
-    console.log(bla);
 
     setActiveFilters(bla);
   };

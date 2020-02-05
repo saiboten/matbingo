@@ -142,6 +142,8 @@ const WeekSelector = ({
 
 const IllustrationContainer = styled.div`
   text-align: center;
+  position: relative;
+  max-width: 100%;
 `;
 
 export const Week = () => {
