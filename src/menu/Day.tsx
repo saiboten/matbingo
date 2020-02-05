@@ -13,11 +13,11 @@ import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import {
   StyledSecondaryActionButtonForText,
-  StyledActionButton
+  StyledActionButton,
+  StyledActionButtonForText
 } from "../components/StyledActionButton";
 import { Filter } from "./Filter";
-import { StyledButtonLink } from "../components/StyledLink";
-import { StyledDeleteIcon, StyledLinkIcon } from "../components/StyledSvgIcons";
+import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 
 interface Props {
   date: Date;
@@ -38,14 +38,14 @@ const StyledDay = styled.div<StyledDayProps>`
   display: inline-block;
   padding: 20px 10px;
   padding-left: 2rem;
-  padding-bottom: 4.5rem;
   text-align: left;
   margin: 5px;
   min-height: 100px;
   color: #000;
 
-  border: ${props =>
-    props.active ? `2px solid ${secondaryColor}` : `1px solid ${primaryColor}`};
+  box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, 0.4);
+
+  border: ${props => (props.active ? `2px solid ${secondaryColor}` : "none")};
 
   @media screen and (max-width: 530px) {
     width: 100%;
@@ -57,7 +57,7 @@ const StyledDate = styled.div`
   position: absolute;
   left: 8px;
   top: 2px;
-  font-size: 2rem;
+  font-size: 1.6rem;
 `;
 
 const CustomStyledDeleteIcon = styled(StyledDeleteIcon)`
@@ -142,27 +142,18 @@ const DeleteDay = ({
         </StyledSecondaryActionButtonForText>
       )}
 
-      <StyledActionButton onClick={deleteDay}>
-        {showConfirm ? <CustomStyledDeleteIcon /> : <CustomStyledDeleteIcon />}
-      </StyledActionButton>
+      {showConfirm ? (
+        <StyledActionButtonForText onClick={deleteDay}>
+          Sikker?
+        </StyledActionButtonForText>
+      ) : (
+        <StyledActionButton onClick={deleteDay}>
+          <CustomStyledDeleteIcon />
+        </StyledActionButton>
+      )}
     </div>
   );
 };
-
-const RecipeLink = ({ recipeId }: { recipeId: string | undefined }) => (
-  <div
-    style={{
-      position: "absolute",
-      top: "0",
-      right: "40px",
-      marginTop: "5px"
-    }}
-  >
-    <StyledButtonLink to={`/recipes/${recipeId}`}>
-      <StyledLinkIcon />
-    </StyledButtonLink>
-  </div>
-);
 
 export const Day = ({
   date,
@@ -252,9 +243,12 @@ export const Day = ({
                   addToTrelloActive ? toggleShoppingCart(date) : null
                 }
               >
-                {today && <div>Dagens meny: </div>}
+                {today && (
+                  <div style={{ transform: "translateY(20px)" }}>
+                    Dagens meny:{" "}
+                  </div>
+                )}
                 <RecipeDetails recipe={recipe} />
-                <RecipeLink recipeId={dayData.recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </div>
             )}

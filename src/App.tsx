@@ -30,6 +30,10 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
 }
 
+a:link, a:visited {
+  color: black;
+}
+
 html {
     // This defines what 1 rem is
     font-size: 62.5%; // 1 rem == 10px

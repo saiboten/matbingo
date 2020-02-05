@@ -224,7 +224,7 @@ export const Week = () => {
         />
       ) : (
         <StyledActionButtonForText onClick={() => setAddToTrelloActive(true)}>
-          Lag handleliste
+          Lag handleliste i Trello
         </StyledActionButtonForText>
       )}
       <WunderlistExportButton

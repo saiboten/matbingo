@@ -24,7 +24,7 @@ export const StyledActionButtonForText = styled.button`
 export const StyledSecondaryActionButtonForText = styled(
   StyledActionButtonForText
 )`
-  color: ${primaryColor};
+  color: black;
   border: 1px solid ${primaryColor};
   background-color: white;
 `;

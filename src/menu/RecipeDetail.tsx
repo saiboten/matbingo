@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { RecipeType, Ingredient, Unit } from "../types";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import { IngredientsContext } from "../context/IngredientsContext";
+import { Link } from "react-router-dom";
 
 const StyledWrapper = styled.div`
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   max-width: 480px;
   display: flex;
   flex-direction: column;
@@ -35,7 +36,7 @@ const StyledEmpesizedP = styled.p`
 `;
 
 export const RecipeDetails = ({
-  recipe: { name, description, ingredients }
+  recipe: { name, description, ingredients, id }
 }: Props) => {
   const ingredientsFromContext = useContext(IngredientsContext).ingredients;
 
@@ -52,7 +53,9 @@ export const RecipeDetails = ({
 
   return (
     <StyledWrapper>
-      <StyledHeaderH1NoMarginTop>{name}</StyledHeaderH1NoMarginTop>
+      <StyledHeaderH1NoMarginTop>
+        <Link to={`/recipes/${id}`}>{name}</Link>
+      </StyledHeaderH1NoMarginTop>
       {description && (
         <>
           <StyledEmpesizedP>Beskrivelse</StyledEmpesizedP>
