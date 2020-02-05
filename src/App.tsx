@@ -36,6 +36,7 @@ a:link, a:visited {
 
 html {
     // This defines what 1 rem is
+    background-color: #f5f5f5;
     font-size: 62.5%; // 1 rem == 10px
     font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif;
 }

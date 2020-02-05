@@ -190,7 +190,7 @@ export const Week = () => {
     .map((el: any, index: number) => addDays(selectedDay, index));
 
   return (
-    <StyledWideWrapper backgroundColor="white">
+    <StyledWideWrapper>
       <StyledHeaderH1>
         Ukesmeny uke {getISOWeek(selectedDay)}
       </StyledHeaderH1>
