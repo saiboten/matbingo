@@ -207,7 +207,14 @@ const AppRouter = () => {
         unsubIngredients();
       };
     },
-    [setGroupdata, setIngredients, setRecipes, setUser, setUserdata, userdata.group]
+    [
+      setGroupdata,
+      setIngredients,
+      setRecipes,
+      setUser,
+      setUserdata,
+      userdata.group
+    ]
   );
 
   if (!state.loggedInStateClarified) {
