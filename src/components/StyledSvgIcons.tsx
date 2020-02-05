@@ -14,6 +14,7 @@ import { ReactComponent as Rotate } from "./svg/rotate-ccw.svg";
 import { ReactComponent as DeleteIcon } from "./svg/trash-2.svg";
 import { ReactComponent as LogOutIcon } from "./svg/log-out.svg";
 import { ReactComponent as SettingsIcon } from "./svg/settings.svg";
+import { ReactComponent as Link } from "./svg/link.svg";
 
 export const StyledSettingsIcon = styled(SettingsIcon)`
   width: 24px;
@@ -70,6 +71,12 @@ export const StyledCheck = styled(Check)`
 `;
 
 export const StyledRotate = styled(Rotate)`
+  width: 24px;
+  height: 24px;
+  fill: white;
+`;
+
+export const StyledLinkIcon = styled(Link)`
   width: 24px;
   height: 24px;
   fill: white;

@@ -5,6 +5,7 @@ import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import { IngredientsContext } from "../context/IngredientsContext";
 
 const StyledWrapper = styled.div`
+  margin-top: 2rem;
   max-width: 480px;
   display: flex;
   flex-direction: column;

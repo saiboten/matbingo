@@ -212,12 +212,13 @@ export const Random = ({ date, back, activeFilters }: Props) => {
           </table>
         </>
       ) : (
-        <StyledActionButtonForText
-          style={{ marginTop: "1rem" }}
-          onClick={() => setShowDetails(true)}
-        >
-          Se score-detaljer
-        </StyledActionButtonForText>
+        <></>
+        // <StyledActionButtonForText
+        //   style={{ marginTop: "1rem" }}
+        //   onClick={() => setShowDetails(true)}
+        // >
+        //   Se score-detaljer
+        // </StyledActionButtonForText>
       )}
     </>
   );

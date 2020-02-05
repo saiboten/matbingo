@@ -12,11 +12,12 @@ import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import {
-  StyledActionButtonForText,
-  StyledSecondaryActionButtonForText
+  StyledSecondaryActionButtonForText,
+  StyledActionButton
 } from "../components/StyledActionButton";
 import { Filter } from "./Filter";
-import { StyledLink } from "../components/StyledLink";
+import { StyledButtonLink } from "../components/StyledLink";
+import { StyledDeleteIcon, StyledLinkIcon } from "../components/StyledSvgIcons";
 
 interface Props {
   date: Date;
@@ -54,8 +55,13 @@ const StyledDay = styled.div<StyledDayProps>`
 
 const StyledDate = styled.div`
   position: absolute;
-  right: 8px;
+  left: 8px;
   top: 2px;
+  font-size: 2rem;
+`;
+
+const CustomStyledDeleteIcon = styled(StyledDeleteIcon)`
+  fill: white;
 `;
 
 const initialState: RecipeType = {
@@ -122,9 +128,9 @@ const DeleteDay = ({
       style={{
         position: "absolute",
         right: "0",
-        bottom: "0",
+        top: "0",
         marginRight: "5px",
-        marginBottom: "5px"
+        marginTop: "5px"
       }}
     >
       {showConfirm && (
@@ -136,9 +142,9 @@ const DeleteDay = ({
         </StyledSecondaryActionButtonForText>
       )}
 
-      <StyledActionButtonForText onClick={deleteDay}>
-        {showConfirm ? "Sikker?" : "Slett dag"}
-      </StyledActionButtonForText>
+      <StyledActionButton onClick={deleteDay}>
+        {showConfirm ? <CustomStyledDeleteIcon /> : <CustomStyledDeleteIcon />}
+      </StyledActionButton>
     </div>
   );
 };
@@ -147,12 +153,14 @@ const RecipeLink = ({ recipeId }: { recipeId: string | undefined }) => (
   <div
     style={{
       position: "absolute",
-      left: "0",
-      bottom: "-5px",
-      marginRight: "5px"
+      top: "0",
+      right: "40px",
+      marginTop: "5px"
     }}
   >
-    <StyledLink to={`/recipes/${recipeId}`}>Gå til oppskrift</StyledLink>
+    <StyledButtonLink to={`/recipes/${recipeId}`}>
+      <StyledLinkIcon />
+    </StyledButtonLink>
   </div>
 );
 
