@@ -31,12 +31,13 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
 
   const handleChange = (selectedOptions: any) => {
     console.log(`Option selected:`, selectedOptions);
-    var newFilters = selectedOptions.map((selectedOption: Option) => ({
+
+    var newFilters = selectedOptions?.map((selectedOption: Option) => ({
       name: selectedOption.value,
       testy: "ingredient",
       filter: (list: RecipeType[]) =>
         list.filter(recipe => recipe.ingredients.includes(selectedOption.value))
-    }));
+    })) ?? [];
 
     const bla = [
       ...newFilters,
