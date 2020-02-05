@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { secondaryColor } from "./Constants";
+import { secondaryColor, minBreakPoint } from "./Constants";
 
 import { ReactComponent as PlusCircle } from "./svg/plus-circle.svg";
 import { ReactComponent as Dice } from "./svg/dice.svg";
@@ -15,6 +15,17 @@ import { ReactComponent as DeleteIcon } from "./svg/trash-2.svg";
 import { ReactComponent as LogOutIcon } from "./svg/log-out.svg";
 import { ReactComponent as SettingsIcon } from "./svg/settings.svg";
 import { ReactComponent as Link } from "./svg/link.svg";
+import { ReactComponent as ChefSvg } from "./svg/chef.svg";
+
+export const StyledChef = styled(ChefSvg)`
+  height: 40rem;
+  width: 40rem;
+
+  @media screen and (max-width: ${minBreakPoint}px) {
+    height: 20rem;
+    width: 20rem;
+  }
+`;
 
 export const StyledSettingsIcon = styled(SettingsIcon)`
   width: 24px;

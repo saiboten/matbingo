@@ -111,7 +111,7 @@ export const Nav = () => {
         <StyledUl style={props}>
           <StyledLeftItemLi>
             <StyledLink onClick={() => setMenuActive(false)} to="/">
-              Food-Eureka!
+              Matbingo.no
             </StyledLink>
           </StyledLeftItemLi>
           {hasSelectedGroup && (
