@@ -12,7 +12,7 @@ import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
 import {
   StyledHeaderH1
 } from "../components/StyledHeaderH1";
-import { StyledNext, StyledPrevious, StyledChef } from "../components/StyledSvgIcons";
+import { StyledNext, StyledPrevious, BackgroundChef as StyledChef } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
@@ -230,7 +230,7 @@ export const Week = () => {
           }}
         />
       ) : (
-        <StyledActionButtonForText style={{ marginBottom: "2rem", marginRight: "1rem"}} onClick={() => setAddToTrelloActive(true)}>
+        <StyledActionButtonForText style={{ marginBottom: "4rem", marginRight: "1rem"}} onClick={() => setAddToTrelloActive(true)}>
           Lag handleliste i Trello
         </StyledActionButtonForText>
       )}

@@ -20,6 +20,24 @@ import { ReactComponent as ChefSvg } from "./svg/chef.svg";
 export const StyledChef = styled(ChefSvg)`
   height: 40rem;
   width: 40rem;
+  color: #e4971a;
+
+  @media screen and (max-width: ${minBreakPoint}px) {
+    height: 20rem;
+    width: 20rem;
+  }
+`;
+
+export const BackgroundChef = styled(ChefSvg)`
+  height: 40rem;
+  width: 40rem;
+  color: #e4971a;
+  fill: currentColor;
+  position: absolute;
+  top: 0;
+  right: -4rem;
+  transform: rotateY(180deg);
+  z-index: -1;
 
   @media screen and (max-width: ${minBreakPoint}px) {
     height: 20rem;

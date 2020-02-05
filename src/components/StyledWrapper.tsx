@@ -17,5 +17,6 @@ export const StyledWrapper = styled.div<Props>`
 `;
 
 export const StyledWideWrapper = styled<any>(StyledWrapper)`
+  position: relative;
   max-width: 815px;
 `;
