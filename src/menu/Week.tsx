@@ -12,7 +12,7 @@ import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
 import {
   StyledHeaderH1
 } from "../components/StyledHeaderH1";
-import { StyledNext, StyledPrevious } from "../components/StyledSvgIcons";
+import { StyledNext, StyledPrevious, StyledChef } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
@@ -140,6 +140,10 @@ const WeekSelector = ({
   );
 };
 
+const IllustrationContainer = styled.div`
+  text-align: center;
+`;
+
 export const Week = () => {
   const { recipes } = useContext(RecipeContext);
   const { userdata } = useContext(UserDataContext);
@@ -190,6 +194,9 @@ export const Week = () => {
       <StyledHeaderH1>
         Ukesmeny uke {getISOWeek(selectedDay)}
       </StyledHeaderH1>
+      <IllustrationContainer>
+        <StyledChef />
+      </IllustrationContainer>
       <Filter
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
@@ -223,7 +230,7 @@ export const Week = () => {
           }}
         />
       ) : (
-        <StyledActionButtonForText onClick={() => setAddToTrelloActive(true)}>
+        <StyledActionButtonForText style={{ marginBottom: "2rem", marginRight: "1rem"}} onClick={() => setAddToTrelloActive(true)}>
           Lag handleliste i Trello
         </StyledActionButtonForText>
       )}
