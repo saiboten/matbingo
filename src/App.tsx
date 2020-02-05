@@ -222,7 +222,12 @@ const AppRouter = () => {
     ]
   );
 
-  if (!state.loggedInStateClarified) {
+  const showLoader = !state.loggedInStateClarified
+    || state.ingredientsLoading
+    || state.recipesLoading
+    || !state.userdataLoaded;
+
+  if (showLoader) {
     return <StyledLoader />;
   }
 
@@ -237,14 +242,6 @@ const AppRouter = () => {
         <JoinGroupRouter />
       </>
     );
-  }
-
-  if (
-    state.ingredientsLoading ||
-    state.recipesLoading ||
-    !state.userdataLoaded
-  ) {
-    return <StyledLoader />;
   }
 
   return (
