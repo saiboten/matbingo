@@ -161,7 +161,7 @@ export const Random = ({ date, back, activeFilters }: Props) => {
         </StyledActionButtonWithMargins>
       </StyledButtonContainer>
       {recipe ? (
-        <RecipeDetails recipe={recipe} />
+        <RecipeDetails today={false} recipe={recipe} />
       ) : (
         <div>Fant ingen oppskrifter med valgte filtre</div>
       )}

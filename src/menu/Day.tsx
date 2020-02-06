@@ -36,14 +36,13 @@ const StyledDay = styled.div<StyledDayProps>`
   position: relative;
   width: 48%;
   display: inline-block;
-  padding: 20px 10px;
-  padding-left: 2rem;
   text-align: left;
   margin: 5px;
   min-height: 100px;
   color: #000;
 
-  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 
   border: ${props => (props.active ? `2px solid ${secondaryColor}` : "none")};
 
@@ -55,9 +54,13 @@ const StyledDay = styled.div<StyledDayProps>`
 
 const StyledDate = styled.div`
   position: absolute;
-  left: 8px;
+  left: 2px;
   top: 2px;
   font-size: 1.6rem;
+  background: white;
+  z-index: 1;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
 `;
 
 const CustomStyledDeleteIcon = styled(StyledDeleteIcon)`
@@ -243,12 +246,7 @@ export const Day = ({
                   addToTrelloActive ? toggleShoppingCart(date) : null
                 }
               >
-                {today && (
-                  <div style={{ transform: "translateY(20px)" }}>
-                    Dagens meny:{" "}
-                  </div>
-                )}
-                <RecipeDetails recipe={recipe} />
+                <RecipeDetails today={today} recipe={recipe} />
                 <DeleteDay documentId={dayData.id} reset={reset} />
               </div>
             )}

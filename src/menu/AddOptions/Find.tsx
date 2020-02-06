@@ -81,7 +81,7 @@ export const Find = ({ date, back }: Props) => {
       </StyledActionBox>
 
       {confirm ? (
-        <RecipeDetails recipe={recipe} />
+        <RecipeDetails today={false} recipe={recipe} />
       ) : (
         <ListRecipes onChange={(option: any) => confirmCheck(option.value)} />
       )}

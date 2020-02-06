@@ -16,6 +16,7 @@ const StyledWrapper = styled.div`
 
 interface Props {
   recipe: RecipeType;
+  today: boolean;
 }
 
 const StyledUl = styled.ul`
@@ -35,8 +36,20 @@ const StyledEmpesizedP = styled.p`
   margin-top: 1rem;
 `;
 
+interface ImageProps {
+  src: string;
+}
+
+const Image = styled.img<ImageProps>`
+  width: 100%;
+  display: block;
+  margin-top: -2.5rem;
+  opacity: 0.2;
+`;
+
 export const RecipeDetails = ({
-  recipe: { name, description, ingredients, id }
+  recipe: { name, description, ingredients, id },
+  today
 }: Props) => {
   const ingredientsFromContext = useContext(IngredientsContext).ingredients;
 
@@ -53,25 +66,32 @@ export const RecipeDetails = ({
 
   return (
     <StyledWrapper>
-      <StyledHeaderH1NoMarginTop>
+      <Image src="stock2.jpeg" />
+      <StyledHeaderH1NoMarginTop
+        style={{ padding: "0 1rem", paddingTop: "1rem", marginBottom: "0" }}
+      >
         <Link to={`/recipes/${id}`}>{name}</Link>
       </StyledHeaderH1NoMarginTop>
-      {description && (
-        <>
-          <StyledEmpesizedP>Beskrivelse</StyledEmpesizedP>
-          <p>{description}</p>
-        </>
-      )}
-      <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
-      <StyledUl>
-        {ingredientsStrings.length > 0 && (
+      <div
+        style={{ padding: "0 1rem", paddingBottom: "1rem", textAlign: "left" }}
+      >
+        {description && (
           <>
-            {ingredientsStrings.map((i: any) => (
-              <StyledLi key={i.name}>{i.name}</StyledLi>
-            ))}
+            <StyledEmpesizedP>Beskrivelse</StyledEmpesizedP>
+            <p>{description}</p>
           </>
         )}
-      </StyledUl>
+        <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
+        <StyledUl>
+          {ingredientsStrings.length > 0 && (
+            <>
+              {ingredientsStrings.map((i: any) => (
+                <StyledLi key={i.name}>{i.name}</StyledLi>
+              ))}
+            </>
+          )}
+        </StyledUl>
+      </div>
     </StyledWrapper>
   );
 };
