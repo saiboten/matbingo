@@ -9,7 +9,6 @@ import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
 import { StyledButton } from "../components/StyledButton";
 import Creatable from "react-select/creatable";
-import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
@@ -18,6 +17,8 @@ import { StyledRatingContainer } from "../components/StyledRatingContainer";
 import { Redirect } from "react-router";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledWrapper } from "../components/StyledWrapper";
+import { useIngredients } from "../hooks/useIngredients";
+import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 interface RecipeErrors {
   name: string | undefined;
@@ -98,9 +99,14 @@ const ReactSelectAdapter = ({ input, ...rest }: any) => {
 export function AddRecipe() {
   const [detailsId, setDetailsId] = useState("");
   const userData = useContext(UserDataContext).userdata;
+  const [ingredientsLoading, ingredients] = useIngredients();
 
   if (detailsId !== "") {
     return <Redirect to={`/recipes/${detailsId}`} push />;
+  }
+
+  if (ingredientsLoading) {
+    return <StyledLocalLoader />;
   }
 
   return (
@@ -158,21 +164,17 @@ export function AddRecipe() {
                 </Field>
               </StyledFieldSet>
               <label>Legg til ingredienser</label>
-              <IngredientsContext.Consumer>
-                {({ ingredients }) => (
-                  <SelectWrapper>
-                    <Field
-                      name="ingredients"
-                      component={ReactSelectAdapter}
-                      isMulti
-                      options={ingredients.map(el => ({
-                        label: el.name,
-                        value: el.id
-                      }))}
-                    />
-                  </SelectWrapper>
-                )}
-              </IngredientsContext.Consumer>
+              <SelectWrapper>
+                <Field
+                  name="ingredients"
+                  component={ReactSelectAdapter}
+                  isMulti
+                  options={ingredients.map(el => ({
+                    label: el.name,
+                    value: el.id
+                  }))}
+                />
+              </SelectWrapper>
               <label>Frekvens</label>
               <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
               <div>

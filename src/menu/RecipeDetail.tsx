@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { RecipeType, Ingredient, Unit } from "../types";
+import { RecipeType } from "../types";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
-import { IngredientsContext } from "../context/IngredientsContext";
 import { Link } from "react-router-dom";
+import { SeeIngredients } from "./SeeIngredients";
 
 const StyledWrapper = styled.div`
   margin-top: 2.5rem;
@@ -18,18 +18,6 @@ interface Props {
   recipe: RecipeType;
   today: boolean;
 }
-
-const StyledUl = styled.ul`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-  flex-wrap: wrap;
-`;
-
-const StyledLi = styled.li`
-  display: inline-block;
-  margin-right: 1.4rem;
-`;
 
 const StyledEmpesizedP = styled.p`
   font-weight: bold;
@@ -51,19 +39,6 @@ export const RecipeDetails = ({
   recipe: { name, description, ingredients, id },
   today
 }: Props) => {
-  const ingredientsFromContext = useContext(IngredientsContext).ingredients;
-
-  const ingredientsStrings: Ingredient[] = ingredients.map(ingredient => {
-    const res = ingredientsFromContext.find(el => el.id === ingredient);
-    return (
-      res || {
-        name: "",
-        unit: "Units" as Unit,
-        id: ""
-      }
-    );
-  });
-
   return (
     <StyledWrapper>
       <Image src="stock2.jpeg" />
@@ -81,16 +56,7 @@ export const RecipeDetails = ({
             <p>{description}</p>
           </>
         )}
-        <StyledEmpesizedP>Ingredienser</StyledEmpesizedP>
-        <StyledUl>
-          {ingredientsStrings.length > 0 && (
-            <>
-              {ingredientsStrings.map((i: any) => (
-                <StyledLi key={i.name}>{i.name}</StyledLi>
-              ))}
-            </>
-          )}
-        </StyledUl>
+        <SeeIngredients ingredientsIds={ingredients} />
       </div>
     </StyledWrapper>
   );

@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { UserDataContext } from "../context/UserDataContext";
 import { RecipeContext } from "../context/RecipeContext";
-import { IngredientsContext } from "../context/IngredientsContext";
 import { Ingredient, RecipeType } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { GroupDataContext } from "../context/GroupDataContext";
 import { StyledButton } from "../components/StyledButton";
+import { useIngredients } from "../hooks/useIngredients";
 
 interface CreateCardResponse {
   id: string;
@@ -35,7 +35,8 @@ export const AddToTrello = ({
   const userData = useContext(UserDataContext).userdata;
   const groupData = useContext(GroupDataContext).groupData;
   const recipes = useContext(RecipeContext).recipes;
-  const ingredients = useContext(IngredientsContext).ingredients;
+
+  const [ingredientsLoading, ingredients] = useIngredients();
 
   useEffect(
     () => {
@@ -113,8 +114,8 @@ export const AddToTrello = ({
         return init;
       }, []) as RecipeType[];
       const recipeIds = res
-        .filter(({ recipe }: any ) => recipe)
-        .map((el : any) => el.recipe) as string[];
+        .filter(({ recipe }: any) => recipe)
+        .map((el: any) => el.recipe) as string[];
       const recipesThisWeek: RecipeType[] = recipeIds.map((recipeId: string) =>
         recipes.find(el => el.id === recipeId)
       ) as RecipeType[];
@@ -133,7 +134,7 @@ export const AddToTrello = ({
     });
   };
 
-  if (loading) {
+  if (loading || ingredientsLoading) {
     return <StyledLocalLoader />;
   }
 

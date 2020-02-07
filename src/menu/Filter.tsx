@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { availableFilters } from "./availableFilters";
 import { StyledActionButtonForText } from "../components/StyledActionButton";
 import { RecipeType } from "../types";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import Select from "react-select";
-import { IngredientsContext } from "../context/IngredientsContext";
+import { useIngredients } from "../hooks/useIngredients";
+import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 interface Props {
   activeFilters: any;
@@ -24,10 +25,25 @@ interface Option {
   label: string;
 }
 
-export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
+export const Filter = (props: Props) => {
   const [open, setOpen] = useState(false);
 
-  const { ingredients } = useContext(IngredientsContext);
+  if (!open) {
+    return (
+      <StyledActionButtonForText onClick={() => setOpen(true)}>
+        Filtrer oppskrifter
+      </StyledActionButtonForText>
+    );
+  }
+  return <OpenFilter {...props} close={() => setOpen(false)} />
+}
+
+interface OpenFilterProps extends Props {
+  close: () => void;
+}
+
+export const OpenFilter = ({ activeFilters, setActiveFilters, close }: OpenFilterProps) => {
+  const [ingredientsLoading, ingredients] = useIngredients();
 
   const handleChange = (selectedOptions: any) => {
     var newFilters = selectedOptions?.map((selectedOption: Option) => ({
@@ -45,13 +61,10 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
     setActiveFilters(bla);
   };
 
-  if (!open) {
-    return (
-      <StyledActionButtonForText onClick={() => setOpen(true)}>
-        Filtrer oppskrifter
-      </StyledActionButtonForText>
-    );
+  if(ingredientsLoading) {
+    return <StyledLocalLoader />
   }
+  
 
   return (
     <div
@@ -99,7 +112,7 @@ export const Filter = ({ activeFilters, setActiveFilters }: Props) => {
         ))}
         <StyledActionButtonForText
           style={{ marginLeft: "auto" }}
-          onClick={() => setOpen(false)}
+          onClick={() => close()}
         >
           Lukk filtrering
         </StyledActionButtonForText>

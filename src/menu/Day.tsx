@@ -232,13 +232,13 @@ export const Day = ({
         ) : (
           <>
             {dayData.description && (
-              <>
+              <div style={{ marginTop: "2.5rem" }}>
                 {today && <div>Hva skjer i dag?: </div>}
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
                 <DeleteDay documentId={dayData.id} reset={reset} />
-              </>
+              </div>
             )}
             {recipe.name !== "" && (
               <div

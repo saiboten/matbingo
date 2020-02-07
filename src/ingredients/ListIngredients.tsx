@@ -2,8 +2,9 @@ import React from "react";
 import { firebase } from "../firebase/firebase";
 import { StyledListItem } from "../components/StyledList";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledDeleteIcon } from "../components/StyledSvgIcons";
+import { useIngredients } from "../hooks/useIngredients";
+import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 function deleteIngredient(id: string) {
   const db = firebase.firestore();
@@ -13,22 +14,24 @@ function deleteIngredient(id: string) {
 }
 
 export function ListIngredients() {
+  const [ingredientsLoading, ingredients] = useIngredients();
+
+  if (ingredientsLoading) {
+    return <StyledLocalLoader />;
+  }
+
   return (
     <>
       <StyledHeaderH1>Ingredienser</StyledHeaderH1>
       <ul>
-        <IngredientsContext.Consumer>
-          {({ ingredients }) =>
-            ingredients.map(el => (
-              <StyledListItem key={el.id}>
-                {el.name}
-                <span onClick={() => deleteIngredient(el.id)}>
-                  <StyledDeleteIcon />
-                </span>
-              </StyledListItem>
-            ))
-          }
-        </IngredientsContext.Consumer>
+        {ingredients.map(el => (
+          <StyledListItem key={el.id}>
+            {el.name}
+            <span onClick={() => deleteIngredient(el.id)}>
+              <StyledDeleteIcon />
+            </span>
+          </StyledListItem>
+        ))}
       </ul>
     </>
   );

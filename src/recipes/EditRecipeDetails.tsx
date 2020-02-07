@@ -13,7 +13,6 @@ import { StyledInputLabel } from "../components/StyledInputLabel";
 import { StyledInputWrapper } from "../components/StyledInputWrapper";
 import { StyledError } from "../components/StyledError";
 import { StyledInput } from "../components/StyledInput";
-import { IngredientsContext } from "../context/IngredientsContext";
 import { StyledButton } from "../components/StyledButton";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
@@ -26,6 +25,7 @@ import { StyledNotification } from "../components/StyledNotification";
 import { ListRecipesAndRedirect } from "./ListRecipesAndRedirect";
 import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 import { UserDataContext } from "../context/UserDataContext";
+import { useIngredients } from "../hooks/useIngredients";
 
 interface Params {
   id: string;
@@ -105,14 +105,14 @@ export const EditRecipeDetails = ({
   }
 }: Props) => {
   const recipes = useContext(RecipeContext);
-  const ingredients = useContext(IngredientsContext);
   const userdata = useContext(UserDataContext).userdata;
+  const [ingredientsLoading, ingredients] = useIngredients();
 
   const [nextPage, setNextPage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  if (ingredients.ingredients.length === 0) {
+  if (ingredientsLoading) {
     return <StyledLoader />;
   }
 
@@ -144,7 +144,7 @@ export const EditRecipeDetails = ({
         initialValues={{
           ...recipeDetails,
           ingredients: recipeDetails.ingredients.map((el: string) => {
-            const found = ingredients.ingredients.find(
+            const found = ingredients.find(
               (option: Ingredient) => option.id === el
             ) || {
               name: "",
@@ -217,21 +217,17 @@ export const EditRecipeDetails = ({
               <label>Frekvens</label>
               <StyledRatingContainer>{createRatings()}</StyledRatingContainer>
               <label>Legg til ingredienser</label>
-              <IngredientsContext.Consumer>
-                {({ ingredients }) => (
-                  <SelectWrapper>
-                    <Field
-                      name="ingredients"
-                      component={ReactSelectAdapter}
-                      isMulti
-                      options={ingredients.map(el => ({
-                        label: el.name,
-                        value: el.id
-                      }))}
-                    />
-                  </SelectWrapper>
-                )}
-              </IngredientsContext.Consumer>
+              <SelectWrapper>
+                <Field
+                  name="ingredients"
+                  component={ReactSelectAdapter}
+                  isMulti
+                  options={ingredients.map(el => ({
+                    label: el.name,
+                    value: el.id
+                  }))}
+                />
+              </SelectWrapper>
 
               <div>
                 <StyledInputLabel>

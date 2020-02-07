@@ -5,7 +5,6 @@ import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
 import { RecipeContext } from "./context/RecipeContext";
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
-import { IngredientsContext } from "./context/IngredientsContext";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
 import { StyledLoader } from "./components/StyledLoader";
@@ -75,7 +74,6 @@ const App = () => {
 
 interface State {
   recipesLoading: boolean;
-  ingredientsLoading: boolean;
   userdataLoaded: boolean;
   loggedIn: boolean;
   loggedInStateClarified: boolean;
@@ -83,7 +81,6 @@ interface State {
 
 const initialState: State = {
   recipesLoading: true,
-  ingredientsLoading: true,
   userdataLoaded: false,
   loggedIn: false,
   loggedInStateClarified: false
@@ -116,11 +113,6 @@ function reducer(state: State, action: any) {
         ...state,
         recipesLoading: false
       };
-    case "ingredientsLoaded":
-      return {
-        ...state,
-        ingredientsLoading: false
-      };
     default:
       throw new Error();
   }
@@ -132,14 +124,12 @@ const AppRouter = () => {
   const { setUser } = useContext(UserContext);
   const { userdata, setUserdata } = useContext(UserDataContext);
   const { setRecipes } = useContext(RecipeContext);
-  const { setIngredients } = useContext(IngredientsContext);
   const { setGroupdata } = useContext(GroupDataContext);
 
   useEffect(
     () => {
       let unsubUserData = () => {};
       let unsubRecipes = () => {};
-      let unsubIngredients = () => {};
       let unsubGroupData = () => {};
 
       let unsubAuthChange = firebase.auth().onAuthStateChanged((user: any) => {
@@ -172,19 +162,6 @@ const AppRouter = () => {
                   });
               }
 
-              unsubIngredients = db
-                .collection("ingredients")
-                .where("group", "==", userdata.group)
-                .onSnapshot(querySnapshot => {
-                  dispatch({ type: "ingredientsLoaded" });
-                  setIngredients(
-                    querySnapshot.docs.map((doc: any) => ({
-                      id: doc.id,
-                      ...doc.data()
-                    }))
-                  );
-                });
-
               if (userdata.group) {
                 unsubGroupData = db
                   .collection("groups")
@@ -209,17 +186,9 @@ const AppRouter = () => {
         unsubAuthChange();
         unsubGroupData();
         unsubRecipes();
-        unsubIngredients();
       };
     },
-    [
-      setGroupdata,
-      setIngredients,
-      setRecipes,
-      setUser,
-      setUserdata,
-      userdata.group
-    ]
+    [setGroupdata, setRecipes, setUser, setUserdata, userdata.group]
   );
 
   if (!state.loggedInStateClarified) {
@@ -239,12 +208,8 @@ const AppRouter = () => {
     );
   }
 
-  if (	
-    state.ingredientsLoading ||	
-    state.recipesLoading ||	
-    !state.userdataLoaded	
-  ) {	
-    return <StyledLoader />;	
+  if (state.recipesLoading || !state.userdataLoaded) {
+    return <StyledLoader />;
   }
 
   return (
