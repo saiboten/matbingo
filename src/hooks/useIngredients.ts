@@ -12,14 +12,15 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
   useEffect(
     () => {
       if (ingredients.length > 0) {
+        setLoading(false);
         return;
       }
 
       const db = firebase.firestore();
-      const unsub = db
-        .collection("ingredients")
+      db.collection("ingredients")
         .where("group", "==", userGroup)
-        .onSnapshot(querySnapshot => {
+        .get()
+        .then(querySnapshot => {
           const ingredients = querySnapshot.docs.map((doc: any) => ({
             id: doc.id,
             ...doc.data()
@@ -28,12 +29,8 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
           setIngredients(ingredients);
           setLoading(false);
         });
-
-      return () => {
-        unsub();
-      };
     },
-    [userGroup]
+    [userGroup, ingredients.length, setIngredients]
   );
 
   return [loading, ingredients];
