@@ -13,8 +13,7 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
       const db = firebase.firestore();
       db.collection("ingredients")
         .where("group", "==", userGroup)
-        .get()
-        .then(querySnapshot => {
+        .onSnapshot(querySnapshot => {
           setData(
             querySnapshot.docs.map((doc: any) => ({
               id: doc.id,
@@ -24,7 +23,7 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
           setLoading(false);
         });
     },
-    [data, userGroup]
+    [userGroup]
   );
 
   return [loading, data];
