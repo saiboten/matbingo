@@ -3,6 +3,10 @@ import { UserContextState, User, UserContext } from "./context/UserContext";
 import { UserDataContext, UserData } from "./context/UserDataContext";
 import { RecipeContextState, RecipeContext } from "./context/RecipeContext";
 import { GroupDataContext, GroupData } from "./context/GroupDataContext";
+import {
+  IngredientsContextState,
+  IngredientsContext
+} from "./context/IngredientsContext";
 
 export const Providers = ({ children }: { children: any }) => {
   const [user, setUser]: [User, any] = useState({
@@ -28,6 +32,8 @@ export const Providers = ({ children }: { children: any }) => {
 
   const [recipes, setRecipes] = useState([]);
 
+  const [ingredients, setIngredients] = useState([]);
+
   const userContextValue: UserContextState = {
     user,
     setUser
@@ -48,15 +54,22 @@ export const Providers = ({ children }: { children: any }) => {
     setGroupdata
   };
 
+  const ingredientsContextValue: IngredientsContextState = {
+    ingredients,
+    setIngredients
+  };
+
   return (
     <RecipeContext.Provider value={recipesContextValue}>
-      <UserContext.Provider value={userContextValue}>
-        <UserDataContext.Provider value={userDataContextValue}>
-          <GroupDataContext.Provider value={groupDataContextValue}>
-            {children}
-          </GroupDataContext.Provider>
-        </UserDataContext.Provider>
-      </UserContext.Provider>
+      <IngredientsContext.Provider value={ingredientsContextValue}>
+        <UserContext.Provider value={userContextValue}>
+          <UserDataContext.Provider value={userDataContextValue}>
+            <GroupDataContext.Provider value={groupDataContextValue}>
+              {children}
+            </GroupDataContext.Provider>
+          </UserDataContext.Provider>
+        </UserContext.Provider>
+      </IngredientsContext.Provider>
     </RecipeContext.Provider>
   );
 };
