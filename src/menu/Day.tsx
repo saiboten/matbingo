@@ -8,7 +8,6 @@ import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { primaryColor, secondaryColor } from "../components/Constants";
-import { RecipeContext } from "../context/RecipeContext";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import {
@@ -18,6 +17,7 @@ import {
 } from "../components/StyledActionButton";
 import { Filter } from "./Filter";
 import { StyledDeleteIcon } from "../components/StyledSvgIcons";
+import { useRecipes } from "../hooks/useRecipes";
 
 interface Props {
   date: Date;
@@ -169,7 +169,7 @@ export const Day = ({
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
 
-  const recipeContext = useContext(RecipeContext);
+  const [recipesLoading, recipes] = useRecipes();
   const userdata = useContext(UserDataContext).userdata;
 
   const reset = () => {
@@ -199,9 +199,7 @@ export const Day = ({
           });
 
           if (dayData.recipe) {
-            const recipe = recipeContext.recipes.find(
-              el => el.id === dayData.recipe
-            );
+            const recipe = recipes.find(el => el.id === dayData.recipe);
 
             if (recipe) {
               setRecipe(recipe);
@@ -213,10 +211,14 @@ export const Day = ({
         unsub();
       };
     },
-    [date, recipeContext.recipes, userdata.group]
+    [date, recipes, userdata.group]
   );
 
   const today = isToday(date);
+
+  if (recipesLoading) {
+    return <StyledLocalLoader />;
+  }
 
   return (
     <StyledDay

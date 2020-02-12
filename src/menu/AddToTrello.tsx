@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { UserDataContext } from "../context/UserDataContext";
-import { RecipeContext } from "../context/RecipeContext";
 import { Ingredient, RecipeType } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 import { GroupDataContext } from "../context/GroupDataContext";
 import { StyledButton } from "../components/StyledButton";
 import { useIngredients } from "../hooks/useIngredients";
+import { useRecipes } from "../hooks/useRecipes";
 
 interface CreateCardResponse {
   id: string;
@@ -34,7 +34,7 @@ export const AddToTrello = ({
 
   const userData = useContext(UserDataContext).userdata;
   const groupData = useContext(GroupDataContext).groupData;
-  const recipes = useContext(RecipeContext).recipes;
+  const [recipesLoading, recipes] = useRecipes();
 
   const [ingredientsLoading, ingredients] = useIngredients();
 
@@ -134,7 +134,7 @@ export const AddToTrello = ({
     });
   };
 
-  if (loading || ingredientsLoading) {
+  if (loading || ingredientsLoading || recipesLoading) {
     return <StyledLocalLoader />;
   }
 

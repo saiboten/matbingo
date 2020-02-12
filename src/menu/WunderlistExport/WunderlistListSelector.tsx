@@ -9,8 +9,8 @@ import { WunderlistSelect } from "./WunderlistSelect";
 import { WunderlistList, RecipeType, Ingredient } from "../../types";
 import { firebase } from "../../firebase/firebase";
 import { UserDataContext } from "../../context/UserDataContext";
-import { RecipeContext } from "../../context/RecipeContext";
 import { useIngredients } from "../../hooks/useIngredients";
+import { useRecipes } from "../../hooks/useRecipes";
 
 const clientId = "03d2eac308bd127169f5";
 async function fetchLists(accessToken: string) {
@@ -188,7 +188,7 @@ function Content({
   const fetchError = fetchListHook.error;
 
   const userGroup = useContext(UserDataContext).userdata.group;
-  const recipes = useContext(RecipeContext).recipes;
+  const [recipesLoading, recipes] = useRecipes();
   const [ingredientsLoading, ingredients] = useIngredients();
 
   const asyncOnClick = useAsyncCallback(() =>
@@ -211,7 +211,12 @@ function Content({
     },
     [lists]
   );
-  if (loading || ingredientsLoading || submitStatus === "loading") {
+  if (
+    loading ||
+    ingredientsLoading ||
+    submitStatus === "loading" ||
+    recipesLoading
+  ) {
     return (
       <LoaderWrapper>
         <StyledLocalLoader />

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
-import { RecipeContext } from "./context/RecipeContext";
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
 import { Week } from "./menu/Week";
 import { firebase } from "./firebase/firebase";
@@ -73,14 +72,12 @@ const App = () => {
 };
 
 interface State {
-  recipesLoading: boolean;
   userdataLoaded: boolean;
   loggedIn: boolean;
   loggedInStateClarified: boolean;
 }
 
 const initialState: State = {
-  recipesLoading: true,
   userdataLoaded: false,
   loggedIn: false,
   loggedInStateClarified: false
@@ -108,11 +105,6 @@ function reducer(state: State, action: any) {
         ...state,
         userdataLoaded: true
       };
-    case "recipesLoaded":
-      return {
-        ...state,
-        recipesLoading: false
-      };
     default:
       throw new Error();
   }
@@ -123,13 +115,11 @@ const AppRouter = () => {
 
   const { setUser } = useContext(UserContext);
   const { userdata, setUserdata } = useContext(UserDataContext);
-  const { setRecipes } = useContext(RecipeContext);
   const { setGroupdata } = useContext(GroupDataContext);
 
   useEffect(
     () => {
       let unsubUserData = () => {};
-      let unsubRecipes = () => {};
       let unsubGroupData = () => {};
 
       let unsubAuthChange = firebase.auth().onAuthStateChanged((user: any) => {
@@ -147,20 +137,6 @@ const AppRouter = () => {
 
               setUserdata(userdata);
               dispatch({ type: "userdataLoaded" });
-              if (userdata.group) {
-                unsubRecipes = db
-                  .collection("recipes")
-                  .where("group", "==", userdata.group)
-                  .onSnapshot(querySnapshot => {
-                    dispatch({ type: "recipesLoaded" });
-                    setRecipes(
-                      querySnapshot.docs.map((doc: any) => ({
-                        id: doc.id,
-                        ...doc.data()
-                      }))
-                    );
-                  });
-              }
 
               if (userdata.group) {
                 unsubGroupData = db
@@ -185,10 +161,9 @@ const AppRouter = () => {
         unsubUserData();
         unsubAuthChange();
         unsubGroupData();
-        unsubRecipes();
       };
     },
-    [setGroupdata, setRecipes, setUser, setUserdata, userdata.group]
+    [setGroupdata, setUser, setUserdata, userdata.group]
   );
 
   if (!state.loggedInStateClarified) {
@@ -208,7 +183,7 @@ const AppRouter = () => {
     );
   }
 
-  if (state.recipesLoading || !state.userdataLoaded) {
+  if (!state.userdataLoaded) {
     return <StyledLoader />;
   }
 

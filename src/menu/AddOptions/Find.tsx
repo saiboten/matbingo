@@ -9,8 +9,9 @@ import { RecipeType } from "../../types";
 import { RecipeDetails } from "../RecipeDetail";
 import styled from "styled-components";
 import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
-import { RecipeContext } from "../../context/RecipeContext";
 import { UserDataContext } from "../../context/UserDataContext";
+import { useRecipes } from "../../hooks/useRecipes";
+import { StyledLocalLoader } from "../../components/StyledLocalLoader";
 
 const storeSelectedRecipe = (date: Date, recipeId: string, group: string) => {
   firebase
@@ -57,12 +58,16 @@ export const Find = ({ date, back }: Props) => {
   const [confirm, setConfirm]: [boolean, any] = useState(false);
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
 
-  const recipeContext = useContext(RecipeContext);
+  const [recipesLoading, recipes] = useRecipes();
   const userData = useContext(UserDataContext).userdata;
+
+  if (recipesLoading) {
+    return <StyledLocalLoader />;
+  }
 
   const confirmCheck = (recipeId: string) => {
     setConfirm(true);
-    setRecipe(recipeContext.recipes.find(r => r.id === recipeId));
+    setRecipe(recipes.find(r => r.id === recipeId));
   };
 
   return (

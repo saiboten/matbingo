@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import Creatable from "react-select/creatable";
-import { RecipeContext } from "../context/RecipeContext";
 import { RouteComponentProps, Redirect } from "react-router";
 import { RecipeType, Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
@@ -26,6 +25,7 @@ import { ListRecipesAndRedirect } from "./ListRecipesAndRedirect";
 import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 import { UserDataContext } from "../context/UserDataContext";
 import { useIngredients } from "../hooks/useIngredients";
+import { useRecipes } from "../hooks/useRecipes";
 
 interface Params {
   id: string;
@@ -104,7 +104,7 @@ export const EditRecipeDetails = ({
     params: { id }
   }
 }: Props) => {
-  const recipes = useContext(RecipeContext);
+  const [recipesLoading, recipes] = useRecipes();
   const userdata = useContext(UserDataContext).userdata;
   const [ingredientsLoading, ingredients] = useIngredients();
 
@@ -112,11 +112,13 @@ export const EditRecipeDetails = ({
   const [showNotification, setShowNotification] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  if (ingredientsLoading) {
+  if (ingredientsLoading || recipesLoading) {
     return <StyledLoader />;
   }
 
-  const recipeDetails: RecipeType = recipes.recipes.find(
+  console.log(ingredients, recipes);
+
+  const recipeDetails: RecipeType = recipes.find(
     recipe => recipe.id === id
   ) || {
     name: "",

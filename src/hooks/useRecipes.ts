@@ -1,28 +1,25 @@
 import { useState, useEffect, useContext } from "react";
 import { firebase } from "../firebase/firebase";
-import { Ingredient } from "../types";
+import { RecipeType } from "../types";
 import { UserDataContext } from "../context/UserDataContext";
-import { IngredientsContext } from "../context/IngredientsContext";
+import { RecipeContext } from "../context/RecipeContext";
 
-export const useIngredients = (): [boolean, Ingredient[]] => {
+export const useRecipes = (): [boolean, RecipeType[]] => {
   const [loading, setLoading] = useState(true);
-  const { ingredients, setIngredients } = useContext(IngredientsContext);
+  const { recipes, setRecipes } = useContext(RecipeContext);
   const userGroup = useContext(UserDataContext).userdata.group;
 
   useEffect(
     () => {
-      console.log(
-        "Im in useEffect and ingredients length: ",
-        ingredients.length
-      );
-
-      if (ingredients.length > 0) {
+      if (recipes.length > 0) {
         setLoading(false);
         return;
       }
 
+      console.log("userecipes", recipes);
+
       const db = firebase.firestore();
-      db.collection("ingredients")
+      db.collection("recipes")
         .where("group", "==", userGroup)
         .get()
         .then(querySnapshot => {
@@ -31,12 +28,12 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
             ...doc.data()
           }));
 
-          setIngredients(ingredients);
+          setRecipes(ingredients);
           setLoading(false);
         });
     },
-    [userGroup, ingredients.length, setIngredients]
+    [userGroup, recipes, setRecipes]
   );
 
-  return [loading, ingredients];
+  return [loading, recipes];
 };

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { RouteComponentProps } from "react-router";
 import { StyledNotification } from "../components/StyledNotification";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { RecipeContext } from "../context/RecipeContext";
 import { StyledLink } from "../components/StyledLink";
+import { useRecipes } from "../hooks/useRecipes";
+import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 interface MatchParams {
   feedback: string;
@@ -15,18 +16,25 @@ interface Props extends RouteComponentProps<MatchParams> {}
 export const RecipesContent = ({ feedback }: { feedback: string }) => {
   const [feedbackActive, setFeedbackActive] = useState(false);
 
-  const recipes = useContext(RecipeContext).recipes;
+  const [recipesLoading, recipes] = useRecipes();
 
-  useEffect(() => {
-    if (feedback) {
-      setTimeout(() => {
-        setFeedbackActive(true);
-      }, 0);
-      setTimeout(() => {
-        setFeedbackActive(false);
-      }, 2000);
-    }
-  }, [feedback]);
+  useEffect(
+    () => {
+      if (feedback) {
+        setTimeout(() => {
+          setFeedbackActive(true);
+        }, 0);
+        setTimeout(() => {
+          setFeedbackActive(false);
+        }, 2000);
+      }
+    },
+    [feedback]
+  );
+
+  if (recipesLoading) {
+    return <StyledLocalLoader />;
+  }
 
   return (
     <>
