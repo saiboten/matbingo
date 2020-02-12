@@ -20,7 +20,9 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
         setLoading(false);
         return;
       }
-
+      if (!userGroup) {
+        return;
+      }
       const db = firebase.firestore();
       db.collection("ingredients")
         .where("group", "==", userGroup)
@@ -30,7 +32,6 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
             id: doc.id,
             ...doc.data()
           }));
-
           setIngredients(ingredients);
           setLoading(false);
         });

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { format, isToday } from "date-fns";
 import styled from "styled-components";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { firebase } from "../firebase/firebase";
 import { RecipeType } from "../types";
 import nbLocale from "date-fns/locale/nb";
@@ -18,6 +19,7 @@ import {
 import { Filter } from "./Filter";
 import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 import { useRecipes } from "../hooks/useRecipes";
+import { ToggleShoppingCart } from "./ToggleShoppingCart";
 
 interface Props {
   date: Date;
@@ -63,10 +65,6 @@ const StyledDate = styled.div`
   border-radius: 3px;
 `;
 
-const CustomStyledDeleteIcon = styled(StyledDeleteIcon)`
-  fill: white;
-`;
-
 const initialState: RecipeType = {
   name: "",
   description: "",
@@ -103,15 +101,26 @@ const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
   margin-top: 42px;
 `;
 
+const ActionButtons = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 5px;
+  margin-top: 5px;
+  display: float;
+`;
+
 const DeleteDay = ({
   documentId,
-  reset
+  reset,
+  showConfirm,
+  setConfirmed
 }: {
   documentId: string;
   reset: () => void;
+  showConfirm: boolean;
+  setConfirmed: (value: boolean) => void;
 }) => {
-  const [showConfirm, setConfirmed] = useState(false);
-
   const deleteDay = () => {
     if (showConfirm) {
       const db = firebase.firestore();
@@ -127,15 +136,7 @@ const DeleteDay = ({
   };
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        right: "0",
-        top: "0",
-        marginRight: "5px",
-        marginTop: "5px"
-      }}
-    >
+    <div>
       {showConfirm && (
         <StyledSecondaryActionButtonForText
           style={{ marginRight: "10px" }}
@@ -151,7 +152,7 @@ const DeleteDay = ({
         </StyledActionButtonForText>
       ) : (
         <StyledActionButton onClick={deleteDay}>
-          <CustomStyledDeleteIcon />
+          <DeleteIcon fontSize="large" />
         </StyledActionButton>
       )}
     </div>
@@ -168,6 +169,7 @@ export const Day = ({
   const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirmed] = useState(false);
 
   const [recipesLoading, recipes] = useRecipes();
   const userdata = useContext(UserDataContext).userdata;
@@ -239,7 +241,12 @@ export const Day = ({
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
-                <DeleteDay documentId={dayData.id} reset={reset} />
+                <DeleteDay
+                  documentId={dayData.id}
+                  reset={reset}
+                  setConfirmed={setShowDeleteConfirmed}
+                  showConfirm={showDeleteConfirm}
+                />
               </div>
             )}
             {recipe.name !== "" && (
@@ -249,7 +256,15 @@ export const Day = ({
                 }
               >
                 <RecipeDetails today={today} recipe={recipe} />
-                <DeleteDay documentId={dayData.id} reset={reset} />
+                <ActionButtons>
+                  <ToggleShoppingCart recipeId={recipe.id} />
+                  <DeleteDay
+                    documentId={dayData.id}
+                    reset={reset}
+                    setConfirmed={setShowDeleteConfirmed}
+                    showConfirm={showDeleteConfirm}
+                  />
+                </ActionButtons>
               </div>
             )}
             {recipe.name === "" && !dayData.description && (
