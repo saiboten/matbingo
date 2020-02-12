@@ -3,7 +3,6 @@ import { format, isToday } from "date-fns";
 import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { firebase } from "../firebase/firebase";
-import { RecipeType } from "../types";
 import nbLocale from "date-fns/locale/nb";
 import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
@@ -17,8 +16,7 @@ import {
   StyledActionButtonForText
 } from "../components/StyledActionButton";
 import { Filter } from "./Filter";
-import { StyledDeleteIcon } from "../components/StyledSvgIcons";
-import { useRecipes } from "../hooks/useRecipes";
+import { useSingleRecipe } from "../hooks/useRecipes";
 import { ToggleShoppingCart } from "./ToggleShoppingCart";
 
 interface Props {
@@ -65,17 +63,17 @@ const StyledDate = styled.div`
   border-radius: 3px;
 `;
 
-const initialState: RecipeType = {
-  name: "",
-  description: "",
-  id: "",
-  ingredients: [],
-  weekdays: [],
-  lastTimeSelected: new Date(),
-  rating: 1,
-  hasBeenSelected: false,
-  recipetype: []
-};
+// const initialState: RecipeType = {
+//   name: "",
+//   description: "",
+//   id: "",
+//   ingredients: [],
+//   weekdays: [],
+//   lastTimeSelected: new Date(),
+//   rating: 1,
+//   hasBeenSelected: false,
+//   recipetype: []
+// };
 
 interface DayData {
   id: string;
@@ -166,18 +164,17 @@ export const Day = ({
   isShoppingCartActive,
   activeFilters
 }: Props) => {
-  const [recipe, setRecipe]: [RecipeType, any] = useState(initialState);
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirmed] = useState(false);
 
-  const [recipesLoading, recipes] = useRecipes();
   const userdata = useContext(UserDataContext).userdata;
 
   const reset = () => {
     setDayData(initialDayData);
-    setRecipe(initialState);
   };
+
+  const [recipeLoading, recipe] = useSingleRecipe(dayData.recipe);
 
   useEffect(
     () => {
@@ -199,26 +196,18 @@ export const Day = ({
             id: daysMatch.id,
             ...dayData
           });
-
-          if (dayData.recipe) {
-            const recipe = recipes.find(el => el.id === dayData.recipe);
-
-            if (recipe) {
-              setRecipe(recipe);
-            }
-          }
         });
       });
       return () => {
         unsub();
       };
     },
-    [date, recipes, userdata.group]
+    [date, userdata.group]
   );
 
   const today = isToday(date);
 
-  if (recipesLoading) {
+  if (recipeLoading) {
     return <StyledLocalLoader />;
   }
 
@@ -249,15 +238,15 @@ export const Day = ({
                 />
               </div>
             )}
-            {recipe.name !== "" && (
+            {recipe?.name !== "" && (
               <div
                 onClick={() =>
                   addToTrelloActive ? toggleShoppingCart(date) : null
                 }
               >
-                <RecipeDetails today={today} recipe={recipe} />
+                <RecipeDetails recipe={recipe} />
                 <ActionButtons>
-                  <ToggleShoppingCart recipeId={recipe.id} />
+                  <ToggleShoppingCart recipeId={recipe?.id} />
                   <DeleteDay
                     documentId={dayData.id}
                     reset={reset}
@@ -267,7 +256,7 @@ export const Day = ({
                 </ActionButtons>
               </div>
             )}
-            {recipe.name === "" && !dayData.description && (
+            {recipe === undefined && !dayData.description && (
               <GenerateDay date={date} activeFilters={activeFilters} />
             )}
           </>

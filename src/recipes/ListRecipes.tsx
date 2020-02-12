@@ -1,7 +1,6 @@
 import React from "react";
 import Select from "react-select";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { RecipeContext } from "../context/RecipeContext";
 import { useRecipes } from "../hooks/useRecipes";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
 

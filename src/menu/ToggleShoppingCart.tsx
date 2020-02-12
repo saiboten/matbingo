@@ -36,7 +36,7 @@ function makeId(length: number) {
 }
 
 
-function mapToShoppingListIngredients(recipeId: string, recipes: RecipeType[], ingredients: Ingredient[]): ShoppingListIngredient[] {
+function mapToShoppingListIngredients(recipeId: string | undefined, recipes: RecipeType[], ingredients: Ingredient[]): ShoppingListIngredient[] {
   const recipe = recipes.find(x => x.id === recipeId);
   if (!recipe) {
     return [];
@@ -56,7 +56,7 @@ function mapToShoppingListIngredients(recipeId: string, recipes: RecipeType[], i
 }
 
 interface WrapperProps {
-  recipeId: string;
+  recipeId: string | undefined;
 }
 function ToggleShoppingCart({ recipeId }: WrapperProps): ReactElement {
   const context = useContext(ShoppingListContext);

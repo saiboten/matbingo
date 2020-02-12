@@ -37,3 +37,37 @@ export const useRecipes = (): [boolean, RecipeType[]] => {
 
   return [loading, recipes];
 };
+
+export const useSingleRecipe = (
+  id: string | undefined
+): [boolean, RecipeType | undefined] => {
+  const [loading, setLoading] = useState(true);
+  const [recipe, setRecipe] = useState<RecipeType | undefined>();
+  const userGroup = useContext(UserDataContext).userdata.group;
+
+  useEffect(
+    () => {
+      if (id === undefined) {
+        setLoading(false);
+        return;
+      }
+
+      const db = firebase.firestore();
+      db.collection("recipes")
+        .doc(id)
+        .get()
+        .then(doc => {
+          const recipe: any = {
+            id: doc.id,
+            ...doc.data()
+          };
+
+          setRecipe(recipe);
+          setLoading(false);
+        });
+    },
+    [userGroup, id]
+  );
+
+  return [loading, recipe];
+};

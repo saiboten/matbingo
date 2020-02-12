@@ -12,9 +12,10 @@ import {
 import { Filter } from "./Filter";
 
 const StyledButtons = styled.div`
-  margin-top: 2rem;
+  margin-top: 3rem;
   display: flex;
   justify-content: space-around;
+  height: 20rem;
 `;
 
 const StyledAction = styled.div`

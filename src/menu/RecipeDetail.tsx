@@ -15,8 +15,7 @@ const StyledWrapper = styled.div`
 `;
 
 interface Props {
-  recipe: RecipeType;
-  today: boolean;
+  recipe: RecipeType | undefined;
 }
 
 const StyledEmpesizedP = styled.p`
@@ -35,10 +34,13 @@ const Image = styled.img<ImageProps>`
   opacity: 0.2;
 `;
 
-export const RecipeDetails = ({
-  recipe: { name, description, ingredients, id },
-  today
-}: Props) => {
+export const RecipeDetails = ({ recipe }: Props) => {
+  if (!recipe) {
+    return null;
+  }
+
+  const { name, description, ingredients, id } = recipe;
+
   return (
     <StyledWrapper>
       <Image src="stock2.jpeg" />

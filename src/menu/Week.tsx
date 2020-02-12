@@ -8,20 +8,17 @@ import {
   StyledActionButtonWithMargins,
   StyledActionButtonForText
 } from "../components/StyledActionButton";
-import { StyledWideWrapper, StyledWrapper } from "../components/StyledWrapper";
+import { StyledWideWrapper } from "../components/StyledWrapper";
 import {
   StyledHeaderH1
 } from "../components/StyledHeaderH1";
 import { StyledNext, StyledPrevious, BackgroundChef as StyledChef } from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
-import { StyledLink } from "../components/StyledLink";
 import { Filter } from "./Filter";
 import { WunderlistExportButton } from "./WunderlistExport/WunderlistExportButton";
 import { WunderlistListSelector } from "./WunderlistExport/WunderlistListSelector";
 import { UserDataContext } from "../context/UserDataContext";
 import { UserContext } from "../context/UserContext";
-import { useRecipes } from "../hooks/useRecipes";
-import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 function makeId(length: number) {
   var result           = '';
@@ -103,20 +100,20 @@ const StyledButtonGroup = styled.div`
   justify-content: center;
 `;
 
-const NoRecipes = () => {
-  return (
-    <StyledWrapper backgroundColor="white">
-      <StyledHeaderH1>Du har ingen oppskrifter</StyledHeaderH1>
-      <p>
-        Før du kan lage ukesoppsett må du opprette noen oppskrifter,{" "}
-        <StyledLink style={{ padding: "0", margin: "0" }} to="/add-recipe">
-          det kan du gjøre her
-        </StyledLink>
-        !
-      </p>
-    </StyledWrapper>
-  );
-};
+// const NoRecipes = () => {
+//   return (
+//     <StyledWrapper backgroundColor="white">
+//       <StyledHeaderH1>Du har ingen oppskrifter</StyledHeaderH1>
+//       <p>
+//         Før du kan lage ukesoppsett må du opprette noen oppskrifter,{" "}
+//         <StyledLink style={{ padding: "0", margin: "0" }} to="/add-recipe">
+//           det kan du gjøre her
+//         </StyledLink>
+//         !
+//       </p>
+//     </StyledWrapper>
+//   );
+// };
 
 const WeekSelector = ({
   selectedDay,
@@ -148,7 +145,6 @@ const IllustrationContainer = styled.div`
 `;
 
 export const Week = () => {
-  const [ recipesLoading, recipes ] = useRecipes();
   const { userdata } = useContext(UserDataContext);
   const { user } = useContext(UserContext);
   const wunderlistAccessToken = userdata.wunderlistAccessToken;
@@ -183,14 +179,6 @@ export const Week = () => {
       redirectToExternalAuthDialog();
     }
   };
-
-  if (recipes.length === 0) {
-    return <NoRecipes />;
-  }
-
-  if(recipesLoading) {
-    return <StyledLocalLoader />
-  }
 
   const listOfDays = new Array(7)
     .fill("")

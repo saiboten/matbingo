@@ -3,11 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Ingredients } from "./ingredients/Ingredients";
 import { createGlobalStyle } from "styled-components";
 import { Recipes } from "./recipes/Recipes";
-<<<<<<< HEAD
-=======
 import { ShoppingList } from "./shoppinglist/ShoppingList";
-import { RecipeContext } from "./context/RecipeContext";
->>>>>>> 46419c0649d327d2ec7bf2d141bae8db97a95bbb
 import { EditRecipeDetails } from "./recipes/EditRecipeDetails";
 import { ShoppingListContext } from "./context/ShoppingListContext";
 import { Week } from "./menu/Week";
@@ -24,7 +20,6 @@ import { Providers } from "./Providers";
 import { AddRecipe } from "./recipes/AddRecipe";
 import { ListRecipesAndRedirect } from "./recipes/ListRecipesAndRedirect";
 import { AdminGroup } from "./settings/AdminGroup";
-import { useIngredients } from "./hooks/useIngredients";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -79,11 +74,7 @@ const App = () => {
 };
 
 interface State {
-<<<<<<< HEAD
-=======
-  recipesLoading: boolean;
   shoppingListLoading: boolean;
->>>>>>> 46419c0649d327d2ec7bf2d141bae8db97a95bbb
   userdataLoaded: boolean;
   loggedIn: boolean;
   loggedInStateClarified: boolean;
@@ -118,19 +109,11 @@ function reducer(state: State, action: any) {
         ...state,
         userdataLoaded: true
       };
-<<<<<<< HEAD
-=======
-    case "recipesLoaded":
-      return {
-        ...state,
-        recipesLoading: false
-      };
     case "shoppingListLoaded":
       return {
         ...state,
         shoppingListLoading: false
-      }
->>>>>>> 46419c0649d327d2ec7bf2d141bae8db97a95bbb
+      };
     default:
       throw new Error();
   }
@@ -143,7 +126,6 @@ const AppRouter = () => {
   const { userdata, setUserdata } = useContext(UserDataContext);
   const { setGroupdata } = useContext(GroupDataContext);
   const { setIngredients, setGroup, setId } = useContext(ShoppingListContext);
-  useIngredients();
 
   useEffect(
     () => {
@@ -157,9 +139,11 @@ const AppRouter = () => {
         unsubGroupData = db
           .collection("shoppingLists")
           .where("group", "==", groupId)
-          .onSnapshot(async (querySnapshot) => {
+          .onSnapshot(async querySnapshot => {
             if (querySnapshot.empty) {
-              return db.collection("shoppingLists").add({ group: groupId, ingredients: [] })
+              return db
+                .collection("shoppingLists")
+                .add({ group: groupId, ingredients: [] });
             }
             dispatch({ type: "shoppingListLoaded" });
             const doc = querySnapshot.docs[0];
@@ -212,7 +196,15 @@ const AppRouter = () => {
         unsubShoppingList();
       };
     },
-    [setGroupdata, setUser, setUserdata, userdata.group]
+    [
+      setGroupdata,
+      setId,
+      setGroup,
+      setIngredients,
+      setUser,
+      setUserdata,
+      userdata.group
+    ]
   );
 
   if (!state.loggedInStateClarified) {
