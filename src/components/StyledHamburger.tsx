@@ -43,15 +43,12 @@ export const StyledWrapper = styled.div`
   position: absolute;
   z-index: 1;
   top: 5px;
-  right: 5px;
-  background-color: white;
+  left: 5px;
   cursor: pointer;
-  border: 1px solid black;
   width: 4rem;
   height: 4rem;
   display: flex;
   justify-content: center;
-  border-radius: 10px;
 
   @media screen and (min-width: ${minBreakPoint}px) {
     display: none;

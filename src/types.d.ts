@@ -43,7 +43,30 @@ export interface RecipeType {
   recipetype: CourseType[];
 }
 
+export type RecipeDict = { [id: string]: RecipeType };
+
+export interface ShoppingListIngredient {
+  id: string;
+  ingredientId: string;
+  ingredientName: string;
+  checked: boolean;
+  recipeId: string;
+  recipeName: string;
+}
+
+export interface ShoppingListType {
+  id: string;
+  group: string;
+  ingredients: ShoppingListIngredient[];
+}
+
 export interface WunderlistList {
   id: number;
   title: string;
+}
+
+declare module 'react' {
+  interface Attributes {
+    css?: InterpolationWithTheme<any>
+  }
 }
