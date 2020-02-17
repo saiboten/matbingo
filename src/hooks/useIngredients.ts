@@ -11,11 +11,6 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
 
   useEffect(
     () => {
-      console.log(
-        "Im in useEffect and ingredients length: ",
-        ingredients.length
-      );
-
       if (ingredients.length > 0) {
         setLoading(false);
         return;

@@ -26,6 +26,13 @@ import { StyledDeleteIcon } from "../components/StyledSvgIcons";
 import { UserDataContext } from "../context/UserDataContext";
 import { useIngredients } from "../hooks/useIngredients";
 import { useRecipes } from "../hooks/useRecipes";
+import styled from "styled-components";
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
 
 interface Params {
   id: string;
@@ -335,22 +342,24 @@ export const EditRecipeDetails = ({
                   Annet
                 </StyledInputLabel>
               </div>
-
-              <StyledButton type="submit">Lagre</StyledButton>
+              <Buttons>
+                <StyledButton type="submit">Lagre</StyledButton>
+                <StyledActionButton
+                  style={{
+                    marginLeft: "1rem",
+                    transition: "all .3s",
+                    transform: `scale(${confirmDelete ? 1.4 : 1})`
+                  }}
+                  onClick={() =>
+                    confirmDelete
+                      ? deleteItem(recipeDetails.id, setNextPage)
+                      : setConfirmDelete(true)
+                  }
+                >
+                  <StyledDeleteIcon color="white" />
+                </StyledActionButton>
+              </Buttons>
             </StyledForm>
-            <StyledActionButton
-              style={{
-                transition: "all .3s",
-                transform: `scale(${confirmDelete ? 1.4 : 1})`
-              }}
-              onClick={() =>
-                confirmDelete
-                  ? deleteItem(recipeDetails.id, setNextPage)
-                  : setConfirmDelete(true)
-              }
-            >
-              <StyledDeleteIcon color="white" />
-            </StyledActionButton>
           </React.Fragment>
         )}
       />

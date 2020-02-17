@@ -16,8 +16,6 @@ export const useRecipes = (): [boolean, RecipeType[]] => {
         return;
       }
 
-      console.log("userecipes", recipes);
-
       const db = firebase.firestore();
       db.collection("recipes")
         .where("group", "==", userGroup)

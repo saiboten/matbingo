@@ -238,7 +238,7 @@ export const Day = ({
                 />
               </div>
             )}
-            {recipe?.name !== "" && (
+            {recipe?.name !== undefined && (
               <div
                 onClick={() =>
                   addToTrelloActive ? toggleShoppingCart(date) : null

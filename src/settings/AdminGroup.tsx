@@ -146,7 +146,9 @@ export const AdminGroup = () => {
                           marginTop: "5px"
                         }}
                       >
-                        <StyledDeleteIcon />
+                        <StyledDeleteIcon
+                          style={{ transform: "translateY(6px)" }}
+                        />
                       </span>
                     </StyledFieldSet>
                   </div>
