@@ -47,6 +47,7 @@ export const useSingleRecipe = (
     () => {
       if (id === undefined) {
         setLoading(false);
+        setRecipe(undefined);
         return;
       }
 

@@ -172,6 +172,7 @@ export const Day = ({
 
   const reset = () => {
     setDayData(initialDayData);
+    setShowDeleteConfirmed(false);
   };
 
   const [recipeLoading, recipe] = useSingleRecipe(dayData.recipe);
@@ -246,7 +247,7 @@ export const Day = ({
               >
                 <RecipeDetails recipe={recipe} />
                 <ActionButtons>
-                  <ToggleShoppingCart recipeId={recipe?.id} />
+                  {!showDeleteConfirm && <ToggleShoppingCart recipeId={recipe?.id} /> }
                   <DeleteDay
                     documentId={dayData.id}
                     reset={reset}
