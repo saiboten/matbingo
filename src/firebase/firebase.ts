@@ -4,6 +4,7 @@ import * as firebaseApp from "firebase/app";
 // These imports load individual services into the firebase namespace.
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
 export const googleAuthProvider = new firebaseApp.auth.GoogleAuthProvider();
 export const facebookAuthProvider = new firebaseApp.auth.FacebookAuthProvider();

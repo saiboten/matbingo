@@ -41,6 +41,7 @@ export interface RecipeType {
   rating: RatingType;
   hasBeenSelected: boolean;
   recipetype: CourseType[];
+  image: boolean | undefined;
 }
 
 export type RecipeDict = { [id: string]: RecipeType };
@@ -65,8 +66,8 @@ export interface WunderlistList {
   title: string;
 }
 
-declare module 'react' {
+declare module "react" {
   interface Attributes {
-    css?: InterpolationWithTheme<any>
+    css?: InterpolationWithTheme<any>;
   }
 }

@@ -123,8 +123,6 @@ export const EditRecipeDetails = ({
     return <StyledLoader />;
   }
 
-  console.log(ingredients, recipes);
-
   const recipeDetails: RecipeType = recipes.find(
     recipe => recipe.id === id
   ) || {
@@ -136,7 +134,8 @@ export const EditRecipeDetails = ({
     lastTimeSelected: new Date(),
     rating: 1,
     hasBeenSelected: false,
-    recipetype: []
+    recipetype: [],
+    image: undefined
   };
 
   if (nextPage !== "") {

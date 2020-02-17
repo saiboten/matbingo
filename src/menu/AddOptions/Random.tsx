@@ -104,7 +104,8 @@ const initialState: RecipeType = {
   lastTimeSelected: new Date(),
   rating: 1,
   hasBeenSelected: false,
-  recipetype: []
+  recipetype: [],
+  image: undefined
 };
 
 const StyledTd = styled.td``;
