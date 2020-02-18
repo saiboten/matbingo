@@ -1,9 +1,18 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import styled from "styled-components";
 
 interface Props {
   setImage: (image: string) => void;
 }
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+  padding: 1rem;
+  border: dotted 1px black;
+  text-align: center;
+  margin-bottom: 1rem;
+`;
 
 export function MyDropzone({ setImage }: Props) {
   const onDrop = useCallback(
@@ -28,9 +37,9 @@ export function MyDropzone({ setImage }: Props) {
   });
 
   return (
-    <div {...getRootProps()}>
+    <Wrapper {...getRootProps()}>
       <input {...getInputProps()} />
-      <p>Last opp</p>
-    </div>
+      <p>Dra bilde/klikk her for å laste opp</p>
+    </Wrapper>
   );
 }

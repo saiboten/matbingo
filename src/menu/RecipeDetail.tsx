@@ -4,10 +4,9 @@ import { RecipeType } from "../types";
 import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
 import { Link } from "react-router-dom";
 import { SeeIngredients } from "./SeeIngredients";
-import Cropper from "react-easy-crop";
-import getCroppedImg from "./CropImage";
-import { MyDropzone } from "./MyDropzone";
+import getCroppedImg from "../components/CropImage";
 import { firebase } from '../firebase/firebase';
+import { ImageCropper } from "../components/ImageCropper";
 
 const StyledWrapper = styled.div`
   margin-top: 2.5rem;
@@ -20,6 +19,8 @@ const StyledWrapper = styled.div`
 
 interface Props {
   recipe: RecipeType | undefined;
+  showImageUpload: boolean;
+  setShowImageUpload?: (val: boolean) => void;
 }
 
 const StyledEmpesizedP = styled.p`
@@ -39,18 +40,8 @@ const Image = styled.img<ImageProps>`
   opacity: ${props => props.blurImage ? 0.2 : 1};
 `;
 
-interface CropType {
-  x: number;
-  y: number;
-}
-
-export const RecipeDetails = ({ recipe }: Props) => {
+export const RecipeDetails = ({ recipe, showImageUpload, setShowImageUpload }: Props) => {
   const [image, setImage] = useState<string | undefined>(undefined);
-  const [image2, setImage2] = useState<string | undefined>(undefined);
-  const [crop, setCrop] = useState<CropType>({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState({});
 
   useEffect(() => {
     if(recipe?.image) {
@@ -59,24 +50,29 @@ export const RecipeDetails = ({ recipe }: Props) => {
       const recipesRef = storageRef.child('recipes');
       const recipeRef = recipesRef.child(recipe?.id || "");
       recipeRef.getDownloadURL().then(function(url) {
-        setImage2(url);
+        setImage(url);
       })
+    } else {
+      setImage("stock2.jpeg");
     }
-  }, [recipe, image]);
+  }, [recipe]);
 
   const storeCroppedImage = useCallback(
-    async () => {
+    async (image, croppedAreaPixels) => {
       try {
         const croppedImage = await getCroppedImg(image, croppedAreaPixels, 0);
-        setImage2(croppedImage);
-
         // Store file
         const storage = firebase.storage();
         const storageRef = storage.ref();
         const recipesRef = storageRef.child('recipes');
         const recipeRef = recipesRef.child(recipe?.id || "");
         // Base64 formatted string
-        recipeRef.putString(croppedImage, 'data_url');
+        recipeRef.putString(croppedImage, 'data_url').then(() => {
+          setImage(croppedImage);
+          if(setShowImageUpload) {
+            setShowImageUpload(false);
+          }
+        })
         firebase.firestore().collection("recipes").doc(recipe?.id).update({
           image: true
         })
@@ -86,7 +82,7 @@ export const RecipeDetails = ({ recipe }: Props) => {
         console.error(e);
       }
     },
-    [croppedAreaPixels, image, recipe]
+    [recipe, setShowImageUpload]
   );
 
   if (!recipe) {
@@ -95,21 +91,9 @@ export const RecipeDetails = ({ recipe }: Props) => {
 
   const { name, description, ingredients, id } = recipe;
 
-  function handleCropComplete(croppedArea: any, croppedAreaPixels: any) {
-    setCroppedAreaPixels(croppedAreaPixels);
-  }
-
-  function handleCropChange(crop: CropType) {
-    setCrop(crop);
-  }
-
-  function handleZoomChange(zoom: number) {
-    setZoom(zoom);
-  }
-
   return (
     <StyledWrapper>
-      <Image blurImage={image2 === undefined} src={image2 ? image2 : "stock2.jpeg"} />
+      {image && <Image blurImage={image === "stock2.jpeg"} src={image || ""} />}
       <StyledHeaderH1NoMarginTop
         style={{ padding: "0 1rem", paddingTop: "1rem", marginBottom: "0" }}
       >
@@ -126,26 +110,7 @@ export const RecipeDetails = ({ recipe }: Props) => {
         )}
         <SeeIngredients ingredientsIds={ingredients} />
       </div>
-      <MyDropzone setImage={setImage} />
-      {image && <><div
-        style={{
-          width: "200px",
-          height: "200px",
-          position: "relative"
-        }}
-      >
-        <Cropper
-          image={image}
-          crop={crop}
-          zoom={zoom}
-          aspect={373 / 169}
-          onCropComplete={handleCropComplete}
-          onCropChange={handleCropChange}
-          onZoomChange={handleZoomChange}
-        />
-      </div>
-      <button onClick={storeCroppedImage}>Lagre</button></>
-      }
+      {showImageUpload && <ImageCropper storeCroppedImage={storeCroppedImage} />}
     </StyledWrapper>
   );
 };

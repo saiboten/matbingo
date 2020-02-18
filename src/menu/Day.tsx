@@ -4,6 +4,7 @@ import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { firebase } from "../firebase/firebase";
 import nbLocale from "date-fns/locale/nb";
+import PublishIcon from '@material-ui/icons/Publish';
 import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
@@ -167,6 +168,7 @@ export const Day = ({
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirmed] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
 
@@ -245,8 +247,9 @@ export const Day = ({
                   addToTrelloActive ? toggleShoppingCart(date) : null
                 }
               >
-                <RecipeDetails recipe={recipe} />
+                <RecipeDetails recipe={recipe} showImageUpload={showImageUpload} setShowImageUpload={setShowImageUpload} />
                 <ActionButtons>
+                  <StyledActionButton style={{ marginRight: "6px"}} onClick={() => setShowImageUpload(true)}><PublishIcon fontSize="large" /></StyledActionButton>
                   {!showDeleteConfirm && <ToggleShoppingCart recipeId={recipe?.id} /> }
                   <DeleteDay
                     documentId={dayData.id}
