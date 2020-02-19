@@ -7,6 +7,7 @@ import { SeeIngredients } from "./SeeIngredients";
 import getCroppedImg from "../components/CropImage";
 import { firebase } from '../firebase/firebase';
 import { ImageCropper } from "../components/ImageCropper";
+import { StyledLocalLoader } from "../components/StyledLocalLoader";
 
 const StyledWrapper = styled.div`
   margin-top: 2.5rem;
@@ -38,6 +39,15 @@ const Image = styled.img<ImageProps>`
   display: block;
   margin-top: -2.5rem;
   opacity: ${props => props.blurImage ? 0.2 : 1};
+`;
+
+const ImagePlaceHolder = styled.div`
+  width: 100%;
+  height: 171px;
+  margin-top: -2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const RecipeDetails = ({ recipe, showImageUpload, setShowImageUpload }: Props) => {
@@ -93,7 +103,7 @@ export const RecipeDetails = ({ recipe, showImageUpload, setShowImageUpload }: P
 
   return (
     <StyledWrapper>
-      {image && <Image blurImage={image === "stock2.jpeg"} src={image || ""} />}
+      {image ? <Image blurImage={image === "stock2.jpeg"} src={image || ""} /> : <ImagePlaceHolder><StyledLocalLoader /></ImagePlaceHolder>}
       <StyledHeaderH1NoMarginTop
         style={{ padding: "0 1rem", paddingTop: "1rem", marginBottom: "0" }}
       >

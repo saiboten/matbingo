@@ -2,8 +2,8 @@ import React from "react";
 import { StyledRadio, SmallStyledRadioLabel } from "./StyledRadio";
 
 export const createRatings = () =>
-  new Array(10).fill("").map((el: string, index: number) => {
-    const rating = index + 1;
+  new Array(11).fill("").map((el: string, index: number) => {
+    const rating = index + 0;
     return (
       <React.Fragment key={rating}>
         <StyledRadio

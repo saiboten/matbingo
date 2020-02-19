@@ -5,7 +5,6 @@ export const StyledRadioLabel = styled.label`
   position: relative;
   padding: 10px 20px;
   padding-left: 30px;
-  margin-right: 10px;
 
   &:after {
     position: absolute;
@@ -36,15 +35,15 @@ export const SmallStyledRadioLabel = styled(StyledRadioLabel)`
   &:after {
     left: 0;
     top: 12px;
-    height: 12px;
-    width: 12px;
+    height: 18px;
+    width: 18px;
   }
 
   &:before {
-    left: 2px;
-    top: 14px;
-    height: 9px;
-    width: 9px;
+    left: 3px;
+    top: 15px;
+    height: 12px;
+    width: 12px;
   }
 `;
 

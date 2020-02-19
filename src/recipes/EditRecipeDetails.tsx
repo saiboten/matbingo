@@ -4,7 +4,10 @@ import { RouteComponentProps, Redirect } from "react-router";
 import { RecipeType, Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import { StyledActionButton } from "../components/StyledActionButton";
+import {
+  StyledActionButtonForText,
+  StyledSecondaryActionButton
+} from "../components/StyledActionButton";
 import { Form, Field } from "react-final-form";
 import { StyledForm } from "../components/StyledForm";
 import { StyledFieldSet } from "../components/StyledFieldSet";
@@ -12,7 +15,6 @@ import { StyledInputLabel } from "../components/StyledInputLabel";
 import { StyledInputWrapper } from "../components/StyledInputWrapper";
 import { StyledError } from "../components/StyledError";
 import { StyledInput } from "../components/StyledInput";
-import { StyledButton } from "../components/StyledButton";
 import { SelectWrapper } from "../components/StyledSelectWrapper";
 import { StyledTextArea } from "../components/StyledTextArea";
 import { ValueType } from "react-select";
@@ -342,8 +344,10 @@ export const EditRecipeDetails = ({
                 </StyledInputLabel>
               </div>
               <Buttons>
-                <StyledButton type="submit">Lagre</StyledButton>
-                <StyledActionButton
+                <StyledActionButtonForText type="submit">
+                  Lagre
+                </StyledActionButtonForText>
+                <StyledSecondaryActionButton
                   style={{
                     marginLeft: "1rem",
                     transition: "all .3s",
@@ -355,8 +359,8 @@ export const EditRecipeDetails = ({
                       : setConfirmDelete(true)
                   }
                 >
-                  <StyledDeleteIcon color="white" />
-                </StyledActionButton>
+                  <StyledDeleteIcon />
+                </StyledSecondaryActionButton>
               </Buttons>
             </StyledForm>
           </React.Fragment>
