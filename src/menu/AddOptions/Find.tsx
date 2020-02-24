@@ -89,7 +89,9 @@ export const Find = ({ date, back }: Props) => {
       {confirm ? (
         <RecipeDetails recipe={recipe} showImageUpload={false} />
       ) : (
-        <ListRecipes onChange={(option: any) => confirmCheck(option.value)} />
+        <div style={{ marginBottom: "2rem", padding: "0 1rem" }}>
+          <ListRecipes onChange={(option: any) => confirmCheck(option.value)} />
+        </div>
       )}
     </>
   );

@@ -29,6 +29,7 @@ import { UserDataContext } from "../context/UserDataContext";
 import { useIngredients } from "../hooks/useIngredients";
 import { useRecipes } from "../hooks/useRecipes";
 import styled from "styled-components";
+import { Checkbox } from "@material-ui/core";
 
 const Buttons = styled.div`
   display: flex;
@@ -241,105 +242,109 @@ export const EditRecipeDetails = ({
 
               <div>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="monday"
-                  />{" "}
+                  <Field name="weekdays" value="monday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox checked={input.value === "monday"} {...input} />
+                    )}
+                  </Field>
                   Mandag
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="tuesday"
-                  />{" "}
+                  <Field name="weekdays" value="tuesday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox
+                        checked={input.value === "tuesday"}
+                        {...input}
+                      />
+                    )}
+                  </Field>
                   Tirsdag
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="wednesday"
-                  />{" "}
+                  <Field name="weekdays" value="wednesday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox
+                        checked={input.value === "wednesday"}
+                        {...input}
+                      />
+                    )}
+                  </Field>
                   Onsdag
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="thursday"
-                  />{" "}
+                  <Field name="weekdays" value="thursday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox
+                        checked={input.value === "thursday"}
+                        {...input}
+                      />
+                    )}
+                  </Field>
                   Torsdag
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="friday"
-                  />{" "}
+                  <Field name="weekdays" value="friday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox checked={input.value === "friday"} {...input} />
+                    )}
+                  </Field>
                   Fredag
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="saturday"
-                  />{" "}
+                  <Field name="weekdays" value="saturday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox
+                        checked={input.value === "saturday"}
+                        {...input}
+                      />
+                    )}
+                  </Field>
                   Lørdag
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="weekdays"
-                    component="input"
-                    type="checkbox"
-                    value="sunday"
-                  />{" "}
+                  <Field name="weekdays" value="sunday" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox checked={input.value === "sunday"} {...input} />
+                    )}
+                  </Field>
                   Søndag
                 </StyledInputLabel>
               </div>
               <div>
                 <label style={{ display: "block" }}>Type rett</label>
                 <StyledInputLabel>
-                  <Field
-                    name="recipetype"
-                    component="input"
-                    type="checkbox"
-                    value="meat"
-                  />{" "}
+                  <Field name="recipetype" value="meat" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox checked={input.value === "meat"} {...input} />
+                    )}
+                  </Field>
                   Kjøtt
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="recipetype"
-                    component="input"
-                    type="checkbox"
-                    value="fish"
-                  />{" "}
+                  <Field name="recipetype" value="fish" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox checked={input.value === "fish"} {...input} />
+                    )}
+                  </Field>
                   Fisk
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="recipetype"
-                    component="input"
-                    type="checkbox"
-                    value="vegetarian"
-                  />{" "}
+                  <Field name="recipetype" value="vegetarian" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox
+                        checked={input.value === "vegetarian"}
+                        {...input}
+                      />
+                    )}
+                  </Field>
                   Vegetar
                 </StyledInputLabel>
                 <StyledInputLabel>
-                  <Field
-                    name="recipetype"
-                    component="input"
-                    type="checkbox"
-                    value="other"
-                  />{" "}
+                  <Field name="recipetype" value="other" type="checkbox">
+                    {({ input }: any) => (
+                      <Checkbox checked={input.value === "other"} {...input} />
+                    )}
+                  </Field>
                   Annet
                 </StyledInputLabel>
               </div>
