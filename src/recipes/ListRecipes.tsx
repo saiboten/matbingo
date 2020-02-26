@@ -13,6 +13,13 @@ interface Props {
   onChange: (opt: Option) => void;
 }
 
+const customStyles = {
+  menu: (provided: any, state: any) => ({
+    ...provided,
+    zIndex: 2
+  })
+};
+
 export const ListRecipes = ({ onChange }: Props) => {
   const [recipesLoading, recipes] = useRecipes();
 
@@ -31,6 +38,7 @@ export const ListRecipes = ({ onChange }: Props) => {
       <StyledHeaderH1>Finn oppskrift</StyledHeaderH1>
       <ul>
         <Select
+          styles={customStyles}
           value={{
             label: "Velg",
             value: "0"

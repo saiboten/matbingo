@@ -21,8 +21,7 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
       const db = firebase.firestore();
       db.collection("ingredients")
         .where("group", "==", userGroup)
-        .get()
-        .then(querySnapshot => {
+        .onSnapshot(querySnapshot => {
           const ingredients = querySnapshot.docs.map((doc: any) => ({
             id: doc.id,
             ...doc.data()
