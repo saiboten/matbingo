@@ -63,7 +63,18 @@ export const Find = ({ date, back }: Props) => {
   const userData = useContext(UserDataContext).userdata;
 
   if (recipesLoading) {
-    return <StyledLocalLoader />;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%"
+        }}
+      >
+        <StyledLocalLoader />
+      </div>
+    );
   }
 
   const confirmCheck = (recipeId: string) => {

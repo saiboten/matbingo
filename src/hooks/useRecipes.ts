@@ -3,6 +3,7 @@ import { firebase } from "../firebase/firebase";
 import { RecipeType } from "../types";
 import { UserDataContext } from "../context/UserDataContext";
 import { RecipeContext } from "../context/RecipeContext";
+import isEqual from "react-fast-compare";
 
 export const useRecipes = (): [boolean, RecipeType[]] => {
   const [loading, setLoading] = useState(true);
@@ -20,12 +21,16 @@ export const useRecipes = (): [boolean, RecipeType[]] => {
       db.collection("recipes")
         .where("group", "==", userGroup)
         .onSnapshot(querySnapshot => {
-          const ingredients = querySnapshot.docs.map((doc: any) => ({
+          const incomingRecipes = querySnapshot.docs.map((doc: any) => ({
             id: doc.id,
             ...doc.data()
           }));
 
-          setRecipes(ingredients);
+          console.log(recipes, incomingRecipes);
+          if (!isEqual(recipes, incomingRecipes)) {
+            setRecipes(incomingRecipes);
+          }
+
           setLoading(false);
         });
     },
@@ -59,7 +64,6 @@ export const useSingleRecipe = (
             id: doc.id,
             ...doc.data()
           };
-
           setRecipe(recipe);
           setLoading(false);
         });

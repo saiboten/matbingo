@@ -3,6 +3,7 @@ import { firebase } from "../firebase/firebase";
 import { Ingredient } from "../types";
 import { UserDataContext } from "../context/UserDataContext";
 import { IngredientsContext } from "../context/IngredientsContext";
+import isEqual from "react-fast-compare";
 
 export const useIngredients = (): [boolean, Ingredient[]] => {
   const [loading, setLoading] = useState(true);
@@ -22,15 +23,19 @@ export const useIngredients = (): [boolean, Ingredient[]] => {
       db.collection("ingredients")
         .where("group", "==", userGroup)
         .onSnapshot(querySnapshot => {
-          const ingredients = querySnapshot.docs.map((doc: any) => ({
+          const incomingIngredients = querySnapshot.docs.map((doc: any) => ({
             id: doc.id,
             ...doc.data()
           }));
-          setIngredients(ingredients);
+
+          if (!isEqual(ingredients, incomingIngredients)) {
+            setIngredients(incomingIngredients);
+          }
+
           setLoading(false);
         });
     },
-    [userGroup, ingredients.length, setIngredients]
+    [userGroup, ingredients, setIngredients]
   );
 
   return [loading, ingredients];

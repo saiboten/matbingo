@@ -94,6 +94,7 @@ const initialDayData: DayData = {
 
 const StyledDayContent = styled.div`
   text-align: center;
+  height: 100%;
 `;
 
 const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
@@ -211,7 +212,7 @@ export const Day = ({
   const today = isToday(date);
 
   if (recipeLoading) {
-    return <StyledLocalLoader />;
+    return null;
   }
 
   return (
