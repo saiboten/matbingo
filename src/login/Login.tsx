@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   firebase,
   googleAuthProvider,
-  facebookAuthProvider
+  facebookAuthProvider,
 } from "../firebase/firebase";
 import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
 import { ReactComponent as GoogleIcon } from "./google.svg";
@@ -92,44 +92,39 @@ export const Login = () => {
         <StyledChef />
       </div>
       <Paragraph>
-        Matbingo er en ny smart og innovativ middagsplanlegger som hjelper deg
-        med å komme med forslag til middag.
+        Matbingo er en innovativ middagsplanlegger som hjelper deg å finne ut
+        hva du skal ha til middag.
       </Paragraph>
       <StyledHeaderH2>Individuell</StyledHeaderH2>
       <Paragraph>
-        Matbingo hensyntar dine hensyn i forhold til hvor ofte du ønsker å spise
-        de forskjellige rettene, og hvilke dager de passer å spises. Du legger
-        selv inn de rettene du selv kan lage.
+        Du velger selv hvilke oppskrifter du liker og hvilke dager du ønsker å
+        bruke Matbingo. Du velger selv når hvor ofte og hvilke dager du ønsker å
+        spise taco, Matbingo fikser resten.
       </Paragraph>
-      <StyledHeaderH2>Smart</StyledHeaderH2>
+      <StyledHeaderH2>Smart rullering</StyledHeaderH2>
       <Paragraph>
-        Så lenge du bruker Matbingo til dagen, så har Matbingo full kontroll
-        over hvilke retter du spiste sist, dette gjør at retter rulleres.
+        Ved å bruke Matbingo får du automatisk rullering av middager.
       </Paragraph>
       <StyledHeaderH2>For hele familien</StyledHeaderH2>
       <Paragraph>
-        I Matbingo kan du bli med i en gruppe for hele familien, slik at alle
-        kan være med å se menyen, eller å legge inn nye oppskrifter.
+        I Matbingo kan du bli med i en gruppe med resten av familien. Alle kan
+        se menyen, legge inn nye oppskrifter eller legge inn middager.
       </Paragraph>
-      <StyledHeaderH2>Fleksibel</StyledHeaderH2>
-      <Paragraph>
-        Dersom du en dag ikke har behov for å lage middag en dag, kan dette lett
-        legges inn i ukesmenyen, slik at du har kontroll.
-      </Paragraph>
+
       <StyledHeaderH2>PS:</StyledHeaderH2>
       <Paragraph>
         Matbingo.no er fremdeles i en tidlig beta. Mer funksjonalitet kommer.
       </Paragraph>
       <StyledHeaderH1>Innlogging</StyledHeaderH1>
-      <Paragraph>
+      {/* <Paragraph>
         Logg inn. PS: Foreløpig er det bare Google som funker.
-      </Paragraph>
+      </Paragraph> */}
       <StyledActions>
         <StyledSecondaryActionButtonWithMargins onClick={loginWithGoogle}>
           <GoogleIcon />
-        </StyledSecondaryActionButtonWithMargins>
+          {/* </StyledSecondaryActionButtonWithMargins>
         <StyledSecondaryActionButtonWithMargins onClick={loginWithFacebook}>
-          <StyledFacebookIcon />
+          <StyledFacebookIcon /> */}
         </StyledSecondaryActionButtonWithMargins>
       </StyledActions>
     </StyledWrapper>

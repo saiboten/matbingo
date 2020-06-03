@@ -5,7 +5,7 @@ import { StyledNotification } from "../components/StyledNotification";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { StyledLink } from "../components/StyledLink";
 import { useRecipes } from "../hooks/useRecipes";
-import { StyledLocalLoader } from "../components/StyledLocalLoader";
+import { StyledLocalLoaderCentered } from "../components/StyledLocalLoader";
 
 interface MatchParams {
   feedback: string;
@@ -33,7 +33,7 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
   );
 
   if (recipesLoading) {
-    return <StyledLocalLoader />;
+    return <StyledLocalLoaderCentered />;
   }
 
   return (
@@ -45,7 +45,7 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
         style={{
           display: "flex",
           justifyContent: "center",
-          flexWrap: "wrap"
+          flexWrap: "wrap",
         }}
       >
         {recipes.length > 0 && (
@@ -59,8 +59,8 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
 
 export const Recipes = ({
   match: {
-    params: { feedback }
-  }
+    params: { feedback },
+  },
 }: Props) => {
   return (
     <StyledWrapper backgroundColor="white">

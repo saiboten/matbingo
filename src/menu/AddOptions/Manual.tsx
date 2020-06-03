@@ -4,11 +4,11 @@ import { firebase } from "../../firebase/firebase";
 import styled from "styled-components";
 import {
   StyledActionButtonWithMargins,
-  StyledSecondaryActionButtonWithMargins
+  StyledSecondaryActionButtonWithMargins,
 } from "../../components/StyledActionButton";
-import { StyledInputLabel } from "../../components/StyledInputLabel";
 import { StyledBack, StyledCheck } from "../../components/StyledSvgIcons";
 import { UserDataContext } from "../../context/UserDataContext";
+import { StyledHeaderH1 } from "../../components/StyledHeaderH1";
 
 const StyledWrapper = styled.div`
   margin-top: 2rem;
@@ -42,7 +42,7 @@ const storeSelectedRecipe = (
     .add({
       date,
       description,
-      group
+      group,
     });
 };
 
@@ -71,7 +71,7 @@ export const Manual = ({ date, back }: Props) => {
               </StyledActionButtonWithMargins>
             </StyledButtons>
             <StyledFieldSet>
-              <StyledInputLabel>Hva skjer denne dagen?</StyledInputLabel>
+              <StyledHeaderH1>Hva skjer denne dagen?</StyledHeaderH1>
               <Field name="description" component="input" type="text">
                 {({ input }: { input: any }) => (
                   <StyledInput

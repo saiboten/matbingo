@@ -234,6 +234,7 @@ export const Day = ({
                 <StyledHeaderH1NoMarginTop>
                   {dayData.description}
                 </StyledHeaderH1NoMarginTop>
+                
                 <DeleteDay
                   documentId={dayData.id}
                   reset={reset}

@@ -18,7 +18,7 @@ import { Redirect } from "react-router";
 import { UserDataContext } from "../context/UserDataContext";
 import { StyledWrapper } from "../components/StyledWrapper";
 import { useIngredients } from "../hooks/useIngredients";
-import { StyledLocalLoader } from "../components/StyledLocalLoader";
+import { StyledLocalLoaderCentered } from "../components/StyledLocalLoader";
 import Checkbox from "@material-ui/core/Checkbox";
 
 interface RecipeErrors {
@@ -45,7 +45,7 @@ const onSubmit = (values: any, form: any, setDetailsId: any, group: string) => {
   const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
     db.collection("ingredients").add({
       name: ingredientToBeCreated,
-      group
+      group,
     })
   );
 
@@ -60,9 +60,9 @@ const onSubmit = (values: any, form: any, setDetailsId: any, group: string) => {
           .concat(newIds),
         lastTimeSelected: new Date(),
         rating: parseInt(values.rating, 10),
-        group
+        group,
       })
-      .then(docRef => {
+      .then((docRef) => {
         setDetailsId(docRef.id);
       });
 
@@ -74,7 +74,7 @@ const validate = (values: any) => {
   let errors: RecipeErrors = {
     name: undefined,
     description: undefined,
-    rating: undefined
+    rating: undefined,
   };
 
   if (!values.name) {
@@ -107,7 +107,7 @@ export function AddRecipe() {
   }
 
   if (ingredientsLoading) {
-    return <StyledLocalLoader />;
+    return <StyledLocalLoaderCentered />;
   }
 
   return (
@@ -170,9 +170,9 @@ export function AddRecipe() {
                   name="ingredients"
                   component={ReactSelectAdapter}
                   isMulti
-                  options={ingredients.map(el => ({
+                  options={ingredients.map((el) => ({
                     label: el.name,
-                    value: el.id
+                    value: el.id,
                   }))}
                 />
               </SelectWrapper>

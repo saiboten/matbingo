@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Spinner } from "./svg/Loading.svg";
 import { secondaryColor } from "./Constants";
@@ -18,3 +19,17 @@ export const StyledLocalLoader = styled(Spinner)`
   animation: ${rotate} 1s infinite linear;
   fill: ${secondaryColor};
 `;
+
+export function StyledLocalLoaderCentered() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <StyledLocalLoader />
+    </div>
+  );
+}

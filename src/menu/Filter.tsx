@@ -5,7 +5,7 @@ import { RecipeType } from "../types";
 import { StyledInputLabel } from "../components/StyledInputLabel";
 import Select from "react-select";
 import { useIngredients } from "../hooks/useIngredients";
-import { StyledLocalLoader } from "../components/StyledLocalLoader";
+import { StyledLocalLoaderCentered } from "../components/StyledLocalLoader";
 
 interface Props {
   activeFilters: any;
@@ -62,7 +62,7 @@ export const OpenFilter = ({ activeFilters, setActiveFilters, close }: OpenFilte
   };
 
   if(ingredientsLoading) {
-    return <StyledLocalLoader />
+    return <StyledLocalLoaderCentered />
   }
   
 
