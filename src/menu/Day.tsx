@@ -4,17 +4,17 @@ import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { firebase } from "../firebase/firebase";
 import nbLocale from "date-fns/locale/nb";
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from "@material-ui/icons/Publish";
 import { RecipeDetails } from "./RecipeDetail";
 import { GenerateDay } from "./GenerateDay";
 import { StyledLocalLoader } from "../components/StyledLocalLoader";
-import { primaryColor, secondaryColor } from "../components/Constants";
+import { secondaryColor } from "../components/Constants";
 import { UserDataContext } from "../context/UserDataContext";
-import { StyledHeaderH1NoMarginTop } from "../components/StyledHeaderH1";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import {
   StyledSecondaryActionButtonForText,
   StyledActionButton,
-  StyledActionButtonForText
+  StyledActionButtonForText,
 } from "../components/StyledActionButton";
 import { Filter } from "./Filter";
 import { useSingleRecipe } from "../hooks/useRecipes";
@@ -45,12 +45,12 @@ const StyledDay = styled.div<StyledDayProps>`
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 
-  border: ${props => (props.active ? `2px solid ${secondaryColor}` : "none")};
+  border: ${(props) => (props.active ? `2px solid ${secondaryColor}` : "none")};
 
   @media screen and (max-width: 530px) {
     width: 100%;
   }
-  background-color: ${props => (props.selected ? `${primaryColor}` : "#fff")};
+  background-color: ${(props) => (props.selected ? "#e4971a" : "#fff")};
 `;
 
 const StyledDate = styled.div`
@@ -89,7 +89,7 @@ const initialDayData: DayData = {
   date: new Date(),
   group: "",
   recipe: undefined,
-  description: undefined
+  description: undefined,
 };
 
 const StyledDayContent = styled.div`
@@ -114,7 +114,7 @@ const DeleteDay = ({
   documentId,
   reset,
   showConfirm,
-  setConfirmed
+  setConfirmed,
 }: {
   documentId: string;
   reset: () => void;
@@ -164,7 +164,7 @@ export const Day = ({
   addToTrelloActive,
   toggleShoppingCart,
   isShoppingCartActive,
-  activeFilters
+  activeFilters,
 }: Props) => {
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
@@ -180,34 +180,31 @@ export const Day = ({
 
   const [recipeLoading, recipe] = useSingleRecipe(dayData.recipe);
 
-  useEffect(
-    () => {
-      reset();
-      const db = firebase.firestore();
-      const daysQuery = db
-        .collection("days")
-        .where("date", "==", date)
-        .where("group", "==", userdata.group);
-      const unsub = daysQuery.onSnapshot(daysMatchesDoc => {
-        if (daysMatchesDoc.empty) {
-          setLoading(false);
-        }
+  useEffect(() => {
+    reset();
+    const db = firebase.firestore();
+    const daysQuery = db
+      .collection("days")
+      .where("date", "==", date)
+      .where("group", "==", userdata.group);
+    const unsub = daysQuery.onSnapshot((daysMatchesDoc) => {
+      if (daysMatchesDoc.empty) {
+        setLoading(false);
+      }
 
-        daysMatchesDoc.forEach(daysMatch => {
-          const dayData: any = daysMatch.data();
-          setLoading(false);
-          setDayData({
-            id: daysMatch.id,
-            ...dayData
-          });
+      daysMatchesDoc.forEach((daysMatch) => {
+        const dayData: any = daysMatch.data();
+        setLoading(false);
+        setDayData({
+          id: daysMatch.id,
+          ...dayData,
         });
       });
-      return () => {
-        unsub();
-      };
-    },
-    [date, userdata.group]
-  );
+    });
+    return () => {
+      unsub();
+    };
+  }, [date, userdata.group]);
 
   const today = isToday(date);
 
@@ -229,18 +226,25 @@ export const Day = ({
         ) : (
           <>
             {dayData.description && (
-              <div style={{ marginTop: "2.5rem" }}>
-                {today && <div>Hva skjer i dag?: </div>}
-                <StyledHeaderH1NoMarginTop>
+              <div style={{ marginTop: "2.5rem", marginBottom: "2.5rem" }}>
+                <StyledHeaderH1>Dagens middagsplan:</StyledHeaderH1>
+                <p
+                  style={{
+                    textAlign: "left",
+                    marginBottom: "1rem",
+                    padding: "0 1rem",
+                  }}
+                >
                   {dayData.description}
-                </StyledHeaderH1NoMarginTop>
-                
-                <DeleteDay
-                  documentId={dayData.id}
-                  reset={reset}
-                  setConfirmed={setShowDeleteConfirmed}
-                  showConfirm={showDeleteConfirm}
-                />
+                </p>
+                <ActionButtons>
+                  <DeleteDay
+                    documentId={dayData.id}
+                    reset={reset}
+                    setConfirmed={setShowDeleteConfirmed}
+                    showConfirm={showDeleteConfirm}
+                  />
+                </ActionButtons>
               </div>
             )}
             {recipe?.name !== undefined && (
@@ -249,10 +253,21 @@ export const Day = ({
                   addToTrelloActive ? toggleShoppingCart(date) : null
                 }
               >
-                <RecipeDetails recipe={recipe} showImageUpload={showImageUpload} setShowImageUpload={setShowImageUpload} />
+                <RecipeDetails
+                  recipe={recipe}
+                  showImageUpload={showImageUpload}
+                  setShowImageUpload={setShowImageUpload}
+                />
                 <ActionButtons>
-                  <StyledActionButton style={{ marginRight: "6px"}} onClick={() => setShowImageUpload(true)}><PublishIcon fontSize="large" /></StyledActionButton>
-                  {!showDeleteConfirm && <ToggleShoppingCart recipeId={recipe?.id} /> }
+                  <StyledActionButton
+                    style={{ marginRight: "6px" }}
+                    onClick={() => setShowImageUpload(true)}
+                  >
+                    <PublishIcon fontSize="large" />
+                  </StyledActionButton>
+                  {!showDeleteConfirm && (
+                    <ToggleShoppingCart recipeId={recipe?.id} />
+                  )}
                   <DeleteDay
                     documentId={dayData.id}
                     reset={reset}

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { SettingsSharp, ShoppingCart } from "@material-ui/icons";
+import { SettingsSharp } from "@material-ui/icons";
+// import { SettingsSharp, ShoppingCart } from "@material-ui/icons";
 import { StyledHamburger } from "./StyledHamburger";
 import { minBreakPoint, secondaryColor } from "./Constants";
 import { Link } from "react-router-dom";
@@ -90,7 +91,7 @@ const StyledLeftItemLi = styled.li`
 
 const NavLinkMobile = styled.span`
   @media screen and (min-width: ${minBreakPoint}px) {
-    display: none; 
+    display: none;
   }
 `;
 const NavLinkDesktop = styled.span`
@@ -106,7 +107,7 @@ export const Nav = () => {
   const hasSelectedGroup = userdata.group !== "";
 
   const props = useSpring({
-    transform: `translateX(${menuActive ? `0vh` : `-100vw`})`
+    transform: `translateX(${menuActive ? `0vh` : `-100vw`})`,
   });
 
   return (
@@ -136,7 +137,7 @@ export const Nav = () => {
               </StyledLi>
             </>
           )}
-          <StyledLi>
+          {/* <StyledLi>
             <StyledLink onClick={() => setMenuActive(false)} to="/shopping-list">
               <NavLinkMobile>
                 Handleliste
@@ -145,12 +146,10 @@ export const Nav = () => {
                 <ShoppingCart fontSize="large" />
               </NavLinkDesktop>
             </StyledLink>
-          </StyledLi>
+          </StyledLi> */}
           <StyledLi>
             <StyledLink onClick={() => setMenuActive(false)} to="/settings">
-              <NavLinkMobile>
-                Innstillinger
-              </NavLinkMobile>
+              <NavLinkMobile>Innstillinger</NavLinkMobile>
               <NavLinkDesktop>
                 <SettingsSharp fontSize="large" />
               </NavLinkDesktop>

@@ -3,18 +3,18 @@ import styled from "styled-components";
 import {
   firebase,
   googleAuthProvider,
-  facebookAuthProvider,
+  // facebookAuthProvider,
 } from "../firebase/firebase";
 import { StyledHeaderH1, StyledHeaderH2 } from "../components/StyledHeaderH1";
 import { ReactComponent as GoogleIcon } from "./google.svg";
-import { ReactComponent as FacebookIcon } from "./facebook.svg";
+// import { ReactComponent as FacebookIcon } from "./facebook.svg";
 import { StyledSecondaryActionButtonWithMargins } from "../components/StyledActionButton";
 import { StyledChef } from "../components/StyledSvgIcons";
 import { minBreakPoint } from "../components/Constants";
 
-const StyledFacebookIcon = styled(FacebookIcon)`
-  fill: #4267b2;
-`;
+// const StyledFacebookIcon = styled(FacebookIcon)`
+//   fill: #4267b2;
+// `;
 
 const loginWithGoogle = () => {
   firebase
@@ -40,30 +40,30 @@ const loginWithGoogle = () => {
     });
 };
 
-const loginWithFacebook = () => {
-  firebase.auth().languageCode = "nb_NO";
-  firebase
-    .auth()
-    .signInWithRedirect(facebookAuthProvider)
-    .then(function(result) {
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      // var token = result.credential.accessToken;
-      // The signed-in user info.
-      // var user = result.user;
-      // ...
-    })
-    .catch(function(error) {
-      console.log(error);
-      // Handle Errors here.
-      // var errorCode = error.code;
-      // var errorMessage = error.message;
-      // // The email of the user's account used.
-      // var email = error.email;
-      // // The firebase.auth.AuthCredential type that was used.
-      // var credential = error.credential;
-      // ...
-    });
-};
+// const loginWithFacebook = () => {
+//   firebase.auth().languageCode = "nb_NO";
+//   firebase
+//     .auth()
+//     .signInWithRedirect(facebookAuthProvider)
+//     .then(function(result) {
+//       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+//       // var token = result.credential.accessToken;
+//       // The signed-in user info.
+//       // var user = result.user;
+//       // ...
+//     })
+//     .catch(function(error) {
+//       console.log(error);
+//       // Handle Errors here.
+//       // var errorCode = error.code;
+//       // var errorMessage = error.message;
+//       // // The email of the user's account used.
+//       // var email = error.email;
+//       // // The firebase.auth.AuthCredential type that was used.
+//       // var credential = error.credential;
+//       // ...
+//     });
+// };
 
 const StyledActions = styled.div`
   text-align: center;

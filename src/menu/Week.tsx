@@ -1,85 +1,21 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { Day } from "./Day";
 import { startOfDay, getISOWeek, addDays, subWeeks, addWeeks } from "date-fns";
 import styled from "styled-components";
-import { firebase } from "../firebase/firebase";
 
 import {
   StyledActionButtonWithMargins,
-  StyledActionButtonForText
+  StyledActionButtonForText,
 } from "../components/StyledActionButton";
 import { StyledWideWrapper } from "../components/StyledWrapper";
+import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import {
-  StyledHeaderH1
-} from "../components/StyledHeaderH1";
-import { StyledNext, StyledPrevious, BackgroundChef as StyledChef } from "../components/StyledSvgIcons";
+  StyledNext,
+  StyledPrevious,
+  BackgroundChef as StyledChef,
+} from "../components/StyledSvgIcons";
 import { AddToTrello } from "./AddToTrello";
 import { Filter } from "./Filter";
-import { WunderlistExportButton } from "./WunderlistExport/WunderlistExportButton";
-import { WunderlistListSelector } from "./WunderlistExport/WunderlistListSelector";
-import { UserDataContext } from "../context/UserDataContext";
-import { UserContext } from "../context/UserContext";
-
-function makeId(length: number) {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
-function redirectToExternalAuthDialog() {
-  const wunderlistClientId = "03d2eac308bd127169f5";
-  const redirectUrl = "https://matbingo.no/wunderlist-callback";
-
-  const randomString = makeId(30);
-  localStorage.setItem('wunderlistAuthState', randomString);
-  const location = `https://www.wunderlist.com/oauth/authorize?client_id=${wunderlistClientId}&redirect_uri=${redirectUrl}&state=${randomString}`;
-  window.location.href = location;
-}
-
-async function getAccessToken(code: string) {
-  return fetch(`https://us-central1-dinnerplanner-48f1d.cloudfunctions.net/wunderlistCallback?code=${code}`)
-    .then(res => res.json())
-    .then((res:any) => res.accessToken);
-}
-
-function getUrlParams() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get('code') ?? '';
-  const state = urlParams.get('state') ?? '';
-
-  return { state, code };
-}
-
-function validateResponse(state: string) {
-  const originalState = localStorage.getItem('wunderlistAuthState');
-  const isValidState = originalState === state;
-  if (!isValidState) {
-    throw new Error(`Invalid auth response state ${state} !=== ${originalState}'`);
-  }
-}
-
-function handleWunderlistAuthCallback(userUid: string, setShowWunderlistExportDialog: (value :boolean) => void) {
-  const { code, state } = getUrlParams();
-
-  validateResponse(state);
-
-  window.history.pushState(null, 'Matbingo.no', '/');
-
-  getAccessToken(code)
-    .then(accessToken => {
-      const db = firebase.firestore();
-      db.collection("userdata")
-        .doc(userUid)
-        .set({ wunderlistAccessToken: accessToken },{ merge: true })
-        .then(() => {
-          setShowWunderlistExportDialog(true);
-        });
-    });
-}
 
 // function resetAccessTokenValue(userUid: string) {
 //   const db = firebase.firestore();
@@ -117,7 +53,7 @@ const StyledButtonGroup = styled.div`
 
 const WeekSelector = ({
   selectedDay,
-  setSelectedDay
+  setSelectedDay,
 }: {
   selectedDay: Date;
   setSelectedDay: (date: Date) => void;
@@ -145,10 +81,6 @@ const IllustrationContainer = styled.div`
 `;
 
 export const Week = () => {
-  const { userdata } = useContext(UserDataContext);
-  const { user } = useContext(UserContext);
-  const wunderlistAccessToken = userdata.wunderlistAccessToken;
-
   const [selectedDay, setSelectedDay]: [Date, any] = useState(
     startOfDay(new Date())
   );
@@ -160,35 +92,13 @@ export const Week = () => {
 
   const [activeFilters, setActiveFilters]: [Filter[], any] = useState([]);
 
-  const [showWunderlistExportDialog, setShowWunderlistExportDialog] = useState(false);
-
-  // useEffect(() => {
-  //   resetAccessTokenValue(user.uid);
-  // }, [user.uid]);
-
-  useEffect(() => {
-    if (window.location.pathname.includes('wunderlist-callback')) {
-      handleWunderlistAuthCallback(user.uid, setShowWunderlistExportDialog);
-    }
-  }, [user.uid]);
-
-  const handleWunderlistExportClick = () => {
-    if (wunderlistAccessToken && !showWunderlistExportDialog) {
-      setShowWunderlistExportDialog(true);
-    } else {
-      redirectToExternalAuthDialog();
-    }
-  };
-
   const listOfDays = new Array(7)
     .fill("")
     .map((el: any, index: number) => addDays(selectedDay, index));
 
   return (
     <StyledWideWrapper>
-      <StyledHeaderH1>
-        Ukesmeny uke {getISOWeek(selectedDay)}
-      </StyledHeaderH1>
+      <StyledHeaderH1>Ukesmeny uke {getISOWeek(selectedDay)}</StyledHeaderH1>
       <IllustrationContainer>
         <StyledChef />
       </IllustrationContainer>
@@ -196,6 +106,22 @@ export const Week = () => {
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
       />
+      {addToTrelloActive ? (
+        <AddToTrello
+          listOfDays={addToTrelloDays}
+          doneCallback={() => {
+            setAddToTrelloActive(false);
+            setAddToTrelloDays([]);
+          }}
+        />
+      ) : (
+        <StyledActionButtonForText
+          style={{ marginRight: "1rem", marginLeft: "1rem" }}
+          onClick={() => setAddToTrelloActive(true)}
+        >
+          Lag handleliste i Trello
+        </StyledActionButtonForText>
+      )}
       <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       <StyledDayList>
         {listOfDays.map((el: any) => (
@@ -205,7 +131,7 @@ export const Week = () => {
             activeFilters={activeFilters}
             addToTrelloActive={addToTrelloActive}
             isShoppingCartActive={dateExists(addToTrelloDays, el)}
-            toggleShoppingCart={date => {
+            toggleShoppingCart={(date) => {
               if (dateExists(addToTrelloDays, date)) {
                 setAddToTrelloDays(deleteDate(addToTrelloDays, date));
               } else {
@@ -216,38 +142,16 @@ export const Week = () => {
         ))}
       </StyledDayList>
       <WeekSelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-      {addToTrelloActive ? (
-        <AddToTrello
-          listOfDays={addToTrelloDays}
-          doneCallback={() => {
-            setAddToTrelloActive(false);
-            setAddToTrelloDays([]);
-          }}
-        />
-      ) : (
-        <StyledActionButtonForText style={{ marginBottom: "4rem", marginRight: "1rem"}} onClick={() => setAddToTrelloActive(true)}>
-          Lag handleliste i Trello
-        </StyledActionButtonForText>
-      )}
-      <WunderlistExportButton
-        onClick={handleWunderlistExportClick}
-      />
-      { wunderlistAccessToken && showWunderlistExportDialog && (
-        <WunderlistListSelector
-          onDismiss={() => setShowWunderlistExportDialog(false)}
-          accessToken={wunderlistAccessToken}
-          selectedDays={listOfDays}
-        />)}
     </StyledWideWrapper>
   );
 };
 
 function deleteDate(addToTrelloDays: Date[], date: Date): any {
-  return addToTrelloDays.filter(el => el.toString() !== date.toString());
+  return addToTrelloDays.filter((el) => el.toString() !== date.toString());
 }
 
 function dateExists(addToTrelloDays: Date[], date: Date) {
   return (
-    addToTrelloDays.filter(el => el.toString() === date.toString()).length > 0
+    addToTrelloDays.filter((el) => el.toString() === date.toString()).length > 0
   );
 }
