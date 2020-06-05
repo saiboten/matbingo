@@ -1,24 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import { format, isToday } from "date-fns";
-import styled from "styled-components";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { isToday } from "date-fns";
 import { firebase } from "../firebase/firebase";
-import nbLocale from "date-fns/locale/nb";
-import PublishIcon from "@material-ui/icons/Publish";
-import { RecipeDetails } from "./RecipeDetail";
-import { GenerateDay } from "./GenerateDay";
-import { StyledLocalLoader } from "../components/StyledLocalLoader";
-import { secondaryColor } from "../components/Constants";
 import { UserDataContext } from "../context/UserDataContext";
-import { StyledHeaderH1 } from "../components/StyledHeaderH1";
-import {
-  StyledSecondaryActionButtonForText,
-  StyledActionButton,
-  StyledActionButtonForText,
-} from "../components/StyledActionButton";
 import { Filter } from "./Filter";
 import { useSingleRecipe } from "../hooks/useRecipes";
-import { ToggleShoppingCart } from "./ToggleShoppingCart";
+import { RecipeSelected } from "./DayTypes/RecipeSelected";
+import { ManualDay } from "./DayTypes/ManualDay";
+import { Undecided } from "./DayTypes/Undecided";
+import { DayData } from "./DayTypes/types";
 
 interface Props {
   date: Date;
@@ -27,42 +16,6 @@ interface Props {
   isShoppingCartActive: boolean;
   activeFilters: Filter[];
 }
-
-interface StyledDayProps {
-  active: boolean;
-  selected: boolean;
-}
-
-const StyledDay = styled.div<StyledDayProps>`
-  position: relative;
-  width: 48%;
-  display: inline-block;
-  text-align: left;
-  margin: 5px;
-  min-height: 100px;
-  color: #000;
-
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-
-  border: ${(props) => (props.active ? `2px solid ${secondaryColor}` : "none")};
-
-  @media screen and (max-width: 530px) {
-    width: 100%;
-  }
-  background-color: ${(props) => (props.selected ? "#e4971a" : "#fff")};
-`;
-
-const StyledDate = styled.div`
-  position: absolute;
-  left: 2px;
-  top: 2px;
-  font-size: 1.6rem;
-  background: white;
-  z-index: 1;
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
-`;
 
 // const initialState: RecipeType = {
 //   name: "",
@@ -76,87 +29,12 @@ const StyledDate = styled.div`
 //   recipetype: []
 // };
 
-interface DayData {
-  id: string;
-  date: Date;
-  group: string;
-  recipe: string | undefined;
-  description: string | undefined;
-}
-
 const initialDayData: DayData = {
   id: "",
   date: new Date(),
   group: "",
   recipe: undefined,
   description: undefined,
-};
-
-const StyledDayContent = styled.div`
-  text-align: center;
-  height: 100%;
-`;
-
-const StyledLocalLoaderWithMarginTop = styled(StyledLocalLoader)`
-  margin-top: 42px;
-`;
-
-const ActionButtons = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: 5px;
-  margin-top: 5px;
-  display: float;
-`;
-
-const DeleteDay = ({
-  documentId,
-  reset,
-  showConfirm,
-  setConfirmed,
-}: {
-  documentId: string;
-  reset: () => void;
-  showConfirm: boolean;
-  setConfirmed: (value: boolean) => void;
-}) => {
-  const deleteDay = () => {
-    if (showConfirm) {
-      const db = firebase.firestore();
-      db.collection("days")
-        .doc(documentId)
-        .delete()
-        .then(() => {
-          reset();
-        });
-    } else {
-      setConfirmed(true);
-    }
-  };
-
-  return (
-    <div>
-      {showConfirm && (
-        <StyledSecondaryActionButtonForText
-          style={{ marginRight: "10px" }}
-          onClick={() => setConfirmed(false)}
-        >
-          Avbryt
-        </StyledSecondaryActionButtonForText>
-      )}
-
-      {showConfirm ? (
-        <StyledActionButtonForText onClick={deleteDay}>
-          Sikker?
-        </StyledActionButtonForText>
-      ) : (
-        <StyledActionButton onClick={deleteDay}>
-          <DeleteIcon fontSize="large" />
-        </StyledActionButton>
-      )}
-    </div>
-  );
 };
 
 export const Day = ({
@@ -169,7 +47,6 @@ export const Day = ({
   const [dayData, setDayData]: [DayData, any] = useState(initialDayData);
   const [loading, setLoading]: any = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirmed] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const userdata = useContext(UserDataContext).userdata;
 
@@ -208,81 +85,50 @@ export const Day = ({
 
   const today = isToday(date);
 
-  if (recipeLoading) {
+  if (recipeLoading || loading) {
     return null;
   }
 
+  if (dayData.description) {
+    return (
+      <ManualDay
+        today={today}
+        isShoppingCartActive={isShoppingCartActive}
+        addToTrelloActive={addToTrelloActive}
+        date={date}
+        description={dayData.description}
+        reset={reset}
+        setShowDeleteConfirmed={setShowDeleteConfirmed}
+        dayData={dayData}
+        showDeleteConfirm={showDeleteConfirm}
+      />
+    );
+  }
+
+  if (recipe?.name !== undefined) {
+    return (
+      <RecipeSelected
+        today={today}
+        isShoppingCartActive={isShoppingCartActive}
+        addToTrelloActive={addToTrelloActive}
+        date={date}
+        dayData={dayData}
+        showDeleteConfirm={showDeleteConfirm}
+        reset={reset}
+        setShowDeleteConfirmed={setShowDeleteConfirmed}
+        toggleShoppingCart={toggleShoppingCart}
+        recipe={recipe}
+      />
+    );
+  }
+
   return (
-    <StyledDay
-      active={today}
-      selected={isShoppingCartActive && addToTrelloActive}
-    >
-      <StyledDate>
-        {format(date, "dddd DD.MM", { locale: nbLocale })}
-      </StyledDate>
-      <StyledDayContent>
-        {loading ? (
-          <StyledLocalLoaderWithMarginTop />
-        ) : (
-          <>
-            {dayData.description && (
-              <div style={{ marginTop: "2.5rem", marginBottom: "2.5rem" }}>
-                <StyledHeaderH1>Dagens middagsplan:</StyledHeaderH1>
-                <p
-                  style={{
-                    textAlign: "left",
-                    marginBottom: "1rem",
-                    padding: "0 1rem",
-                  }}
-                >
-                  {dayData.description}
-                </p>
-                <ActionButtons>
-                  <DeleteDay
-                    documentId={dayData.id}
-                    reset={reset}
-                    setConfirmed={setShowDeleteConfirmed}
-                    showConfirm={showDeleteConfirm}
-                  />
-                </ActionButtons>
-              </div>
-            )}
-            {recipe?.name !== undefined && (
-              <div
-                onClick={() =>
-                  addToTrelloActive ? toggleShoppingCart(date) : null
-                }
-              >
-                <RecipeDetails
-                  recipe={recipe}
-                  showImageUpload={showImageUpload}
-                  setShowImageUpload={setShowImageUpload}
-                />
-                <ActionButtons>
-                  <StyledActionButton
-                    style={{ marginRight: "6px" }}
-                    onClick={() => setShowImageUpload(true)}
-                  >
-                    <PublishIcon fontSize="large" />
-                  </StyledActionButton>
-                  {!showDeleteConfirm && (
-                    <ToggleShoppingCart recipeId={recipe?.id} />
-                  )}
-                  <DeleteDay
-                    documentId={dayData.id}
-                    reset={reset}
-                    setConfirmed={setShowDeleteConfirmed}
-                    showConfirm={showDeleteConfirm}
-                  />
-                </ActionButtons>
-              </div>
-            )}
-            {recipe === undefined && !dayData.description && (
-              <GenerateDay date={date} activeFilters={activeFilters} />
-            )}
-          </>
-        )}
-      </StyledDayContent>
-    </StyledDay>
+    <Undecided
+      today={today}
+      isShoppingCartActive={isShoppingCartActive}
+      addToTrelloActive={addToTrelloActive}
+      date={date}
+      activeFilters={activeFilters}
+    />
   );
 };
