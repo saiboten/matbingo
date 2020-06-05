@@ -6,7 +6,7 @@ import { firebase } from "../firebase/firebase";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import {
   StyledActionButtonForText,
-  StyledSecondaryActionButton
+  StyledSecondaryActionButton,
 } from "../components/StyledActionButton";
 import { Form, Field } from "react-final-form";
 import { StyledForm } from "../components/StyledForm";
@@ -63,7 +63,7 @@ const onSubmit = (
   const createPromises: any = createThese.map((ingredientToBeCreated: string) =>
     db.collection("ingredients").add({
       name: ingredientToBeCreated,
-      group
+      group,
     })
   );
 
@@ -77,7 +77,7 @@ const onSubmit = (
         rating: parseInt(values.rating, 10),
         ingredients: values.ingredients
           .map((el: ValueType<any>) => el.value)
-          .concat(newIds)
+          .concat(newIds),
       });
   });
 };
@@ -99,9 +99,7 @@ const validate = (values: any) => {
 
 function deleteItem(id: string, setNextPage: (nextPage: string) => void) {
   const db = firebase.firestore();
-  db.collection("recipes")
-    .doc(id)
-    .delete();
+  db.collection("recipes").doc(id).delete();
   setNextPage("/recipe-feedback/delete");
 }
 
@@ -111,8 +109,8 @@ const ReactSelectAdapter = ({ input, ...rest }: any) => {
 
 export const EditRecipeDetails = ({
   match: {
-    params: { id }
-  }
+    params: { id },
+  },
 }: Props) => {
   const [recipesLoading, recipes] = useRecipes();
   const userdata = useContext(UserDataContext).userdata;
@@ -127,7 +125,7 @@ export const EditRecipeDetails = ({
   }
 
   const recipeDetails: RecipeType = recipes.find(
-    recipe => recipe.id === id
+    (recipe) => recipe.id === id
   ) || {
     name: "",
     description: "",
@@ -138,7 +136,7 @@ export const EditRecipeDetails = ({
     rating: 1,
     hasBeenSelected: false,
     recipetype: [],
-    image: undefined
+    image: undefined,
   };
 
   if (nextPage !== "") {
@@ -159,14 +157,14 @@ export const EditRecipeDetails = ({
               (option: Ingredient) => option.id === el
             ) || {
               name: "",
-              id: ""
+              id: "",
             };
 
             return {
               label: found.name,
-              value: found.id
+              value: found.id,
             };
-          })
+          }),
         }}
         onSubmit={(values, form) => {
           setShowNotification(true);
@@ -206,7 +204,7 @@ export const EditRecipeDetails = ({
                   )}
                 </Field>
               </StyledFieldSet>
-              <StyledFieldSet>
+              <StyledFieldSet wide>
                 <Field name="description" component="input" type="text">
                   {({ input, meta }: { input: any; meta: any }) => (
                     <>
@@ -233,9 +231,9 @@ export const EditRecipeDetails = ({
                   name="ingredients"
                   component={ReactSelectAdapter}
                   isMulti
-                  options={ingredients.map(el => ({
+                  options={ingredients.map((el) => ({
                     label: el.name,
-                    value: el.id
+                    value: el.id,
                   }))}
                 />
               </SelectWrapper>
@@ -356,7 +354,7 @@ export const EditRecipeDetails = ({
                   style={{
                     marginLeft: "1rem",
                     transition: "all .3s",
-                    transform: `scale(${confirmDelete ? 1.4 : 1})`
+                    transform: `scale(${confirmDelete ? 1.4 : 1})`,
                   }}
                   onClick={() =>
                     confirmDelete

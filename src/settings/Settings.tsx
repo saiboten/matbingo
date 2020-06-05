@@ -4,7 +4,7 @@ import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import {
   StyledActionButtonForText,
   StyledSecondaryActionButtonWithMargins,
-  StyledSecondaryActionButtonForText
+  StyledSecondaryActionButtonForText,
 } from "../components/StyledActionButton";
 import { firebase } from "../firebase/firebase";
 import { UserContext } from "../context/UserContext";
@@ -12,7 +12,7 @@ import { Redirect } from "react-router";
 import {
   StyledLogOut,
   StyledDeleteIcon,
-  StyledSettingsIcon
+  StyledSettingsIcon,
 } from "../components/StyledSvgIcons";
 import styled from "styled-components";
 import { GroupDataContext } from "../context/GroupDataContext";
@@ -29,10 +29,10 @@ const LogOut = (setLeave: any) => {
   firebase
     .auth()
     .signOut()
-    .then(function() {
+    .then(function () {
       // Sign-out successful.
     })
-    .catch(function(error) {
+    .catch(function (error) {
       // An error happened.
     });
 
@@ -51,11 +51,7 @@ export const Settings = () => {
   };
 
   const leaveGroup = () => {
-    firebase
-      .firestore()
-      .collection("userdata")
-      .doc(user.uid)
-      .delete();
+    firebase.firestore().collection("userdata").doc(user.uid).delete();
     setLeave(true);
   };
 
@@ -72,7 +68,7 @@ export const Settings = () => {
   }
 
   return (
-    <StyledWrapper backgroundColor="white">
+    <StyledWrapper narrow backgroundColor="white">
       <StyledHeaderH1>Innstillinger</StyledHeaderH1>
       <div style={{ marginBottom: "1rem" }}>
         Du er medlem av gruppen{" "}
@@ -117,7 +113,7 @@ export const Settings = () => {
             style={{
               display: "flex",
               marginTop: "1rem",
-              justifyContent: "space-around"
+              justifyContent: "space-around",
             }}
           >
             <StyledActionButtonForText

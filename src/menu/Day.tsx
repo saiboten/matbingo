@@ -17,18 +17,6 @@ interface Props {
   activeFilters: Filter[];
 }
 
-// const initialState: RecipeType = {
-//   name: "",
-//   description: "",
-//   id: "",
-//   ingredients: [],
-//   weekdays: [],
-//   lastTimeSelected: new Date(),
-//   rating: 1,
-//   hasBeenSelected: false,
-//   recipetype: []
-// };
-
 const initialDayData: DayData = {
   id: "",
   date: new Date(),

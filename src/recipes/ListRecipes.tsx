@@ -16,8 +16,8 @@ interface Props {
 const customStyles = {
   menu: (provided: any, state: any) => ({
     ...provided,
-    zIndex: 2
-  })
+    zIndex: 2,
+  }),
 };
 
 export const ListRecipes = ({ onChange }: Props) => {
@@ -34,22 +34,22 @@ export const ListRecipes = ({ onChange }: Props) => {
   }
 
   return (
-    <>
+    <div style={{ maxWidth: "415px", margin: "0 auto", marginBottom: "2rem" }}>
       <StyledHeaderH1>Finn oppskrift</StyledHeaderH1>
       <ul>
         <Select
           styles={customStyles}
           value={{
             label: "Velg",
-            value: "0"
+            value: "0",
           }}
           onChange={handleChange}
-          options={recipes.map(el => ({
+          options={recipes.map((el) => ({
             label: el.name,
-            value: el.id
+            value: el.id,
           }))}
         />
       </ul>
-    </>
+    </div>
   );
 };

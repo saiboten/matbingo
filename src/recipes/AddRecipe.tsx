@@ -145,7 +145,7 @@ export function AddRecipe() {
                   )}
                 </Field>
               </StyledFieldSet>
-              <StyledFieldSet>
+              <StyledFieldSet wide>
                 <Field name="description" component="input" type="text">
                   {({ input, meta }: { input: any; meta: any }) => (
                     <>
