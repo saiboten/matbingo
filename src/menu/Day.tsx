@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { isToday } from "date-fns";
 import { firebase } from "../firebase/firebase";
 import { UserDataContext } from "../context/UserDataContext";
@@ -45,12 +45,16 @@ export const Day = ({
 
   const [recipeLoading, recipe] = useSingleRecipe(dayData.recipe);
 
+  console.log(date);
+
+  const memoDate = useMemo(() => date, []);
+
   useEffect(() => {
     reset();
     const db = firebase.firestore();
     const daysQuery = db
       .collection("days")
-      .where("date", "==", date)
+      .where("date", "==", memoDate)
       .where("group", "==", userdata.group);
     const unsub = daysQuery.onSnapshot((daysMatchesDoc) => {
       if (daysMatchesDoc.empty) {
@@ -69,7 +73,7 @@ export const Day = ({
     return () => {
       unsub();
     };
-  }, [date, userdata.group]);
+  }, [userdata.group, memoDate]);
 
   const today = isToday(date);
 

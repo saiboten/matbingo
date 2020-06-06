@@ -23,17 +23,18 @@ interface Props {
   dayData: DayData;
 }
 
-export function ManualDay({
-  today,
-  isShoppingCartActive,
-  addToTrelloActive,
-  date,
-  description,
-  reset,
-  setShowDeleteConfirmed,
-  showDeleteConfirm,
-  dayData,
-}: Props) {
+export function ManualDay(props: Props) {
+  const {
+    today,
+    isShoppingCartActive,
+    addToTrelloActive,
+    date,
+    description,
+    reset,
+    setShowDeleteConfirmed,
+    showDeleteConfirm,
+    dayData,
+  } = props;
   return (
     <StyledDay
       active={today}
