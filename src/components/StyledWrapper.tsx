@@ -20,5 +20,5 @@ export const StyledWrapper = styled.div<Props>`
 export const StyledWideWrapper = styled<any>(StyledWrapper)`
   position: relative;
   overflow-x: hidden;
-  max-width: 815px;
+  max-width: 1100px;
 `;

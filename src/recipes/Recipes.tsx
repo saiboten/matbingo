@@ -18,19 +18,16 @@ export const RecipesContent = ({ feedback }: { feedback: string }) => {
 
   const [recipesLoading, recipes] = useRecipes();
 
-  useEffect(
-    () => {
-      if (feedback) {
-        setTimeout(() => {
-          setFeedbackActive(true);
-        }, 0);
-        setTimeout(() => {
-          setFeedbackActive(false);
-        }, 2000);
-      }
-    },
-    [feedback]
-  );
+  useEffect(() => {
+    if (feedback) {
+      setTimeout(() => {
+        setFeedbackActive(true);
+      }, 0);
+      setTimeout(() => {
+        setFeedbackActive(false);
+      }, 2000);
+    }
+  }, [feedback]);
 
   if (recipesLoading) {
     return <StyledLocalLoaderCentered />;

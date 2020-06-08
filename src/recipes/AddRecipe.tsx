@@ -107,7 +107,11 @@ export function AddRecipe() {
   }
 
   if (ingredientsLoading) {
-    return <StyledLocalLoaderCentered />;
+    return (
+      <StyledWrapper backgroundColor="white">
+        <StyledLocalLoaderCentered />
+      </StyledWrapper>
+    );
   }
 
   return (

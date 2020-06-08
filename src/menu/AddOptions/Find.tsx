@@ -3,7 +3,7 @@ import { ListRecipes } from "../../recipes/ListRecipes";
 import { firebase } from "../../firebase/firebase";
 import {
   StyledActionButtonWithMargins,
-  StyledSecondaryActionButtonWithMargins
+  StyledSecondaryActionButtonWithMargins,
 } from "../../components/StyledActionButton";
 import { RecipeType } from "../../types";
 import { RecipeDetails } from "../RecipeDetail";
@@ -14,23 +14,16 @@ import { useRecipes } from "../../hooks/useRecipes";
 import { StyledLocalLoader } from "../../components/StyledLocalLoader";
 
 const storeSelectedRecipe = (date: Date, recipeId: string, group: string) => {
-  firebase
-    .firestore()
-    .collection("days")
-    .add({
-      date,
-      recipe: recipeId,
-      group
-    });
+  firebase.firestore().collection("days").add({
+    date,
+    recipe: recipeId,
+    group,
+  });
 
-  firebase
-    .firestore()
-    .collection("recipes")
-    .doc(recipeId)
-    .update({
-      lastTimeSelected: date,
-      hasBeenSelected: true
-    });
+  firebase.firestore().collection("recipes").doc(recipeId).update({
+    lastTimeSelected: date,
+    hasBeenSelected: true,
+  });
 };
 
 interface Props {
@@ -48,7 +41,7 @@ const initialState: RecipeType = {
   rating: 1,
   hasBeenSelected: false,
   recipetype: [],
-  image: undefined
+  image: undefined,
 };
 
 const StyledActionBox = styled.div`
@@ -69,7 +62,7 @@ export const Find = ({ date, back }: Props) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100%"
+          height: "100%",
         }}
       >
         <StyledLocalLoader />
@@ -79,7 +72,7 @@ export const Find = ({ date, back }: Props) => {
 
   const confirmCheck = (recipeId: string) => {
     setConfirm(true);
-    setRecipe(recipes.find(r => r.id === recipeId));
+    setRecipe(recipes.find((r) => r.id === recipeId));
   };
 
   return (

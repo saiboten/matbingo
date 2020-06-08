@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import { useRecipes } from "../hooks/useRecipes";
-import { StyledLocalLoader } from "../components/StyledLocalLoader";
+import { StyledLocalLoaderCentered } from "../components/StyledLocalLoader";
 
 interface Option {
   label: string;
@@ -30,7 +30,7 @@ export const ListRecipes = ({ onChange }: Props) => {
   };
 
   if (recipesLoading) {
-    return <StyledLocalLoader />;
+    return <StyledLocalLoaderCentered />;
   }
 
   return (
