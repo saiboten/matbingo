@@ -135,6 +135,11 @@ export const Nav = () => {
                   Oppskrifter
                 </StyledLink>
               </StyledLi>
+              <StyledLi>
+                <StyledLink onClick={() => setMenuActive(false)} to="/library">
+                  Inspirasjon
+                </StyledLink>
+              </StyledLi>
             </>
           )}
           {/* <StyledLi>

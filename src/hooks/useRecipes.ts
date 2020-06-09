@@ -10,32 +10,28 @@ export const useRecipes = (): [boolean, RecipeType[]] => {
   const { recipes, setRecipes } = useContext(RecipeContext);
   const userGroup = useContext(UserDataContext).userdata.group;
 
-  useEffect(
-    () => {
-      if (recipes.length > 0) {
+  useEffect(() => {
+    if (recipes.length > 0) {
+      setLoading(false);
+      return;
+    }
+
+    const db = firebase.firestore();
+    db.collection("recipes")
+      .where("group", "==", userGroup)
+      .onSnapshot((querySnapshot) => {
+        const incomingRecipes = querySnapshot.docs.map((doc: any) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        if (!isEqual(recipes, incomingRecipes)) {
+          setRecipes(incomingRecipes);
+        }
+
         setLoading(false);
-        return;
-      }
-
-      const db = firebase.firestore();
-      db.collection("recipes")
-        .where("group", "==", userGroup)
-        .onSnapshot(querySnapshot => {
-          const incomingRecipes = querySnapshot.docs.map((doc: any) => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-
-          console.log(recipes, incomingRecipes);
-          if (!isEqual(recipes, incomingRecipes)) {
-            setRecipes(incomingRecipes);
-          }
-
-          setLoading(false);
-        });
-    },
-    [userGroup, recipes, setRecipes]
-  );
+      });
+  }, [userGroup, recipes, setRecipes]);
 
   return [loading, recipes];
 };
@@ -47,29 +43,26 @@ export const useSingleRecipe = (
   const [recipe, setRecipe] = useState<RecipeType | undefined>();
   const userGroup = useContext(UserDataContext).userdata.group;
 
-  useEffect(
-    () => {
-      if (id === undefined) {
-        setLoading(false);
-        setRecipe(undefined);
-        return;
-      }
+  useEffect(() => {
+    if (id === undefined) {
+      setLoading(false);
+      setRecipe(undefined);
+      return;
+    }
 
-      const db = firebase.firestore();
-      db.collection("recipes")
-        .doc(id)
-        .get()
-        .then(doc => {
-          const recipe: any = {
-            id: doc.id,
-            ...doc.data()
-          };
-          setRecipe(recipe);
-          setLoading(false);
-        });
-    },
-    [userGroup, id]
-  );
+    const db = firebase.firestore();
+    db.collection("recipes")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        const recipe: any = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        setRecipe(recipe);
+        setLoading(false);
+      });
+  }, [userGroup, id]);
 
   return [loading, recipe];
 };

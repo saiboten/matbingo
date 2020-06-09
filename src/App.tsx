@@ -20,6 +20,7 @@ import { Providers } from "./Providers";
 import { AddRecipe } from "./recipes/AddRecipe";
 import { ListRecipesAndRedirect } from "./recipes/ListRecipesAndRedirect";
 import { AdminGroup } from "./settings/AdminGroup";
+import { Library } from "./library/Library";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -84,7 +85,7 @@ const initialState: State = {
   userdataLoaded: false,
   shoppingListLoading: true,
   loggedIn: false,
-  loggedInStateClarified: false
+  loggedInStateClarified: false,
 };
 
 function reducer(state: State, action: any) {
@@ -92,27 +93,27 @@ function reducer(state: State, action: any) {
     case "loggedInStateClarified":
       return {
         ...state,
-        loggedInStateClarified: true
+        loggedInStateClarified: true,
       };
     case "userLoggedIn":
       return {
         ...state,
-        loggedIn: true
+        loggedIn: true,
       };
     case "userLoggedOut":
       return {
         ...state,
-        loggedIn: false
+        loggedIn: false,
       };
     case "userdataLoaded":
       return {
         ...state,
-        userdataLoaded: true
+        userdataLoaded: true,
       };
     case "shoppingListLoaded":
       return {
         ...state,
-        shoppingListLoading: false
+        shoppingListLoading: false,
       };
     default:
       throw new Error();
@@ -127,85 +128,82 @@ const AppRouter = () => {
   const { setGroupdata } = useContext(GroupDataContext);
   const { setIngredients, setGroup, setId } = useContext(ShoppingListContext);
 
-  useEffect(
-    () => {
-      let unsubUserData = () => {};
-      let unsubGroupData = () => {};
-      let unsubShoppingList = () => {};
+  useEffect(() => {
+    let unsubUserData = () => {};
+    let unsubGroupData = () => {};
+    let unsubShoppingList = () => {};
 
-      const db = firebase.firestore();
+    const db = firebase.firestore();
 
-      const subscribeToShoppingList = (groupId: string) => {
-        unsubGroupData = db
-          .collection("shoppingLists")
-          .where("group", "==", groupId)
-          .onSnapshot(async querySnapshot => {
-            if (querySnapshot.empty) {
-              return db
-                .collection("shoppingLists")
-                .add({ group: groupId, ingredients: [] });
-            }
-            dispatch({ type: "shoppingListLoaded" });
-            const doc = querySnapshot.docs[0];
-            const { group, ingredients } = doc.data();
-            setId(doc.id);
-            setGroup(group);
-            setIngredients(ingredients);
-          });
-      };
+    const subscribeToShoppingList = (groupId: string) => {
+      unsubGroupData = db
+        .collection("shoppingLists")
+        .where("group", "==", groupId)
+        .onSnapshot(async (querySnapshot) => {
+          if (querySnapshot.empty) {
+            return db
+              .collection("shoppingLists")
+              .add({ group: groupId, ingredients: [] });
+          }
+          dispatch({ type: "shoppingListLoaded" });
+          const doc = querySnapshot.docs[0];
+          const { group, ingredients } = doc.data();
+          setId(doc.id);
+          setGroup(group);
+          setIngredients(ingredients);
+        });
+    };
 
-      let unsubAuthChange = firebase.auth().onAuthStateChanged((user: any) => {
-        dispatch({ type: "loggedInStateClarified" });
-        if (user) {
-          setUser(user);
-          dispatch({ type: "userLoggedIn" });
+    let unsubAuthChange = firebase.auth().onAuthStateChanged((user: any) => {
+      dispatch({ type: "loggedInStateClarified" });
+      if (user) {
+        setUser(user);
+        dispatch({ type: "userLoggedIn" });
 
-          unsubUserData = db
-            .collection("userdata")
-            .doc(user.uid)
-            .onSnapshot(querySnapshot => {
-              const userdata: any = querySnapshot.data() || { group: "" };
+        unsubUserData = db
+          .collection("userdata")
+          .doc(user.uid)
+          .onSnapshot((querySnapshot) => {
+            const userdata: any = querySnapshot.data() || { group: "" };
 
-              setUserdata(userdata);
-              dispatch({ type: "userdataLoaded" });
+            setUserdata(userdata);
+            dispatch({ type: "userdataLoaded" });
 
-              if (userdata.group) {
-                subscribeToShoppingList(userdata.group);
-                unsubGroupData = db
-                  .collection("groups")
-                  .doc(userdata.group)
-                  .onSnapshot(querySnapshot => {
-                    const groupData: any = querySnapshot.data();
+            if (userdata.group) {
+              subscribeToShoppingList(userdata.group);
+              unsubGroupData = db
+                .collection("groups")
+                .doc(userdata.group)
+                .onSnapshot((querySnapshot) => {
+                  const groupData: any = querySnapshot.data();
 
-                    setGroupdata({
-                      id: querySnapshot.id,
-                      ...groupData
-                    });
+                  setGroupdata({
+                    id: querySnapshot.id,
+                    ...groupData,
                   });
-              }
-            });
-        } else {
-          dispatch({ type: "userLoggedOut" });
-        }
-      });
+                });
+            }
+          });
+      } else {
+        dispatch({ type: "userLoggedOut" });
+      }
+    });
 
-      return () => {
-        unsubUserData();
-        unsubAuthChange();
-        unsubGroupData();
-        unsubShoppingList();
-      };
-    },
-    [
-      setGroupdata,
-      setId,
-      setGroup,
-      setIngredients,
-      setUser,
-      setUserdata,
-      userdata.group
-    ]
-  );
+    return () => {
+      unsubUserData();
+      unsubAuthChange();
+      unsubGroupData();
+      unsubShoppingList();
+    };
+  }, [
+    setGroupdata,
+    setId,
+    setGroup,
+    setIngredients,
+    setUser,
+    setUserdata,
+    userdata.group,
+  ]);
 
   if (!state.loggedInStateClarified) {
     return <StyledLoader />;
@@ -233,7 +231,7 @@ const AppRouter = () => {
       <Nav />
       <main>
         <Route path="/" exact component={Week} />
-        <Route path="/wunderlist-callback" component={Week} />
+        <Route path="/library" exact component={Library} />
         <Route path="/admin" exact component={AdminGroup} />
         <Route path="/recipes" exact component={Recipes} />
         <Route path="/find-recipes" exact component={ListRecipesAndRedirect} />

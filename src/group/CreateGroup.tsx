@@ -34,26 +34,22 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
     // Create group
     db.collection("groups")
       .add({
-        invites: groupInfo
-          ? groupInfo.participants.map(el => el.email)
-          : undefined,
+        invites: groupInfo?.participants?.map((el) => el.email) || [],
         members: [user.uid],
         owner: user.uid,
-        name: groupInfo.groupName
+        name: groupInfo.groupName,
       })
-      .then(docRef => {
+      .then((docRef) => {
         // Update user with group
-        db.collection("userdata")
-          .doc(user.uid)
-          .set({
-            group: docRef.id
-          });
+        db.collection("userdata").doc(user.uid).set({
+          group: docRef.id,
+        });
         setGroupCreated(true);
       });
   };
 
   if (groupCreated) {
-    return <Redirect to="/" push />;
+    return <Redirect to="/library?firstVisit=true" push />;
   }
 
   return (
@@ -61,7 +57,7 @@ const ConfirmGroupInfo = ({ groupInfo }: { groupInfo: GroupInfo }) => {
       <StyledHeaderH1>{groupInfo.groupName}</StyledHeaderH1>
 
       <div style={{ marginBottom: "1rem" }}>
-        Alle deltagere vil få en epost med info
+        For øyeblikket må du gi beskjed til alle manuelt at de er invitert.
       </div>
 
       <StyledHeaderH2 style={{ textAlign: "left" }}>Deltakere</StyledHeaderH2>
@@ -98,15 +94,15 @@ export const CreateGroup = () => {
       <Form
         onSubmit={onSubmit}
         mutators={{
-          ...arrayMutators
+          ...arrayMutators,
         }}
         render={({
           handleSubmit,
           form: {
-            mutators: { push, pop }
+            mutators: { push, pop },
           },
           pristine,
-          invalid
+          invalid,
         }) => (
           <StyledForm onSubmit={handleSubmit}>
             <StyledFieldSet>
@@ -133,7 +129,7 @@ export const CreateGroup = () => {
                     style={{
                       border: "1px solid black",
                       marginBottom: "1rem",
-                      paddingRight: "1rem"
+                      paddingRight: "1rem",
                     }}
                   >
                     <StyledFieldSet>

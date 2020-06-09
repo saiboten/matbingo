@@ -42,6 +42,7 @@ export interface RecipeType {
   hasBeenSelected: boolean;
   recipetype: CourseType[];
   image: boolean | undefined;
+  group?: string;
 }
 
 export type RecipeDict = { [id: string]: RecipeType };
