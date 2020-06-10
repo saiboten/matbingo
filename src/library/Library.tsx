@@ -9,9 +9,11 @@ import { UserDataContext } from "../context/UserDataContext";
 
 import { useLocation, Link } from "react-router-dom";
 import { secondaryColor } from "../components/Constants";
+import { StyledActionButtonForText } from "../components/StyledActionButton";
 
 export function Library() {
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
+  const [feedback, setFeedback] = useState<string | undefined>();
 
   const userdata = useContext(UserDataContext).userdata;
 
@@ -40,6 +42,26 @@ export function Library() {
       });
   }, [userdata.group]);
 
+  function handleClick(el: RecipeType) {
+    const { id, ...rest } = el;
+
+    firebase
+      .firestore()
+      .collection("recipes")
+      .add({
+        ...rest,
+        copy: true,
+        ingredients: [],
+        lastTimeSelected: new Date(),
+        public: false,
+        group: userdata.group,
+        image: false,
+      });
+
+    setFeedback("Oppskrift lagt til");
+    setTimeout(() => setFeedback(undefined), 3000);
+  }
+
   return (
     <StyledWrapper backgroundColor="white">
       {location.search.indexOf("firstVisit") !== -1 && (
@@ -58,13 +80,18 @@ export function Library() {
 
       <StyledHeaderH1>Inspirasjon</StyledHeaderH1>
       <p>Her kan du legge til nye oppskrifter i samlingen din</p>
-      {recipes.map((el) => {
+      {recipes.slice(0, 10).map((el) => {
         return (
           <StyledDay active={false} selected={false}>
             <RecipeDetails recipe={el} showImageUpload={false} />
+            <StyledActionButtonForText onClick={() => handleClick(el)}>
+              Legg til oppskrift
+            </StyledActionButtonForText>
           </StyledDay>
         );
       })}
+
+      {feedback && <div>{feedback}</div>}
     </StyledWrapper>
   );
 }

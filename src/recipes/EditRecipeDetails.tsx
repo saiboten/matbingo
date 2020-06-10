@@ -70,11 +70,14 @@ const onSubmit = (
   Promise.all(createPromises).then((newDocs: any) => {
     const newIds = newDocs.map((el: any) => el.id);
 
+    console.log(values.public);
+
     db.collection("recipes")
       .doc(documentId)
       .update({
         ...values,
         rating: parseInt(values.rating, 10),
+        public: values.public,
         ingredients: values.ingredients
           .map((el: ValueType<any>) => el.value)
           .concat(newIds),
@@ -346,6 +349,18 @@ export const EditRecipeDetails = ({
                   Annet
                 </StyledInputLabel>
               </div>
+
+              <StyledInputLabel>
+                <Field name="public" type="checkbox">
+                  {({ input }: any) => (
+                    <Checkbox checked={input.value} {...input} />
+                  )}
+                </Field>
+                Offentlig oppskrift
+              </StyledInputLabel>
+
+              <br />
+
               <Buttons>
                 <StyledActionButtonForText type="submit">
                   Lagre

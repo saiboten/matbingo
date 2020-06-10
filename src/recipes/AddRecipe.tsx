@@ -61,6 +61,7 @@ const onSubmit = (values: any, form: any, setDetailsId: any, group: string) => {
         lastTimeSelected: new Date(),
         rating: parseInt(values.rating, 10),
         group,
+        public: values.public === "true",
       })
       .then((docRef) => {
         setDetailsId(docRef.id);
@@ -290,6 +291,18 @@ export function AddRecipe() {
                   Annet
                 </StyledInputLabel>
               </div>
+
+              <StyledInputLabel>
+                <Field name="public" value="true" type="checkbox">
+                  {({ input }: any) => (
+                    <Checkbox checked={input.value === "true"} {...input} />
+                  )}
+                </Field>
+                Offentlig oppskrift
+              </StyledInputLabel>
+
+              <br />
+
               <StyledButton type="submit" disabled={pristine || submitting}>
                 Legg til
               </StyledButton>
