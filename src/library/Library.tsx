@@ -45,6 +45,8 @@ export function Library() {
   function handleClick(el: RecipeType) {
     const { id, ...rest } = el;
 
+    var existingImage = firebase.storage().ref().child("recipes").child(id);
+
     firebase
       .firestore()
       .collection("recipes")
@@ -55,7 +57,29 @@ export function Library() {
         lastTimeSelected: new Date(),
         public: false,
         group: userdata.group,
-        image: false,
+      })
+      .then((docRef) => {
+        if (rest.image) {
+          const newImage = firebase
+            .storage()
+            .ref()
+            .child("recipes")
+            .child(docRef.id);
+
+          existingImage.getDownloadURL().then(function (url) {
+            // TODO configure CORS.
+            // Read this:;  https://firebase.google.com/docs/storage/web/download-files
+            // var xhr = new XMLHttpRequest();
+            // xhr.responseType = "blob";
+            // xhr.onload = function (event) {
+            //   const blob = xhr.response;
+            //   console.log(blob);
+            //   newImage.putString(blob);
+            // };
+            // xhr.open("GET", url);
+            // xhr.send();
+          });
+        }
       });
 
     setFeedback("Oppskrift lagt til");
