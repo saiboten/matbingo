@@ -45,7 +45,7 @@ export function Library() {
   function handleClick(el: RecipeType) {
     const { id, ...rest } = el;
 
-    var existingImage = firebase.storage().ref().child("recipes").child(id);
+    const existingImage = firebase.storage().ref().child("recipes").child(id);
 
     firebase
       .firestore()
@@ -56,6 +56,7 @@ export function Library() {
         ingredients: [],
         lastTimeSelected: new Date(),
         public: false,
+        rating: 0,
         group: userdata.group,
       })
       .then((docRef) => {
@@ -67,17 +68,20 @@ export function Library() {
             .child(docRef.id);
 
           existingImage.getDownloadURL().then(function (url) {
-            // TODO configure CORS.
-            // Read this:;  https://firebase.google.com/docs/storage/web/download-files
-            // var xhr = new XMLHttpRequest();
-            // xhr.responseType = "blob";
-            // xhr.onload = function (event) {
-            //   const blob = xhr.response;
-            //   console.log(blob);
-            //   newImage.putString(blob);
-            // };
-            // xhr.open("GET", url);
-            // xhr.send();
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = "blob";
+            xhr.onload = function (event) {
+              const blob = xhr.response;
+              const reader = new FileReader();
+              reader.onload = (data) => {
+                console.log(data.target?.result);
+                const result = data.target?.result as string;
+                newImage.putString(result, "data_url");
+              };
+              reader.readAsDataURL(blob);
+            };
+            xhr.open("GET", url);
+            xhr.send();
           });
         }
       });
@@ -106,7 +110,7 @@ export function Library() {
       <p>Her kan du legge til nye oppskrifter i samlingen din</p>
       {recipes.slice(0, 10).map((el) => {
         return (
-          <StyledDay active={false} selected={false}>
+          <StyledDay key={el.id} active={false} selected={false}>
             <RecipeDetails recipe={el} showImageUpload={false} />
             <StyledActionButtonForText onClick={() => handleClick(el)}>
               Legg til oppskrift
