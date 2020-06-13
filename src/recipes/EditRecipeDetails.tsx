@@ -31,6 +31,7 @@ import { useRecipes } from "../hooks/useRecipes";
 import styled from "styled-components";
 import { Checkbox } from "@material-ui/core";
 import { useRecipeImage } from "../hooks/useRecipeImage";
+import { RecipeDetails } from "../menu/RecipeDetail";
 
 const Buttons = styled.div`
   display: flex;
@@ -154,12 +155,14 @@ export const EditRecipeDetails = ({
       <StyledNotification text="Oppskrift lagret" active={showNotification} />
       <ListRecipesAndRedirect />
       <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>
-
-      {image && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src={image} alt="Recipe" />
-        </div>
-      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <RecipeDetails recipe={recipeDetails} showImageUpload />
+      </div>
 
       <Form
         initialValues={{
