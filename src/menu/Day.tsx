@@ -45,8 +45,6 @@ export const Day = ({
 
   const [recipeLoading, recipe] = useSingleRecipe(dayData.recipe);
 
-  console.log(date);
-
   const memoDate = useMemo(() => date, []);
 
   useEffect(() => {

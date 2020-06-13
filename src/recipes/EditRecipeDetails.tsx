@@ -154,7 +154,6 @@ export const EditRecipeDetails = ({
     <StyledWrapper backgroundColor="white">
       <StyledNotification text="Oppskrift lagret" active={showNotification} />
       <ListRecipesAndRedirect />
-      <StyledHeaderH1>{recipeDetails.name}</StyledHeaderH1>
       <div
         style={{
           display: "flex",
