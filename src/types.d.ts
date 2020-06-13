@@ -43,6 +43,7 @@ export interface RecipeType {
   recipetype: CourseType[];
   image: boolean | undefined;
   group?: string;
+  link?: string;
 }
 
 export type RecipeDict = { [id: string]: RecipeType };

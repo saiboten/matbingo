@@ -150,6 +150,26 @@ export function AddRecipe() {
                   )}
                 </Field>
               </StyledFieldSet>
+              <StyledFieldSet>
+                <Field name="link" component="input" type="text">
+                  {({ input, meta }: { input: any; meta: any }) => (
+                    <>
+                      <StyledInputLabel>Lenke (valgfritt)</StyledInputLabel>
+
+                      <StyledInputWrapper>
+                        {meta.error && meta.touched && (
+                          <StyledError>{meta.error}</StyledError>
+                        )}
+                        <StyledInput
+                          autoComplete="off"
+                          placeholder="Lenke til oppskrift"
+                          {...input}
+                        />
+                      </StyledInputWrapper>
+                    </>
+                  )}
+                </Field>
+              </StyledFieldSet>
               <StyledFieldSet wide>
                 <Field name="description" component="input" type="text">
                   {({ input, meta }: { input: any; meta: any }) => (

@@ -90,7 +90,7 @@ export const RecipeDetails = ({
     return null;
   }
 
-  const { name, description, ingredients, id } = recipe;
+  const { name, description, ingredients, id, link } = recipe;
 
   return (
     <StyledWrapper>
@@ -113,6 +113,13 @@ export const RecipeDetails = ({
           <>
             <StyledEmpesizedP>Beskrivelse</StyledEmpesizedP>
             <p>{description}</p>
+          </>
+        )}
+        {link && (
+          <>
+            <StyledEmpesizedP>
+              {<a href={link}>Lenke til oppskrift</a>}
+            </StyledEmpesizedP>
           </>
         )}
         <SeeIngredients ingredientsIds={ingredients} />

@@ -3,7 +3,6 @@ import Creatable from "react-select/creatable";
 import { RouteComponentProps, Redirect } from "react-router";
 import { RecipeType, Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
-import { StyledHeaderH1 } from "../components/StyledHeaderH1";
 import {
   StyledActionButtonForText,
   StyledSecondaryActionButton,
@@ -30,7 +29,6 @@ import { useIngredients } from "../hooks/useIngredients";
 import { useRecipes } from "../hooks/useRecipes";
 import styled from "styled-components";
 import { Checkbox } from "@material-ui/core";
-import { useRecipeImage } from "../hooks/useRecipeImage";
 import { RecipeDetails } from "../menu/RecipeDetail";
 
 const Buttons = styled.div`
@@ -140,8 +138,6 @@ export const EditRecipeDetails = ({
     image: undefined,
   };
 
-  const { image } = useRecipeImage(recipeDetails);
-
   if (ingredientsLoading || recipesLoading) {
     return <StyledLoader />;
   }
@@ -160,7 +156,9 @@ export const EditRecipeDetails = ({
           justifyContent: "center",
         }}
       >
-        <RecipeDetails recipe={recipeDetails} showImageUpload />
+        <div style={{ border: "1px solid black" }}>
+          <RecipeDetails recipe={recipeDetails} showImageUpload />
+        </div>
       </div>
 
       <Form
@@ -211,6 +209,26 @@ export const EditRecipeDetails = ({
                         <StyledInput
                           autoComplete="off"
                           placeholder="Navn på oppskrift"
+                          {...input}
+                        />
+                      </StyledInputWrapper>
+                    </>
+                  )}
+                </Field>
+              </StyledFieldSet>
+              <StyledFieldSet>
+                <Field name="link" component="input" type="text">
+                  {({ input, meta }: { input: any; meta: any }) => (
+                    <>
+                      <StyledInputLabel>Lenke</StyledInputLabel>
+
+                      <StyledInputWrapper>
+                        {meta.error && meta.touched && (
+                          <StyledError>{meta.error}</StyledError>
+                        )}
+                        <StyledInput
+                          autoComplete="off"
+                          placeholder="Lenke til oppskrift"
                           {...input}
                         />
                       </StyledInputWrapper>
