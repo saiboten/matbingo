@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import Creatable from "react-select/creatable";
 import { RouteComponentProps, Redirect } from "react-router";
+import PublishIcon from "@material-ui/icons/Publish";
 import { RecipeType, Ingredient } from "../types";
 import { firebase } from "../firebase/firebase";
 import {
   StyledActionButtonForText,
   StyledSecondaryActionButton,
+  StyledActionButtonWithMargins,
 } from "../components/StyledActionButton";
 import { Form, Field } from "react-final-form";
 import { StyledForm } from "../components/StyledForm";
@@ -122,6 +124,7 @@ export const EditRecipeDetails = ({
   const [nextPage, setNextPage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const recipeDetails: RecipeType = recipes.find(
     (recipe) => recipe.id === id
@@ -156,8 +159,24 @@ export const EditRecipeDetails = ({
           justifyContent: "center",
         }}
       >
-        <div style={{ border: "1px solid black" }}>
-          <RecipeDetails recipe={recipeDetails} showImageUpload />
+        <div style={{ border: "1px solid black", position: "relative" }}>
+          <RecipeDetails
+            recipe={recipeDetails}
+            showImageUpload={showImageUpload}
+            setShowImageUpload={setShowImageUpload}
+          />
+          {!showImageUpload && (
+            <StyledActionButtonWithMargins
+              style={{
+                position: "absolute",
+                right: "0",
+                top: "0",
+              }}
+              onClick={() => setShowImageUpload(true)}
+            >
+              <PublishIcon fontSize="large" />
+            </StyledActionButtonWithMargins>
+          )}
         </div>
       </div>
 
