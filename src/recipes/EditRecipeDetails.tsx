@@ -79,7 +79,7 @@ const onSubmit = (
       .update({
         ...values,
         rating: parseInt(values.rating, 10),
-        public: values.public,
+        public: values.public || false,
         ingredients: values.ingredients
           .map((el: ValueType<any>) => el.value)
           .concat(newIds),
