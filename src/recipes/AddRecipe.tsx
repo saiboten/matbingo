@@ -94,6 +94,15 @@ interface Option {
   value: string;
 }
 
+const customStyles = {
+  menu: (provided: any, state: any) => ({
+    ...provided,
+    width: state.selectProps.width,
+    color: state.selectProps.menuColor,
+    zIndex: 2,
+  }),
+};
+
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
   return <Creatable {...input} {...rest} />;
 };
@@ -195,6 +204,7 @@ export function AddRecipe() {
                   name="ingredients"
                   component={ReactSelectAdapter}
                   isMulti
+                  styles={customStyles}
                   options={ingredients.map((el) => ({
                     label: el.name,
                     value: el.id,

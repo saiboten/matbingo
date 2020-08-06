@@ -72,8 +72,6 @@ const onSubmit = (
   Promise.all(createPromises).then((newDocs: any) => {
     const newIds = newDocs.map((el: any) => el.id);
 
-    console.log(values.public);
-
     db.collection("recipes")
       .doc(documentId)
       .update({
@@ -110,6 +108,15 @@ function deleteItem(id: string, setNextPage: (nextPage: string) => void) {
 
 const ReactSelectAdapter = ({ input, ...rest }: any) => {
   return <Creatable {...input} {...rest} />;
+};
+
+const customStyles = {
+  menu: (provided: any, state: any) => ({
+    ...provided,
+    width: state.selectProps.width,
+    color: state.selectProps.menuColor,
+    zIndex: 2,
+  }),
 };
 
 export const EditRecipeDetails = ({
@@ -282,6 +289,7 @@ export const EditRecipeDetails = ({
                   name="ingredients"
                   component={ReactSelectAdapter}
                   isMulti
+                  styles={customStyles}
                   options={ingredients.map((el) => ({
                     label: el.name,
                     value: el.id,
